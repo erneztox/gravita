@@ -50,3 +50,14 @@ The legacy postprocessor supports GRBL, LinuxCNC, Mach3, Mach4, Fanuc and Haas, 
 ## Conclusion
 
 The selected contract is a sound functional baseline for the product as currently specified. It does not require carrying the previous editor workbenches into Gravita. The remaining work is to implement the four new requirements and TIFF support, then verify each operation with the WBS acceptance fixtures. The contract remains a candidate until the new Rust implementation compiles and passes those tests.
+
+
+## Execution-model findings
+
+The previous engine exposes one `Session::execute` entry point. It routes requests through the document, vector, bitmap, relief, CAM and simulation handlers. The selected Gravita contract keeps the domain operations needed by the new product and removes the vector/bitmap editing handlers.
+
+Mutating calls are normally wrapped in an automatic history transaction. A returned error triggers rollback; the previous engine also snapshots several session components and catches panics to restore state. Gravita should preserve failure atomicity through its typed transaction model and ordinary `Result` propagation, without copying panic-based control flow.
+
+The old `schema.rs` reads a generated JSON registry for schema introspection (`command_schema` / `command_signature`). The execution path itself dispatches to handlers that read JSON fields directly; it does not validate every call against that generated schema first. That is why this contract is derived from handler behavior rather than copying the old generated schema file.
+
+The workflow runner executes ordered steps by calling the same `Session::execute` entry point and collects generated artifacts. Gravita should preserve that single execution path for desktop, CLI, MCP and programmatic workflows, with typed payloads at the engine boundary.

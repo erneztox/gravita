@@ -84,6 +84,11 @@ fn rust_type_family(ty: &Type) -> &'static str {
         _ => "Other",
     }
 }
+fn type_compatible(expected: &str, actual: &str) -> bool {
+    actual == "Other"
+        || actual == expected
+        || (expected == "Choice" && matches!(actual, "String" | "Int" | "Float" | "Array"))
+}
 fn contract_type_family(value: &serde_json::Value) -> &'static str {
     value.get("type").and_then(serde_json::Value::as_str).unwrap_or("Other")
 }
@@ -235,8 +240,7 @@ fn audit(contract_path: &Path, source_root: &Path, json_path: Option<&Path>) -> 
                     detail: format!("Payload {} in {} has no field {}.", type_name, payload.file, name) }),
                 Some(actual) => {
                     let actual_type = actual.family.as_str();
-                    if actual_type != "Other" && actual_type != *expected_type
-                        && !(*expected_type == "Choice" && ["String", "Int", "Float", "Array"].contains(&actual_type)) {
+                    if !type_compatible(expected_type, actual_type) {
                         issues.push(Issue { command_id: command.id.clone(), code: "parameter_type_mismatch".into(),
                             detail: format!("Parameter {} expects {}, but {} is {}.", name, expected_type, type_name, actual.rust_type) });
                     }
@@ -293,6 +297,15 @@ mod tests {
             let ty = syn::parse_str::<Type>(source).expect("test type parses");
             assert_eq!(rust_type_family(&ty), expected, "type: {source}");
         }
+    }
+
+    #[test]
+    fn accepts_union_parameter_families() {
+        assert!(type_compatible("Choice", "String"));
+        assert!(type_compatible("Choice", "Int"));
+        assert!(type_compatible("Choice", "Array"));
+        assert!(!type_compatible("Choice", "Bool"));
+        assert!(type_compatible("Float", "Other"));
     }
 
     #[test]

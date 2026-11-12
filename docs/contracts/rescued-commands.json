@@ -4925,5 +4925,11 @@
       ],
       "on_failure": "Do not write or publish the G-code artifact."
     }
+  ],
+  "execution_model_notes": [
+    "Previous Session::execute is the single dispatch entry point for document, vector, bitmap, relief, CAM and simulation handlers.",
+    "Mutating legacy commands are normally wrapped in automatic history transactions; returned errors trigger rollback. The old panic snapshot guard is not a design requirement for new Gravita: preserve atomicity through typed Result-based transactions.",
+    "The legacy generated schema registry is used for schema introspection, while command execution reads parameters in the handler branches. The selected contract is therefore based on handler behavior rather than copied schema metadata.",
+    "The legacy workflow runner executes ordered steps through Session::execute. Desktop, CLI, MCP and programmatic workflows in new Gravita should share one typed execution path."
   ]
 }

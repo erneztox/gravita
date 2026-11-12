@@ -52,3 +52,12 @@ The previous postprocessor has dialect implementations for GRBL, LinuxCNC, Mach3
 `cargo xtask audit rescued-commands` checks the selected contract against typed Rust command payloads, execution implementations and dispatcher registration. It intentionally audits only this selected contract; excluded legacy operations are not porting failures.
 
 The current Gravita repository is still at its specification baseline and has no application crates, so the audit will report the selected commands as pending until the implementation is added. The contract is a product baseline, not a claim that the engine has already been implemented or verified.
+
+
+## How the previous command bus is used
+
+The previous engine has a single `Session::execute` entry point that dispatches to document, vector, bitmap, relief, CAM and simulation handlers. The selected contract keeps the relevant domain behavior but does not carry the editor handlers into Gravita.
+
+Mutating commands are normally grouped in automatic history transactions. Errors trigger rollback, and the previous implementation additionally snapshots session state to recover from panics. The new engine should preserve atomic command execution using the typed transaction system and `Result` propagation rather than copying panic recovery as normal control flow.
+
+The previous workflow runner executes each declared step through that same session entry point. Gravita's desktop, CLI, MCP and programmatic workflows should likewise share one typed engine API.
