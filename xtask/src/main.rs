@@ -37,6 +37,7 @@ struct SourceIndex {
     payloads: BTreeMap<String, Payload>,
     command_ids: BTreeMap<String, Vec<String>>,
     command_impls: BTreeSet<String>,
+    command_execs: BTreeSet<String>,
     registrations: BTreeSet<String>,
 }
 struct Collector<'a> { file: &'a str, index: &'a mut SourceIndex }
@@ -99,6 +100,11 @@ impl<'ast> Visit<'ast> for Collector<'_> {
                 if let Some(name) = type_name(&item.self_ty) {
                     self.index.command_impls.insert(name.clone());
                     for member in &item.items {
+                        if let ImplItem::Fn(method) = member {
+                            if method.sig.ident == "execute" {
+                                self.index.command_execs.insert(name.clone());
+                            }
+                        }
                         if let ImplItem::Const(value) = member {
                             if value.ident == "ID" {
                                 if let syn::Expr::Lit(expr) = &value.expr {
@@ -163,7 +169,12 @@ fn audit(contract_path: &Path, source_root: &Path, json_path: Option<&Path>) -> 
             continue;
         };
         declarations_found += 1;
-        if index.command_impls.contains(type_name) { implemented_commands += 1; }
+        if index.command_impls.contains(type_name) && index.command_execs.contains(type_name) {
+            implemented_commands += 1;
+        } else if !index.command_execs.contains(type_name) {
+            issues.push(Issue { command_id: command.id.clone(), code: "missing_execute_method".into(),
+                detail: format!("{} implements Command but has no execute method body.", type_name) });
+        }
         if index.registrations.contains(type_name) { registered_commands += 1; }
         else {
             issues.push(Issue { command_id: command.id.clone(), code: "missing_bus_registration".into(),
