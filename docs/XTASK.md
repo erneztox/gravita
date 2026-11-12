@@ -30,7 +30,7 @@ cargo xtask is Gravita's deterministic developer tool. It enforces architecture,
 - Commands that write files must accept explicit output paths and never overwrite source fixtures.
 - Keep audit logic in testable modules; CLI functions are thin adapters.
 - Normal audit/CI commands must not access the network.
-- Derive thresholds and expected inventories from the current Gravita contracts, never from arbitrary historical counts.
+- Derive thresholds and expected inventories from the current Gravita contracts, never from arbitrary fixed counts.
 
 ## Proposed module layout
 
