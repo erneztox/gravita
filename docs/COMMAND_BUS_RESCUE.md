@@ -1,6 +1,6 @@
 # Rescuing the previous Gravita Core Bus
 
-This work uses the previous Gravita engine as an engineering reference. Its command bus was implemented in Rust; it is not an ArtCAM command bus.
+This work uses the previous Gravita engine as an engineering reference. Its command bus was implemented in Rust from the ground up.
 
 ## Scope
 
