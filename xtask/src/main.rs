@@ -272,3 +272,44 @@ fn main() -> Result<()> {
             audit(&contract, &source_root, json.as_deref()),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn rust_type_families_handle_wrappers_and_compound_types() {
+        let cases = [
+            ("Vec<f64>", "Array"),
+            ("Option<Vec<f64>>", "Array"),
+            ("Option<f64>", "Float"),
+            ("serde_json::Value", "Any"),
+            ("BTreeMap<String, f64>", "Object"),
+            ("String", "String"),
+            ("i64", "Int"),
+            ("bool", "Bool"),
+        ];
+        for (source, expected) in cases {
+            let ty = syn::parse_str::<Type>(source).expect("test type parses");
+            assert_eq!(rust_type_family(&ty), expected, "type: {source}");
+        }
+    }
+
+    #[test]
+    fn detects_associated_and_method_style_bus_registration() {
+        let syntax = syn::parse_file(
+            "fn setup() { bus.register::<MethodCommand>(); CommandBus::register::<AssociatedCommand>(); }",
+        )
+        .expect("test Rust source parses");
+        let mut index = SourceIndex::default();
+        {
+            let mut collector = Collector {
+                file: "test.rs",
+                index: &mut index,
+            };
+            collector.visit_file(&syntax);
+        }
+        assert!(index.registrations.contains("MethodCommand"));
+        assert!(index.registrations.contains("AssociatedCommand"));
+    }
+}
