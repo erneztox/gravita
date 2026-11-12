@@ -21,7 +21,13 @@
     "unique_command_ids": 404,
     "schema_entries": 116,
     "schema_coverage": "Only commands present in generated_schemas.json have a parameter schema. Missing schema is not interpreted as zero parameters.",
-    "command_status_semantics": "Registry status is metadata; it is not independently verified implementation evidence."
+    "command_status_semantics": "Registry status is metadata; it is not independently verified implementation evidence.",
+    "schemas_matching_registry": 111,
+    "orphan_schema_entries": 5,
+    "status_counts": {
+      "Implemented": 403,
+      "Draft": 1
+    }
   },
   "execution_model": {
     "entrypoint": "gravita_engine::Session::execute(command: &str, params: serde_json::Value) -> Result<serde_json::Value, EngineError>",
@@ -11106,5 +11112,142 @@
       "parameter_schema": null,
       "schema_state": "not_described"
     }
-  ]
+  ],
+  "orphan_schemas": {
+    "relief.sculpt_carve": {
+      "cmd_id": "relief.sculpt_carve",
+      "label": "Sculpt Carve",
+      "description": null,
+      "fields": [
+        {
+          "name": "brush_mode",
+          "label": "Brush Mode",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "tool",
+          "label": "Tool",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        }
+      ]
+    },
+    "relief.sculpt_deposit": {
+      "cmd_id": "relief.sculpt_deposit",
+      "label": "Sculpt Deposit",
+      "description": null,
+      "fields": [
+        {
+          "name": "brush_mode",
+          "label": "Brush Mode",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "tool",
+          "label": "Tool",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        }
+      ]
+    },
+    "relief.sculpt_erase": {
+      "cmd_id": "relief.sculpt_erase",
+      "label": "Sculpt Erase",
+      "description": null,
+      "fields": [
+        {
+          "name": "brush_mode",
+          "label": "Brush Mode",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "tool",
+          "label": "Tool",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        }
+      ]
+    },
+    "relief.sculpt_smooth": {
+      "cmd_id": "relief.sculpt_smooth",
+      "label": "Sculpt Smooth",
+      "description": null,
+      "fields": [
+        {
+          "name": "brush_mode",
+          "label": "Brush Mode",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "tool",
+          "label": "Tool",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        }
+      ]
+    },
+    "relief.sculpt_smudge": {
+      "cmd_id": "relief.sculpt_smudge",
+      "label": "Sculpt Smudge",
+      "description": null,
+      "fields": [
+        {
+          "name": "brush_mode",
+          "label": "Brush Mode",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "tool",
+          "label": "Tool",
+          "param_type": {
+            "type": "String"
+          },
+          "default_value": "deposit",
+          "required": false,
+          "description": null
+        }
+      ]
+    }
+  }
 }

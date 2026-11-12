@@ -14,7 +14,7 @@
   "commands": [
     {
       "id": "document.resize",
-      "name": "documentResize",
+      "name": "Document Resize",
       "description": "Resize the project workspace in physical dimensions.",
       "domain": "document",
       "parameters": [
@@ -60,27 +60,27 @@
     },
     {
       "id": "project.open",
-      "name": "projectOpen",
+      "name": "Project Open",
       "description": "Load a saved native project.",
       "domain": "document",
       "parameters": [
         {
-          "name": "filename",
+          "name": "path",
           "type": {
             "type": "String"
           },
           "required": false,
           "default": null,
-          "description": null
+          "description": "Path to a native Gravita project."
         },
         {
-          "name": "json",
+          "name": "content",
           "type": {
             "type": "String"
           },
           "required": false,
           "default": null,
-          "description": null
+          "description": "Serialized native project JSON; alternative to path."
         }
       ],
       "source": {
@@ -89,12 +89,13 @@
         "handler_modules": [
           "doc"
         ],
-        "registry_status": "Implemented"
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/doc.rs"
       }
     },
     {
       "id": "history.transaction.begin",
-      "name": "historyTransactionBegin",
+      "name": "History Transaction Begin",
       "description": "Begin a named grouped edit transaction.",
       "domain": "document",
       "parameters": [
@@ -119,7 +120,7 @@
     },
     {
       "id": "relief.height.scale_to_height",
-      "name": "reliefHeightScale_to_height",
+      "name": "Relief Height Scale To Height",
       "description": "Scale relief height to a target Z height.",
       "domain": "relief",
       "parameters": [
@@ -150,7 +151,7 @@
     },
     {
       "id": "relief.height.fade",
-      "name": "reliefHeightFade",
+      "name": "Relief Height Fade",
       "description": "Apply a spatial fade between start and end height ratios.",
       "domain": "relief",
       "parameters": [
@@ -256,7 +257,7 @@
     },
     {
       "id": "relief.draft.apply",
-      "name": "reliefDraftApply",
+      "name": "Relief Draft Apply",
       "description": "Apply draft angle to a relief.",
       "domain": "relief",
       "parameters": [
@@ -287,7 +288,7 @@
     },
     {
       "id": "relief.slice",
-      "name": "reliefSlice",
+      "name": "Relief Slice",
       "description": "Slice a relief into layers of a specified thickness.",
       "domain": "relief",
       "parameters": [
@@ -318,7 +319,7 @@
     },
     {
       "id": "relief.volume.calculate",
-      "name": "reliefVolumeCalculate",
+      "name": "Relief Volume Calculate",
       "description": "Calculate relief volume using a supplied material density.",
       "domain": "relief",
       "parameters": [
@@ -349,7 +350,7 @@
     },
     {
       "id": "relief.section.sample",
-      "name": "reliefSectionSample",
+      "name": "Relief Section Sample",
       "description": "Sample a relief cross-section between two positions.",
       "domain": "relief",
       "parameters": [
@@ -425,7 +426,7 @@
     },
     {
       "id": "relief.volume.scale",
-      "name": "reliefVolumeScale",
+      "name": "Relief Volume Scale",
       "description": "Scale a relief to a target volume.",
       "domain": "relief",
       "parameters": [
@@ -456,7 +457,7 @@
     },
     {
       "id": "relief.height.scale",
-      "name": "reliefHeightScale",
+      "name": "Relief Height Scale",
       "description": "Scale relief Z values.",
       "domain": "relief",
       "parameters": [
@@ -502,7 +503,7 @@
     },
     {
       "id": "relief.height.smooth",
-      "name": "reliefHeightSmooth",
+      "name": "Relief Height Smooth",
       "description": "Smooth relief height values.",
       "domain": "relief",
       "parameters": [
@@ -533,7 +534,7 @@
     },
     {
       "id": "relief.height.offset",
-      "name": "reliefHeightOffset",
+      "name": "Relief Height Offset",
       "description": "Offset relief height values by a delta.",
       "domain": "relief",
       "parameters": [
@@ -564,7 +565,7 @@
     },
     {
       "id": "relief.shape.generate",
-      "name": "reliefShapeGenerate",
+      "name": "Relief Shape Generate",
       "description": "Generate a parametric shape on the relief using the selected combine mode and limits.",
       "domain": "relief",
       "parameters": [
@@ -751,7 +752,7 @@
     },
     {
       "id": "relief.sweep.two_rail",
-      "name": "reliefSweepTwo_rail",
+      "name": "Relief Sweep Two Rail",
       "description": "Generate a relief by sweeping a cross-section along two rails.",
       "domain": "relief",
       "parameters": [
@@ -851,7 +852,7 @@
     },
     {
       "id": "relief.extrude",
-      "name": "reliefExtrude",
+      "name": "Relief Extrude",
       "description": "Generate a relief by extruding a profile along a width.",
       "domain": "relief",
       "parameters": [
@@ -972,7 +973,7 @@
     },
     {
       "id": "relief.revolve",
-      "name": "reliefRevolve",
+      "name": "Relief Revolve",
       "description": "Generate a relief by revolving a profile around a center axis.",
       "domain": "relief",
       "parameters": [
@@ -1144,7 +1145,7 @@
     },
     {
       "id": "relief.turn",
-      "name": "reliefTurn",
+      "name": "Relief Turn",
       "description": "Generate a turned relief around a defined axis.",
       "domain": "relief",
       "parameters": [
@@ -1256,7 +1257,7 @@
     },
     {
       "id": "relief.layer.select",
-      "name": "reliefLayerSelect",
+      "name": "Relief Layer Select",
       "description": "Select the active relief layer.",
       "domain": "relief",
       "parameters": [
@@ -1294,7 +1295,7 @@
     },
     {
       "id": "relief.layer.delete",
-      "name": "reliefLayerDelete",
+      "name": "Relief Layer Delete",
       "description": "Delete a relief layer.",
       "domain": "relief",
       "parameters": [
@@ -1323,7 +1324,7 @@
     },
     {
       "id": "relief.layer.set_visibility",
-      "name": "reliefLayerSet_visibility",
+      "name": "Relief Layer Set Visibility",
       "description": "Set relief-layer visibility explicitly.",
       "domain": "relief",
       "parameters": [
@@ -1361,7 +1362,7 @@
     },
     {
       "id": "relief.layer.set_combine_mode",
-      "name": "reliefLayerSet_combine_mode",
+      "name": "Relief Layer Set Combine Mode",
       "description": "Set how a relief layer combines with the composite relief.",
       "domain": "relief",
       "parameters": [
@@ -1408,7 +1409,7 @@
     },
     {
       "id": "relief.layer.set_opacity",
-      "name": "reliefLayerSet_opacity",
+      "name": "Relief Layer Set Opacity",
       "description": "Set relief-layer opacity.",
       "domain": "relief",
       "parameters": [
@@ -1439,7 +1440,7 @@
     },
     {
       "id": "cam.tools.load_database",
-      "name": "camToolsLoad_database",
+      "name": "Cam Tools Load Database",
       "description": "Load the cutter/tool database from a file.",
       "domain": "cam",
       "parameters": [
@@ -1464,7 +1465,7 @@
     },
     {
       "id": "cam.tools.save_database",
-      "name": "camToolsSave_database",
+      "name": "Cam Tools Save Database",
       "description": "Save the cutter/tool database to a file.",
       "domain": "cam",
       "parameters": [
@@ -1489,7 +1490,7 @@
     },
     {
       "id": "cam.tools.create",
-      "name": "camToolsCreate",
+      "name": "Cam Tools Create",
       "description": "Create a cutter/tool definition.",
       "domain": "cam",
       "parameters": [
@@ -1547,7 +1548,7 @@
     },
     {
       "id": "cam.tools.update",
-      "name": "camToolsUpdate",
+      "name": "Cam Tools Update",
       "description": "Update a cutter/tool definition.",
       "domain": "cam",
       "parameters": [
@@ -1605,7 +1606,7 @@
     },
     {
       "id": "cam.tools.delete",
-      "name": "camToolsDelete",
+      "name": "Cam Tools Delete",
       "description": "Delete a cutter/tool definition.",
       "domain": "cam",
       "parameters": [
@@ -1630,7 +1631,7 @@
     },
     {
       "id": "cam.tools.create_group",
-      "name": "camToolsCreate_group",
+      "name": "Cam Tools Create Group",
       "description": "Create a group in the tool database.",
       "domain": "cam",
       "parameters": [
@@ -1664,7 +1665,7 @@
     },
     {
       "id": "cam.tools.list",
-      "name": "camToolsList",
+      "name": "Cam Tools List",
       "description": "List tools, optionally filtered by group.",
       "domain": "cam",
       "parameters": [
@@ -1689,7 +1690,7 @@
     },
     {
       "id": "cam.tools.get",
-      "name": "camToolsGet",
+      "name": "Cam Tools Get",
       "description": "Retrieve a tool by identifier or tool number.",
       "domain": "cam",
       "parameters": [
@@ -1723,7 +1724,7 @@
     },
     {
       "id": "cam.tools.calculate_feeds_speeds",
-      "name": "camToolsCalculate_feeds_speeds",
+      "name": "Cam Tools Calculate Feeds Speeds",
       "description": "Calculate feeds and speeds for a selected tool/material context.",
       "domain": "cam",
       "parameters": [
@@ -1748,7 +1749,7 @@
     },
     {
       "id": "cam.tools.import_linuxcnc_table",
-      "name": "camToolsImport_linuxcnc_table",
+      "name": "Cam Tools Import Linuxcnc Table",
       "description": "Import a LinuxCNC tool table.",
       "domain": "cam",
       "parameters": [
@@ -1773,7 +1774,7 @@
     },
     {
       "id": "cam.tools.export_linuxcnc_table",
-      "name": "camToolsExport_linuxcnc_table",
+      "name": "Cam Tools Export Linuxcnc Table",
       "description": "Export the tool database as a LinuxCNC tool table.",
       "domain": "cam",
       "parameters": [
@@ -1798,7 +1799,7 @@
     },
     {
       "id": "cam.profile.set_bridges",
-      "name": "camProfileSet_bridges",
+      "name": "Cam Profile Set Bridges",
       "description": "Configure bridge/tab count, kind, length and thickness for profile machining.",
       "domain": "cam",
       "parameters": [
@@ -1866,7 +1867,7 @@
     },
     {
       "id": "cam.toolpaths.list",
-      "name": "camToolpathsList",
+      "name": "Cam Toolpaths List",
       "description": "List generated toolpaths.",
       "domain": "cam",
       "parameters": [
@@ -1891,7 +1892,7 @@
     },
     {
       "id": "cam.toolpaths.get",
-      "name": "camToolpathsGet",
+      "name": "Cam Toolpaths Get",
       "description": "Retrieve a toolpath by ID or index.",
       "domain": "cam",
       "parameters": [
@@ -1929,7 +1930,7 @@
     },
     {
       "id": "cam.toolpaths.delete",
-      "name": "camToolpathsDelete",
+      "name": "Cam Toolpaths Delete",
       "description": "Delete a toolpath by ID or index.",
       "domain": "cam",
       "parameters": [
@@ -1967,7 +1968,7 @@
     },
     {
       "id": "cam.drill.create",
-      "name": "camDrillCreate",
+      "name": "Cam Drill Create",
       "description": "Generate drilling cycles for supplied holes and machining parameters.",
       "domain": "cam",
       "parameters": [
@@ -2085,7 +2086,7 @@
     },
     {
       "id": "cam.drill.create_bank",
-      "name": "camDrillCreate_bank",
+      "name": "Cam Drill Create Bank",
       "description": "Generate a repeated drilling pattern using a pitch and selected tool.",
       "domain": "cam",
       "parameters": [
@@ -2155,7 +2156,7 @@
     },
     {
       "id": "cam.engrave.create",
-      "name": "camEngraveCreate",
+      "name": "Cam Engrave Create",
       "description": "Generate an engraving toolpath from a selected geometry layer.",
       "domain": "cam",
       "parameters": [
@@ -2204,7 +2205,7 @@
     },
     {
       "id": "cam.vcarve.create",
-      "name": "camVcarveCreate",
+      "name": "Cam Vcarve Create",
       "description": "Generate a V-bit carving toolpath.",
       "domain": "cam",
       "parameters": [
@@ -2377,7 +2378,7 @@
     },
     {
       "id": "cam.bevel.create",
-      "name": "camBevelCreate",
+      "name": "Cam Bevel Create",
       "description": "Generate a bevel-carving toolpath.",
       "domain": "cam",
       "parameters": [
@@ -2550,7 +2551,7 @@
     },
     {
       "id": "cam.inlay.create",
-      "name": "camInlayCreate",
+      "name": "Cam Inlay Create",
       "description": "Generate male/female inlay toolpaths from a polygon and machining parameters.",
       "domain": "cam",
       "parameters": [
@@ -2752,7 +2753,7 @@
     },
     {
       "id": "cam.roughing.z_level",
-      "name": "camRoughingZ_level",
+      "name": "Cam Roughing Z Level",
       "description": "Generate Z-level 3D roughing passes.",
       "domain": "cam",
       "parameters": [
@@ -2924,7 +2925,7 @@
     },
     {
       "id": "cam.relief.finish_3d",
-      "name": "camReliefFinish_3d",
+      "name": "Cam Relief Finish 3d",
       "description": "Generate a 3D relief finishing toolpath.",
       "domain": "cam",
       "parameters": [
@@ -3132,7 +3133,7 @@
     },
     {
       "id": "cam.rest_machining.create",
-      "name": "camRest_machiningCreate",
+      "name": "Cam Rest Machining Create",
       "description": "Generate a rest-machining toolpath from prior-tool residual material.",
       "domain": "cam",
       "parameters": [
@@ -3349,7 +3350,7 @@
     },
     {
       "id": "cam.toolpaths.merge",
-      "name": "camToolpathsMerge",
+      "name": "Cam Toolpaths Merge",
       "description": "Merge toolpaths with a configurable tolerance.",
       "domain": "cam",
       "parameters": [
@@ -3389,7 +3390,7 @@
     },
     {
       "id": "cam.toolpaths.transform",
-      "name": "camToolpathsTransform",
+      "name": "Cam Toolpaths Transform",
       "description": "Translate, rotate or scale a toolpath.",
       "domain": "cam",
       "parameters": [
@@ -3507,7 +3508,7 @@
     },
     {
       "id": "cam.toolpaths.panel",
-      "name": "camToolpathsPanel",
+      "name": "Cam Toolpaths Panel",
       "description": "Split a toolpath across panels with safe transitions and overcut.",
       "domain": "cam",
       "parameters": [
@@ -3592,7 +3593,7 @@
     },
     {
       "id": "simulation.collisions.check",
-      "name": "simulationCollisionsCheck",
+      "name": "Simulation Collisions Check",
       "description": "Check a toolpath for tool/holder collisions.",
       "domain": "simulation",
       "parameters": [
@@ -3650,7 +3651,7 @@
     },
     {
       "id": "simulation.gouging.detect",
-      "name": "simulationGougingDetect",
+      "name": "Simulation Gouging Detect",
       "description": "Detect gouging against the design model.",
       "domain": "simulation",
       "parameters": [
@@ -3684,7 +3685,7 @@
     },
     {
       "id": "simulation.feedrate.optimize",
-      "name": "simulationFeedrateOptimize",
+      "name": "Simulation Feedrate Optimize",
       "description": "Optimize toolpath feedrate using simulation resolution.",
       "domain": "simulation",
       "parameters": [
@@ -3729,6 +3730,933 @@
           "sim"
         ],
         "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "project.save",
+      "name": "Project Save",
+      "description": "Save the current native Gravita project, optionally returning its serialized JSON.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Destination project path; defaults to the current project path."
+        },
+        {
+          "name": "return_json",
+          "type": {
+            "type": "Bool"
+          },
+          "required": false,
+          "default": false,
+          "description": "Return serialized project JSON instead of writing a file."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "project.save",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/doc.rs"
+      }
+    },
+    {
+      "id": "relief.layer.create",
+      "name": "Relief Layer Create",
+      "description": "Create a relief layer with an optional name and combine mode.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Layer name."
+        },
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "add",
+          "description": "Layer composition mode."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief_layer.create",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/doc.rs"
+      }
+    },
+    {
+      "id": "geometry.import_2d",
+      "name": "Geometry Import 2d",
+      "description": "Import DXF, SVG or serialized vector geometry as machining geometry; this does not expose vector drawing or editing tools.",
+      "domain": "geometry",
+      "parameters": [
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Input DXF, SVG or JSON file path."
+        },
+        {
+          "name": "data",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Inline file content."
+        },
+        {
+          "name": "format",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "dxf",
+                "svg",
+                "json"
+              ]
+            }
+          },
+          "required": false,
+          "default": "json",
+          "description": "Input format."
+        },
+        {
+          "name": "entities",
+          "type": {
+            "type": "Array",
+            "details": {
+              "items": "object"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Inline serialized geometry entities."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "vector.import",
+        "handler_modules": [
+          "vector"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/vector.rs"
+      }
+    },
+    {
+      "id": "relief.mesh.import",
+      "name": "Relief Mesh Import",
+      "description": "Import an STL or OBJ mesh and rasterize it into the active relief heightfield.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "STL or OBJ file path."
+        },
+        {
+          "name": "data",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Inline STL or OBJ content."
+        },
+        {
+          "name": "format",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "stl",
+                "obj"
+              ]
+            }
+          },
+          "required": false,
+          "default": "stl",
+          "description": "Format for inline data."
+        },
+        {
+          "name": "bytes",
+          "type": {
+            "type": "Array",
+            "details": {
+              "items": "u8"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Binary STL bytes."
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "Imported3D",
+          "description": "Imported asset name."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.import_3d",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/relief.rs"
+      }
+    },
+    {
+      "id": "mesh.export",
+      "name": "Mesh Export",
+      "description": "Build and export the relief surface as STL or OBJ.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Output file path."
+        },
+        {
+          "name": "format",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "stl",
+                "obj"
+              ]
+            }
+          },
+          "required": false,
+          "default": "stl",
+          "description": "Mesh format."
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "ReliefMesh",
+          "description": "Mesh name."
+        },
+        {
+          "name": "close_mode",
+          "type": {
+            "type": "Choice"
+          },
+          "required": false,
+          "default": "open",
+          "description": "Mesh closure mode."
+        },
+        {
+          "name": "density",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": 1,
+          "description": "Material density used for the reported weight."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "mesh.export",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/relief.rs"
+      }
+    },
+    {
+      "id": "cam.profile.create",
+      "name": "CAM Profile Create",
+      "description": "Generate a 2D profile toolpath from a closed boundary and optional islands.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "Profile Toolpath",
+          "description": "Toolpath name."
+        },
+        {
+          "name": "polygon",
+          "type": {
+            "type": "Object",
+            "details": {
+              "shape": "Polygon2D"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Explicit Polygon2D input."
+        },
+        {
+          "name": "boundary_index",
+          "type": {
+            "type": "Int"
+          },
+          "required": false,
+          "default": null,
+          "description": "Selected boundary entity index."
+        },
+        {
+          "name": "island_indices",
+          "type": {
+            "type": "Array",
+            "details": {
+              "items": "usize"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Indices of internal islands."
+        },
+        {
+          "name": "side",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "inside",
+                "along",
+                "outside"
+              ]
+            }
+          },
+          "required": false,
+          "default": "outside",
+          "description": "Cut side."
+        },
+        {
+          "name": "direction",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "conventional",
+                "climb"
+              ]
+            }
+          },
+          "required": false,
+          "default": "climb",
+          "description": "Cutting direction."
+        },
+        {
+          "name": "start_depth",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": 0,
+          "description": "Starting depth in mm."
+        },
+        {
+          "name": "finish_depth",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": 10,
+          "description": "Final depth in mm."
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Maximum depth per pass in mm."
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": 5,
+          "description": "Safe retract height in mm."
+        },
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": 0,
+          "description": "Stock allowance in mm."
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "XY feed rate in mm/min."
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Plunge feed rate in mm/min."
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Spindle speed in RPM."
+        },
+        {
+          "name": "bridges",
+          "type": {
+            "type": "Object",
+            "details": {
+              "shape": "BridgeParams"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Bridge settings: enabled, length, thickness, kind and count."
+        },
+        {
+          "name": "lead_in_out",
+          "type": {
+            "type": "Object",
+            "details": {
+              "shape": "LeadInOutParams"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Lead-in/out settings: enabled, overcut, ramp_from_surface and position."
+        },
+        {
+          "name": "ramping",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "plunge",
+                "spiral"
+              ]
+            }
+          },
+          "required": false,
+          "default": "plunge",
+          "description": "Entry ramp strategy."
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Tool database identifier."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.profile_2d",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/cam.rs"
+      }
+    },
+    {
+      "id": "cam.pocket.create",
+      "name": "CAM Pocket Create",
+      "description": "Generate pocket toolpaths from a polygon or selected boundary and islands.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "2D Area Clearance 1",
+          "description": "Toolpath name."
+        },
+        {
+          "name": "polygon",
+          "type": {
+            "type": "Object",
+            "details": {
+              "shape": "Polygon2D"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Explicit Polygon2D input."
+        },
+        {
+          "name": "boundary_index",
+          "type": {
+            "type": "Int"
+          },
+          "required": false,
+          "default": null,
+          "description": "Boundary entity index."
+        },
+        {
+          "name": "island_indices",
+          "type": {
+            "type": "Array",
+            "details": {
+              "items": "usize"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Internal island entity indices."
+        },
+        {
+          "name": "entity_indices",
+          "type": {
+            "type": "Array",
+            "details": {
+              "items": "usize"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Selected geometry entities for automatic topological ordering."
+        },
+        {
+          "name": "finish_depth",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Final pocket depth in mm."
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Depth per pass in mm."
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Lateral stepover."
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Safe retract height in mm."
+        },
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Stock allowance."
+        },
+        {
+          "name": "final_tool_allowance",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Final tool allowance."
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "offset",
+                "raster"
+              ]
+            }
+          },
+          "required": false,
+          "default": "offset",
+          "description": "Pocket strategy."
+        },
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": 0,
+          "description": "Raster angle in degrees."
+        },
+        {
+          "name": "previous_tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Previous tool for rest machining."
+        },
+        {
+          "name": "previous_tool_diameter",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Previous tool diameter for rest machining."
+        },
+        {
+          "name": "previous_allowance",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Previous machining allowance."
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Tool database identifier."
+        },
+        {
+          "name": "params",
+          "type": {
+            "type": "Object",
+            "details": {
+              "shape": "PocketParams"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Full PocketParams payload; overrides individual pocket parameter fields."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.pocket_2d",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/cam.rs"
+      }
+    },
+    {
+      "id": "simulation.run",
+      "name": "Simulation Run",
+      "description": "Simulate stock removal for one selected toolpath or the most recently generated toolpath.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Toolpath identifier; defaults to the most recent toolpath."
+        },
+        {
+          "name": "resolution",
+          "type": {
+            "type": "Int"
+          },
+          "required": false,
+          "default": 100,
+          "description": "Stock simulation grid resolution for rows and columns."
+        },
+        {
+          "name": "reset",
+          "type": {
+            "type": "Bool"
+          },
+          "required": false,
+          "default": false,
+          "description": "Reset stock to the original material before simulation."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.simulate_toolpath",
+        "handler_modules": [
+          "sim"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/sim.rs"
+      }
+    },
+    {
+      "id": "simulation.reset",
+      "name": "Simulation Reset",
+      "description": "Reset the stock-removal simulation to the original material.",
+      "domain": "simulation",
+      "parameters": [],
+      "source": {
+        "legacy_command_id": "cam.reset_simulation",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/cam.rs"
+      }
+    },
+    {
+      "id": "postprocessor.gcode.export",
+      "name": "Postprocessor Gcode Export",
+      "description": "Post-process selected toolpaths into controller-specific G-code and optionally write the output file.",
+      "domain": "postprocessor",
+      "parameters": [
+        {
+          "name": "dialect",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "mach3",
+          "description": "Machine dialect identifier."
+        },
+        {
+          "name": "units",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "metric",
+                "imperial"
+              ]
+            }
+          },
+          "required": false,
+          "default": "metric",
+          "description": "Output units."
+        },
+        {
+          "name": "arc_mode",
+          "type": {
+            "type": "Choice",
+            "details": {
+              "choices": [
+                "incremental",
+                "absolute",
+                "radius"
+              ]
+            }
+          },
+          "required": false,
+          "default": "incremental",
+          "description": "Arc-center mode."
+        },
+        {
+          "name": "line_numbers",
+          "type": {
+            "type": "Bool"
+          },
+          "required": false,
+          "default": false,
+          "description": "Emit line numbers."
+        },
+        {
+          "name": "spindle_dwell",
+          "type": {
+            "type": "Float"
+          },
+          "required": false,
+          "default": null,
+          "description": "Spindle dwell duration in seconds."
+        },
+        {
+          "name": "rotary",
+          "type": {
+            "type": "Object",
+            "details": {
+              "shape": "RotaryAxisConfig"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Optional rotary-axis configuration: axis, diameter and wrap."
+        },
+        {
+          "name": "precision",
+          "type": {
+            "type": "Int"
+          },
+          "required": false,
+          "default": null,
+          "description": "Coordinate decimal precision; defaults to dialect units precision."
+        },
+        {
+          "name": "feed_precision",
+          "type": {
+            "type": "Int"
+          },
+          "required": false,
+          "default": 1,
+          "description": "Feed decimal precision."
+        },
+        {
+          "name": "line_number_increment",
+          "type": {
+            "type": "Int"
+          },
+          "required": false,
+          "default": 10,
+          "description": "Line-number increment."
+        },
+        {
+          "name": "comments",
+          "type": {
+            "type": "Bool"
+          },
+          "required": false,
+          "default": true,
+          "description": "Include comments."
+        },
+        {
+          "name": "modal",
+          "type": {
+            "type": "Bool"
+          },
+          "required": false,
+          "default": true,
+          "description": "Use modal G-code output."
+        },
+        {
+          "name": "preamble",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Custom program preamble."
+        },
+        {
+          "name": "postamble",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Custom program postamble."
+        },
+        {
+          "name": "program_number",
+          "type": {
+            "type": "Int"
+          },
+          "required": false,
+          "default": null,
+          "description": "Optional program number."
+        },
+        {
+          "name": "program_name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Optional program name."
+        },
+        {
+          "name": "toolpath_ids",
+          "type": {
+            "type": "Array",
+            "details": {
+              "items": "string"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": "Toolpath identifiers to export."
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Single toolpath identifier; alternative to toolpath_ids."
+        },
+        {
+          "name": "output_path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": "Optional G-code destination path."
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.save_toolpath",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented",
+        "parameter_source": "handler inspection: crates/engine/src/cmd/cam.rs"
       }
     }
   ]

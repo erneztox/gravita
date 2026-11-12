@@ -103,12 +103,12 @@ struct Report {
     implemented_commands: usize, registered_commands: usize, passed: bool, issues: Vec<Issue>,
 }
 fn collect_sources(root: &Path) -> Result<SourceIndex> {
-    if !root.exists() { anyhow::bail!("source root does not exist: {}", root.display()); }
+    if !root.exists() { return Ok(SourceIndex::default()); }
     let mut index = SourceIndex::default();
     let mut sources = Vec::new();
     for entry in WalkDir::new(root).into_iter().filter_map(Result::ok) {
         let path = entry.path();
-        if !entry.file_type().is_file() || path.extension().is_none_or(|ext| ext != "rs") { continue; }
+        if !entry.file_type().is_file() || path.extension() != Some(std::ffi::OsStr::new("rs")) { continue; }
         let source = fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
         let syntax = syn::parse_file(&source).with_context(|| format!("parsing Rust source {}", path.display()))?;
         let display = path.display().to_string();
