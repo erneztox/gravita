@@ -1,0 +1,3735 @@
+{
+  "format_version": 1,
+  "contract_id": "gravita.rescued-operations.v1",
+  "purpose": "Functional contract for the subset of legacy Gravita engine operations selected as candidates for the new Gravita core. This is not a clone of the legacy registry.",
+  "status": "candidate_contract",
+  "selection_policy": "Only document, relief, tool-database, CAM and simulation operations within the new product scope. Interactive vector authoring, bitmap editing, UI/dialog/window commands and ArtCAM menu aliases are excluded. Legacy commands without a reliable generated parameter schema are not silently treated as parameterless.",
+  "parameter_policy": "Parameter names, types, defaults and bounds below are copied from the legacy generated schema as a starting contract. New Gravita may normalize them; changes must be deliberate and reflected in this file.",
+  "source": {
+    "repository": "https://github.com/erneztox/artcam-investigation",
+    "ref": "main",
+    "registry": "crates/engine/src/cmd/registry.rs",
+    "schemas": "crates/engine/src/cmd/generated_schemas.json"
+  },
+  "commands": [
+    {
+      "id": "document.resize",
+      "name": "documentResize",
+      "description": "Resize the project workspace in physical dimensions.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 50,
+          "description": null
+        },
+        {
+          "name": "width",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 50,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "model.set_size",
+        "legacy_label": "Set Size...",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "project.open",
+      "name": "projectOpen",
+      "description": "Load a saved native project.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "filename",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "json",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "file.open",
+        "legacy_label": "Open...",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "history.transaction.begin",
+      "name": "historyTransactionBegin",
+      "description": "Begin a named grouped edit transaction.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "history.begin_transaction",
+        "legacy_label": "Begin Transaction",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.height.scale_to_height",
+      "name": "reliefHeightScale_to_height",
+      "description": "Scale relief height to a target Z height.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "target_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 10,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.auto_scale_z",
+        "legacy_label": "Auto Scale Z",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.height.fade",
+      "name": "reliefHeightFade",
+      "description": "Apply a spatial fade between start and end height ratios.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "end_ratio",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.01,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "end_x",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "end_y",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "start_ratio",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.01,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "start_x",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "start_y",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.fade",
+        "legacy_label": "Fade Relief...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.draft.apply",
+      "name": "reliefDraftApply",
+      "description": "Apply draft angle to a relief.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.add_draft",
+        "legacy_label": "Add Draft...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.slice",
+      "name": "reliefSlice",
+      "description": "Slice a relief into layers of a specified thickness.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "thickness",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.slice",
+        "legacy_label": "Slice Relief...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.volume.calculate",
+      "name": "reliefVolumeCalculate",
+      "description": "Calculate relief volume using a supplied material density.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "density",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.calculate_volume",
+        "legacy_label": "Relief Volume...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.section.sample",
+      "name": "reliefSectionSample",
+      "description": "Sample a relief cross-section between two positions.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "end_x",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "end_y",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "sample_step",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "start_x",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.create_cross_section",
+        "legacy_label": "Create Cross-Section...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.volume.scale",
+      "name": "reliefVolumeScale",
+      "description": "Scale a relief to a target volume.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "target_volume",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1000,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.scale_to_volume",
+        "legacy_label": "Scale to Target Volume...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.height.scale",
+      "name": "reliefHeightScale",
+      "description": "Scale relief Z values.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "factor",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.01,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "target_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 10,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.scale_z",
+        "legacy_label": "Scale...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.height.smooth",
+      "name": "reliefHeightSmooth",
+      "description": "Smooth relief height values.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "strength",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.smooth",
+        "legacy_label": "Smooth...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.height.offset",
+      "name": "reliefHeightOffset",
+      "description": "Offset relief height values by a delta.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "delta",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.offset_z",
+        "legacy_label": "Offset...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.shape.generate",
+      "name": "reliefShapeGenerate",
+      "description": "Generate a parametric shape on the relief using the selected combine mode and limits.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "all",
+          "type": {
+            "type": "Bool"
+          },
+          "required": false,
+          "default": false,
+          "description": null
+        },
+        {
+          "name": "angle",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "color",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "add",
+          "description": null
+        },
+        {
+          "name": "entity_indices",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "height_limit",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 10,
+          "description": null
+        },
+        {
+          "name": "layer",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "layer_idx",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "layer_name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "limit",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "no_limit",
+          "description": null
+        },
+        {
+          "name": "limit_value",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 10,
+          "description": null
+        },
+        {
+          "name": "shape",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "plane",
+          "description": null
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "tilt_angle",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "tolerance",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.shape_editor",
+        "legacy_label": "Shape Editor",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.sweep.two_rail",
+      "name": "reliefSweepTwo_rail",
+      "description": "Generate a relief by sweeping a cross-section along two rails.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "add",
+          "description": null
+        },
+        {
+          "name": "cross_section_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "final_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "invert_profile_z",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "rail1",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "rail2",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.two_rail_sweep",
+        "legacy_label": "Two Rail Sweep...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.extrude",
+      "name": "reliefExtrude",
+      "description": "Generate a relief by extruding a profile along a width.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "anchor",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0.5,
+          "description": null
+        },
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "add",
+          "description": null
+        },
+        {
+          "name": "drive_curve",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "drive_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "final_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "invert_profile_z",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "width",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 50,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.extrude",
+        "legacy_label": "Extrude...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.revolve",
+      "name": "reliefRevolve",
+      "description": "Generate a relief by revolving a profile around a center axis.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 360,
+          "description": null
+        },
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 360,
+          "description": null
+        },
+        {
+          "name": "center",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "add",
+          "description": null
+        },
+        {
+          "name": "final_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "invert_profile_z",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "scale",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "start_angle",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "start_angle_deg",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "z_scale",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.spin",
+        "legacy_label": "Spin...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.turn",
+      "name": "reliefTurn",
+      "description": "Generate a turned relief around a defined axis.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "axis",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "add",
+          "description": null
+        },
+        {
+          "name": "final_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "invert_profile_z",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "scale",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "z_scale",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief.turn",
+        "legacy_label": "Turn...",
+        "handler_modules": [
+          "relief"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.layer.select",
+      "name": "reliefLayerSelect",
+      "description": "Select the active relief layer.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int",
+            "details": {
+              "min": 0,
+              "max": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief_layer.select",
+        "legacy_label": "Activate Relief Layer",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.layer.delete",
+      "name": "reliefLayerDelete",
+      "description": "Delete a relief layer.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int",
+            "details": {
+              "min": 0,
+              "max": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief_layer.delete",
+        "legacy_label": "Delete",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.layer.set_visibility",
+      "name": "reliefLayerSet_visibility",
+      "description": "Set relief-layer visibility explicitly.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int",
+            "details": {
+              "min": 0,
+              "max": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief_layer.set_visibility",
+        "legacy_label": "Set Visibility",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.layer.set_combine_mode",
+      "name": "reliefLayerSet_combine_mode",
+      "description": "Set how a relief layer combines with the composite relief.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "add",
+          "description": null
+        },
+        {
+          "name": "id",
+          "type": {
+            "type": "Int",
+            "details": {
+              "min": 0,
+              "max": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "add",
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief_layer.set_combine_mode",
+        "legacy_label": "Set Combine Mode",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "relief.layer.set_opacity",
+      "name": "reliefLayerSet_opacity",
+      "description": "Set relief-layer opacity.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "opacity",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "relief_layer.set_opacity",
+        "legacy_label": "Set Relief Layer Opacity",
+        "handler_modules": [
+          "doc"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.load_database",
+      "name": "camToolsLoad_database",
+      "description": "Load the cutter/tool database from a file.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.tool_db_load",
+        "legacy_label": "Load Tool Database",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.save_database",
+      "name": "camToolsSave_database",
+      "description": "Save the cutter/tool database to a file.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.tool_db_save",
+        "legacy_label": "Save Tool Database",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.create",
+      "name": "camToolsCreate",
+      "description": "Create a cutter/tool definition.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "diameter",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "group_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tool",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.tool_create",
+        "legacy_label": "Create Tool",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.update",
+      "name": "camToolsUpdate",
+      "description": "Update a cutter/tool definition.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "diameter",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tool",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.tool_update",
+        "legacy_label": "Update Tool",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.delete",
+      "name": "camToolsDelete",
+      "description": "Delete a cutter/tool definition.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.tool_delete",
+        "legacy_label": "Delete Tool",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.create_group",
+      "name": "camToolsCreate_group",
+      "description": "Create a group in the tool database.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "notes",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "",
+          "description": null
+        },
+        {
+          "name": "parent_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "",
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.tool_group_create",
+        "legacy_label": "Create Tool Group",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.list",
+      "name": "camToolsList",
+      "description": "List tools, optionally filtered by group.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "group_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.tool_list",
+        "legacy_label": "List Tools",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.get",
+      "name": "camToolsGet",
+      "description": "Retrieve a tool by identifier or tool number.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tool_number",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.tool_get",
+        "legacy_label": "Get Tool",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.calculate_feeds_speeds",
+      "name": "camToolsCalculate_feeds_speeds",
+      "description": "Calculate feeds and speeds for a selected tool/material context.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "Softwood",
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.calculate_feeds_speeds",
+        "legacy_label": "Calculate Feeds and Speeds",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.import_linuxcnc_table",
+      "name": "camToolsImport_linuxcnc_table",
+      "description": "Import a LinuxCNC tool table.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.import_linuxcnc_tbl",
+        "legacy_label": "Import LinuxCNC Tool Table",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.tools.export_linuxcnc_table",
+      "name": "camToolsExport_linuxcnc_table",
+      "description": "Export the tool database as a LinuxCNC tool table.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.export_linuxcnc_tbl",
+        "legacy_label": "Export LinuxCNC Tool Table",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.profile.set_bridges",
+      "name": "camProfileSet_bridges",
+      "description": "Configure bridge/tab count, kind, length and thickness for profile machining.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "count",
+          "type": {
+            "type": "Int",
+            "details": {
+              "min": 0,
+              "max": null
+            }
+          },
+          "required": false,
+          "default": 4,
+          "description": null
+        },
+        {
+          "name": "kind",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "3d",
+          "description": null
+        },
+        {
+          "name": "length",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        },
+        {
+          "name": "thickness",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 2,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.profile_options",
+        "legacy_label": "Profile Options (Bridges)",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.toolpaths.list",
+      "name": "camToolpathsList",
+      "description": "List generated toolpaths.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "output_path",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.toolpath_list",
+        "legacy_label": "List Toolpaths",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.toolpaths.get",
+      "name": "camToolpathsGet",
+      "description": "Retrieve a toolpath by ID or index.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "type": "Int",
+            "details": {
+              "min": 0,
+              "max": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.toolpath_get",
+        "legacy_label": "Get Toolpath",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.toolpaths.delete",
+      "name": "camToolpathsDelete",
+      "description": "Delete a toolpath by ID or index.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "type": "Int",
+            "details": {
+              "min": 0,
+              "max": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.toolpath_delete",
+        "legacy_label": "Delete Toolpath",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.drill.create",
+      "name": "camDrillCreate",
+      "description": "Generate drilling cycles for supplied holes and machining parameters.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "cycle",
+          "type": {
+            "type": "Choice",
+            "details": [
+              "standard",
+              "peck",
+              "chip_break",
+              "dwell"
+            ]
+          },
+          "required": false,
+          "default": "standard",
+          "description": null
+        },
+        {
+          "name": "finish_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "hole_diameter",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "holes",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "layer",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "peck_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.drill_create",
+        "legacy_label": "Drilling...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.drill.create_bank",
+      "name": "camDrillCreate_bank",
+      "description": "Generate a repeated drilling pattern using a pitch and selected tool.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "finish_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 10,
+          "description": null
+        },
+        {
+          "name": "pitch",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 32,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.drill_bank",
+        "legacy_label": "Drill Banks...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.engrave.create",
+      "name": "camEngraveCreate",
+      "description": "Generate an engraving toolpath from a selected geometry layer.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "layer",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "scribe",
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.smart_engrave",
+        "legacy_label": "Smart Engraving...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.vcarve.create",
+      "name": "camVcarveCreate",
+      "description": "Generate a V-bit carving toolpath.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 1200,
+          "description": null
+        },
+        {
+          "name": "half_angle_deg",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 45,
+          "description": null
+        },
+        {
+          "name": "max_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 300,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 500,
+              "unit": "rpm"
+            }
+          },
+          "required": false,
+          "default": 18000,
+          "description": null
+        },
+        {
+          "name": "start_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 2,
+          "description": null
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "style",
+          "type": {
+            "type": "Choice",
+            "details": [
+              "centerline_with_bevels",
+              "multi_pass_offset"
+            ]
+          },
+          "required": false,
+          "default": "centerline_with_bevels",
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.vcarve",
+        "legacy_label": "V-Bit Carving...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.bevel.create",
+      "name": "camBevelCreate",
+      "description": "Generate a bevel-carving toolpath.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "bevel_max_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 1200,
+          "description": null
+        },
+        {
+          "name": "half_angle_deg",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 45,
+          "description": null
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 300,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 500,
+              "unit": "rpm"
+            }
+          },
+          "required": false,
+          "default": 18000,
+          "description": null
+        },
+        {
+          "name": "start_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 2,
+          "description": null
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "style",
+          "type": {
+            "type": "Choice",
+            "details": [
+              "centerline_with_bevels",
+              "multi_pass_offset"
+            ]
+          },
+          "required": false,
+          "default": "centerline_with_bevels",
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.bevel_carving",
+        "legacy_label": "Bevel Carving...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.inlay.create",
+      "name": "camInlayCreate",
+      "description": "Generate male/female inlay toolpaths from a polygon and machining parameters.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "corner_radius",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 1200,
+          "description": null
+        },
+        {
+          "name": "female_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "glue_gap",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "half_angle_deg",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 45,
+          "description": null
+        },
+        {
+          "name": "kind",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "male_depth",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "mirror_male",
+          "type": {
+            "type": "Bool"
+          },
+          "required": false,
+          "default": false,
+          "description": null
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 300,
+          "description": null
+        },
+        {
+          "name": "polygon",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 500,
+              "unit": "rpm"
+            }
+          },
+          "required": false,
+          "default": 18000,
+          "description": null
+        },
+        {
+          "name": "tolerance",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0.01,
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.inlay_wizard",
+        "legacy_label": "Inlay...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.roughing.z_level",
+      "name": "camRoughingZ_level",
+      "description": "Generate Z-level 3D roughing passes.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "boundary",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 1200,
+          "description": null
+        },
+        {
+          "name": "finish_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 300,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 500,
+              "unit": "rpm"
+            }
+          },
+          "required": false,
+          "default": 18000,
+          "description": null
+        },
+        {
+          "name": "start_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "stock_allowance",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.z_level_roughing",
+        "legacy_label": "Z Level Roughing...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.relief.finish_3d",
+      "name": "camReliefFinish_3d",
+      "description": "Generate a 3D relief finishing toolpath.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "boundary",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "center_x",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "center_y",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 1200,
+          "description": null
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 300,
+          "description": null
+        },
+        {
+          "name": "raster_angle",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "sample_interval",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "scallop_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 500,
+              "unit": "rpm"
+            }
+          },
+          "required": false,
+          "default": 18000,
+          "description": null
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.relief_3d",
+        "legacy_label": "Machine Relief...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.rest_machining.create",
+      "name": "camRest_machiningCreate",
+      "description": "Generate a rest-machining toolpath from prior-tool residual material.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "blend_distance",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "boundary",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "center_x",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "center_y",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 1200,
+          "description": null
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 50,
+              "unit": "mm/min"
+            }
+          },
+          "required": false,
+          "default": 300,
+          "description": null
+        },
+        {
+          "name": "prev_tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "sample_interval",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "scallop_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 500,
+              "unit": "rpm"
+            }
+          },
+          "required": false,
+          "default": 18000,
+          "description": null
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.rest_machining_3d",
+        "legacy_label": "Rest Machining...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.toolpaths.merge",
+      "name": "camToolpathsMerge",
+      "description": "Merge toolpaths with a configurable tolerance.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "all",
+          "type": {
+            "type": "Bool"
+          },
+          "required": false,
+          "default": false,
+          "description": null
+        },
+        {
+          "name": "tolerance",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 0.01,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.toolpath_merge",
+        "legacy_label": "Merge Toolpaths...",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.toolpaths.transform",
+      "name": "camToolpathsTransform",
+      "description": "Translate, rotate or scale a toolpath.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "dx",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 10,
+          "description": null
+        },
+        {
+          "name": "dy",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 10,
+          "description": null
+        },
+        {
+          "name": "dz",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "rotation_center",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "rotation_deg",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "deg"
+            }
+          },
+          "required": false,
+          "default": 0,
+          "description": null
+        },
+        {
+          "name": "scale",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": 1,
+          "description": null
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "translation",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.toolpath_transform",
+        "legacy_label": "Transform Toolpath",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "cam.toolpaths.panel",
+      "name": "camToolpathsPanel",
+      "description": "Split a toolpath across panels with safe transitions and overcut.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "overcut_distance",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 2,
+          "description": null
+        },
+        {
+          "name": "panel_height",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 50,
+          "description": null
+        },
+        {
+          "name": "panel_width",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 50,
+          "description": null
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 5,
+          "description": null
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": "horizontal",
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.toolpath_panelling",
+        "legacy_label": "Toolpath Panelling",
+        "handler_modules": [
+          "cam"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "simulation.collisions.check",
+      "name": "simulationCollisionsCheck",
+      "description": "Check a toolpath for tool/holder collisions.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "holder_diameter",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": 0,
+              "max": null,
+              "step": 0.1,
+              "unit": "mm"
+            }
+          },
+          "required": false,
+          "default": 35,
+          "description": null
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "resolution",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.check_collisions",
+        "legacy_label": "Check Toolpath Collisions",
+        "handler_modules": [
+          "sim"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "simulation.gouging.detect",
+      "name": "simulationGougingDetect",
+      "description": "Detect gouging against the design model.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.detect_gouging",
+        "legacy_label": "Detect Design Model Gouging",
+        "handler_modules": [
+          "sim"
+        ],
+        "registry_status": "Implemented"
+      }
+    },
+    {
+      "id": "simulation.feedrate.optimize",
+      "name": "simulationFeedrateOptimize",
+      "description": "Optimize toolpath feedrate using simulation resolution.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "sim_resolution",
+          "type": {
+            "type": "Float",
+            "details": {
+              "min": null,
+              "max": null,
+              "step": 1,
+              "unit": null
+            }
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "required": false,
+          "default": null,
+          "description": null
+        }
+      ],
+      "source": {
+        "legacy_command_id": "cam.optifeed",
+        "legacy_label": "OptiFeed Feedrate Optimizer...",
+        "handler_modules": [
+          "sim"
+        ],
+        "registry_status": "Implemented"
+      }
+    }
+  ]
+}
