@@ -54,13 +54,13 @@ fn type_name(ty: &Type) -> Option<String> {
 fn type_tokens(ty: &Type) -> String { format!("{ty:?}") }
 fn rust_type_family(raw: &str) -> &'static str {
     let s = raw.to_ascii_lowercase();
-    if s.contains("f32") || s.contains("f64") { "Float" }
+    if s.contains("vec<") || s.starts_with("vec") || s.contains("slice") || s.contains("array") { "Array" }
+    else if s.contains("serde_json::value") { "Any" }
+    else if s.contains("serde_json::map") || s.contains("hashmap<") || s.contains("btreemap<") { "Object" }
+    else if s.contains("f32") || s.contains("f64") { "Float" }
     else if ["i8","i16","i32","i64","u8","u16","u32","u64","usize","isize"].iter().any(|n| s.contains(n)) { "Int" }
     else if s.contains("bool") { "Bool" }
     else if s.contains("string") || s.contains("str") { "String" }
-    else if s.contains("vec<") || s.starts_with("vec") || s.contains("array") { "Array" }
-    else if s.contains("serde_json::value") { "Any" }
-    else if s.contains("serde_json::map") { "Object" }
     else { "Other" }
 }
 fn contract_type_family(value: &serde_json::Value) -> &'static str {
