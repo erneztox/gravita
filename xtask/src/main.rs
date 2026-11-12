@@ -236,7 +236,7 @@ fn audit(contract_path: &Path, source_root: &Path, json_path: Option<&Path>) -> 
                 Some(actual) => {
                     let actual_type = actual.family.as_str();
                     if actual_type != "Other" && actual_type != *expected_type
-                        && !(*expected_type == "Choice" && actual_type == "String") {
+                        && !(*expected_type == "Choice" && ["String", "Int", "Float", "Array"].contains(&actual_type)) {
                         issues.push(Issue { command_id: command.id.clone(), code: "parameter_type_mismatch".into(),
                             detail: format!("Parameter {} expects {}, but {} is {}.", name, expected_type, type_name, actual.rust_type) });
                     }

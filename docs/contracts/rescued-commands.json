@@ -560,9 +560,9 @@
         {
           "name": "layer",
           "type": {
-            "type": "String"
+            "type": "Choice"
           },
-          "source_expression": "params.get(\"layer\").and_then(Value::as_str) { self.doc .vector_layers .iter() .find(|l| l.na"
+          "source_expression": "Legacy handler accepts a layer name (String) or layer index (Integer) in the same field."
         },
         {
           "name": "layer_id",
@@ -1045,9 +1045,9 @@
         {
           "name": "axis",
           "type": {
-            "type": "Array"
+            "type": "Choice"
           },
-          "source_expression": "params.get(\"axis\").and_then(Value::as_array) { if ax.len() >= 4 { let x0 = ax.first().and_then(Value::as_f64).unwrap_or(0.0)"
+          "source_expression": "Legacy handler accepts either an axis line coordinate array or a vector-entity ID."
         },
         {
           "name": "axis_id",
@@ -2595,9 +2595,9 @@
         {
           "name": "scale",
           "type": {
-            "type": "Array"
+            "type": "Choice"
           },
-          "source_expression": "params.get(\"scale\").and_then(Value::as_array) { let sx = arr.first().and_then(Value::as_f64).unwrap_or(1.0)"
+          "source_expression": "Legacy handler accepts either a uniform scalar scale or an XYZ scale array."
         },
         {
           "name": "toolpath_id",
