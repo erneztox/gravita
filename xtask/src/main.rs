@@ -4,7 +4,7 @@ use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use serde::{Deserialize, Serialize};
 use std::{collections::{BTreeMap, BTreeSet}, fs, path::{Path, PathBuf}};
-use syn::{visit::Visit, Fields, ImplItem, Type};
+use syn::{visit::Visit, Fields, GenericArgument, ImplItem, PathArguments, Type};
 use walkdir::WalkDir;
 
 #[derive(Parser)]
@@ -35,7 +35,7 @@ struct Payload { type_name: String, fields: BTreeMap<String, String>, file: Stri
 #[derive(Default)]
 struct SourceIndex {
     payloads: BTreeMap<String, Payload>,
-    command_ids: BTreeMap<String, String>,
+    command_ids: BTreeMap<String, Vec<String>>,
     command_impls: BTreeSet<String>,
     registrations: BTreeSet<String>,
 }
@@ -75,6 +75,24 @@ impl<'ast> Visit<'ast> for Collector<'_> {
         });
         syn::visit::visit_item_struct(self, item);
     }
+    fn visit_expr_call(&mut self, expression: &'ast syn::ExprCall) {
+        if let syn::Expr::Path(function) = expression.func.as_ref() {
+            if let Some(segment) = function.path.segments.last() {
+                if segment.ident == "register" {
+                    if let PathArguments::AngleBracketed(arguments) = &segment.arguments {
+                        for argument in &arguments.args {
+                            if let GenericArgument::Type(ty) = argument {
+                                if let Some(name) = type_name(ty) {
+                                    self.index.registrations.insert(name);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        syn::visit::visit_expr_call(self, expression);
+    }
     fn visit_item_impl(&mut self, item: &'ast syn::ItemImpl) {
         if let Some((_, path, _)) = &item.trait_ {
             if path.segments.last().is_some_and(|s| s.ident == "Command") {
@@ -85,7 +103,7 @@ impl<'ast> Visit<'ast> for Collector<'_> {
                             if value.ident == "ID" {
                                 if let syn::Expr::Lit(expr) = &value.expr {
                                     if let syn::Lit::Str(id) = &expr.lit {
-                                        self.index.command_ids.insert(id.value(), name.clone());
+                                        self.index.command_ids.entry(id.value()).or_default().push(name.clone());
                                     }
                                 }
                             }
@@ -107,8 +125,8 @@ struct Report {
 fn collect_sources(root: &Path) -> Result<SourceIndex> {
     if !root.exists() { return Ok(SourceIndex::default()); }
     let mut index = SourceIndex::default();
-    let mut sources = Vec::new();
-    for entry in WalkDir::new(root).into_iter().filter_map(|entry| entry.ok()) {
+    for entry in WalkDir::new(root) {
+        let entry = entry.with_context(|| format!("walking {}", root.display()))?;
         let path = entry.path();
         if !entry.file_type().is_file() || path.extension() != Some(std::ffi::OsStr::new("rs")) { continue; }
         let source = fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
@@ -116,13 +134,6 @@ fn collect_sources(root: &Path) -> Result<SourceIndex> {
         let display = path.display().to_string();
         let mut collector = Collector { file: &display, index: &mut index };
         collector.visit_file(&syntax);
-        sources.push(source);
-    }
-    for type_name in &index.command_impls {
-        let needle = format!("register::<{type_name}>");
-        if sources.iter().any(|source| source.contains(&needle)) {
-            index.registrations.insert(type_name.clone());
-        }
     }
     Ok(index)
 }
@@ -135,11 +146,17 @@ fn audit(contract_path: &Path, source_root: &Path, json_path: Option<&Path>) -> 
     let mut implemented_commands = 0;
     let mut registered_commands = 0;
     for command in &contract.commands {
-        let Some(type_name) = index.command_ids.get(&command.id) else {
+        let Some(type_names) = index.command_ids.get(&command.id) else {
             issues.push(Issue { command_id: command.id.clone(), code: "missing_command_impl".into(),
                 detail: format!("No impl Command declares ID {} (expected an associated const ID).", command.id) });
             continue;
         };
+        if type_names.len() != 1 {
+            issues.push(Issue { command_id: command.id.clone(), code: "duplicate_command_id".into(),
+                detail: format!("Command ID {} is declared by multiple types: {}.", command.id, type_names.join(", ")) });
+            continue;
+        }
+        let type_name = &type_names[0];
         let Some(payload) = index.payloads.get(type_name) else {
             issues.push(Issue { command_id: command.id.clone(), code: "missing_payload".into(),
                 detail: format!("Command type {} has no Rust struct payload.", type_name) });
