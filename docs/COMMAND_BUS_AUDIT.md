@@ -37,7 +37,7 @@ Of these, 93 are backed by executable handlers in the previous Gravita Rust engi
 | Mandatory export validation | Previous G-code export does not require a passing safety report; Gravita must enforce the WBS G7.4 release gate. |
 | G-code validation | Previous postprocessor generates output but has no explicit parsed G-code validation stage (WBS G7.4). |
 
-The four new operations are explicitly marked `new_product_requirement` in the contract. TIFF is recorded as an additional required format on the heightmap import operation.
+The four new operations are explicitly marked `new_product_requirement` in the contract. TIFF is recorded as an additional required format on the heightmap import operation. Offset relief finishing is also required by WBS G5.6, but the previous handler only implements raster and spiral; the new CAM kernel must add offset finishing. The G-code export contract requires both `safety.export.validate` and `postprocessor.gcode.validate` to pass before the file is written.
 
 ## Excluded legacy functionality
 

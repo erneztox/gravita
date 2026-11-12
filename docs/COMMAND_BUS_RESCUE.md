@@ -29,8 +29,9 @@ The previous engine is a useful starting point, but it does not fully satisfy th
 3. **Machine travel bounds:** the old collision checker covers tool/holder collisions and optional gouge checks, not a configured machine travel envelope.
 4. **Mandatory export gate:** the old G-code command generates output without requiring a successful safety report. Gravita must block export until stock, collision, gouge and machine-bound validation passes.
 5. **G-code validation:** the old postprocessor generates dialect-specific output but does not expose the G-code parser/validation stage required by WBS G7.4.
+6. **Offset relief finishing:** the old 3D relief finishing handler supports raster and spiral strategies; Gravita's WBS G5.6 also requires offset finishing.
 
-These are represented as four new operations in the contract: toolpath sequencing, machine-bounds checking, pre-export safety validation and generated-G-code validation. TIFF is recorded as an additional required format on the heightmap import operation.
+These are represented as four new operations in the contract: toolpath sequencing, machine-bounds checking, pre-export safety validation and generated-G-code validation. TIFF is recorded as an additional required format on the heightmap import operation, and offset relief finishing is recorded as a new required strategy on the existing 3D finishing operation. G-code export is explicitly blocked until both safety validation and parsed G-code validation pass.
 
 ## Deliberate exclusions
 
