@@ -1327,16 +1327,16 @@
         {
           "name": "file_path",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str()) { let content = std::fs::read_to_string(path_str).map_err(|e| EngineError::BadParams {"
+          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str())"
         },
         {
           "name": "json_content",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"json_content\").and_then(|v| v.as_str()) { gravita_cam::ToolDatabase::from_json(content)? } else if let Some(path_str) = params.get(\"file"
+          "source_expression": "params.get(\"json_content\").and_then(|v| v.as_str())"
         }
       ],
       "source": {
@@ -1358,9 +1358,9 @@
         {
           "name": "file_path",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str()) { std::fs::write(path_str, &json_data).map_err(|e| EngineError::BadParams { cmd: \"cam.tool_db_save\".into(),"
+          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str())"
         }
       ],
       "source": {
@@ -1382,30 +1382,30 @@
         {
           "name": "diameter",
           "type": {
-            "type": "Any"
+            "type": "Float"
           },
-          "source_expression": "params.get(\"diameter\").is_some() { serde_json::from_value(params.clone()).map_err(|e| EngineError::BadParams { cmd: \"cam.tool_create\".into(),"
+          "source_expression": "ToolDefinition.geometry.diameter (f64), accepted in flattened ToolDefinition JSON"
         },
         {
           "name": "group_id",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
           "source_expression": "params.get(\"group_id\").and_then(|v| v.as_str())"
         },
         {
           "name": "name",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"name\").is_some() || params.get(\"diameter\").is_some() { serde_json::from_value(params.clone()).map_err(|e| EngineError::BadParams { cmd: \"cam.too"
+          "source_expression": "ToolDefinition.name (String), accepted in flattened ToolDefinition JSON"
         },
         {
           "name": "tool",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"tool\") { serde_json::from_value(t_val.clone()).map_err(|e| EngineError::BadParams { cmd: \"cam.tool_create\".into(), msg:"
+          "source_expression": "params.get(\"tool\") deserialized as ToolDefinition"
         }
       ],
       "source": {
@@ -1427,30 +1427,30 @@
         {
           "name": "diameter",
           "type": {
-            "type": "Any"
+            "type": "Float"
           },
-          "source_expression": "params.get(\"diameter\").is_some()) { serde_json::from_value(params.clone()).map_err(|e| EngineError::BadParams { cmd: \"cam.tool_update\".into("
+          "source_expression": "ToolDefinition.geometry.diameter (f64), accepted in flattened ToolDefinition JSON"
         },
         {
           "name": "id",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"id\").is_some() && (params.get(\"name\").is_some() || params.get(\"diameter\").is_some()) { serde_json::from_value(params.clone()).map_er"
+          "source_expression": "ToolDefinition.id (String), accepted in flattened ToolDefinition JSON"
         },
         {
           "name": "name",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"name\").is_some() || params.get(\"diameter\").is_some()) { serde_json::from_value(params.clone()).map_err(|e| EngineError::BadParams {"
+          "source_expression": "ToolDefinition.name (String), accepted in flattened ToolDefinition JSON"
         },
         {
           "name": "tool",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"tool\") { serde_json::from_value(t_val.clone()).map_err(|e| EngineError::BadParams { cmd: \"cam.tool_update\".into(), msg:"
+          "source_expression": "params.get(\"tool\") deserialized as ToolDefinition"
         }
       ],
       "source": {
@@ -1472,7 +1472,7 @@
         {
           "name": "id",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
           "source_expression": "params.get(\"id\").and_then(|v| v.as_str())"
         }
@@ -1496,28 +1496,28 @@
         {
           "name": "id",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params .get(\"id\") .and_then(|v| v.as_str()) .map(|s| s.to_string()) .unwrap_or_else(|| format!(\"group-auto-{count}\"))"
+          "source_expression": "params.get(\"id\").and_then(|v| v.as_str())"
         },
         {
           "name": "name",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params .get(\"name\") .and_then(|v| v.as_str()) .unwrap_or(\"New Group\")"
+          "source_expression": "params.get(\"name\").and_then(|v| v.as_str())"
         },
         {
           "name": "notes",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"notes\").and_then(|v| v.as_str()).unwrap_or(\"\")"
+          "source_expression": "params.get(\"notes\").and_then(|v| v.as_str())"
         },
         {
           "name": "parent_id",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
           "source_expression": "params.get(\"parent_id\").and_then(|v| v.as_str())"
         }
@@ -1541,7 +1541,7 @@
         {
           "name": "group_id",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
           "source_expression": "params.get(\"group_id\").and_then(|v| v.as_str())"
         }
@@ -1565,16 +1565,16 @@
         {
           "name": "id",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"id\").and_then(|v| v.as_str()) { self.tool_database.find_tool(id).cloned().ok_or_else(|| { EngineError::BadParams { c"
+          "source_expression": "params.get(\"id\").and_then(|v| v.as_str())"
         },
         {
           "name": "tool_number",
           "type": {
-            "type": "Any"
+            "type": "Int"
           },
-          "source_expression": "params.get(\"tool_number\").and_then(|v| v.as_u64()) { self.tool_database .find_tool_by_number(num as u32) .cloned()"
+          "source_expression": "params.get(\"tool_number\").and_then(Value::as_u64)"
         }
       ],
       "source": {
@@ -1596,16 +1596,16 @@
         {
           "name": "material",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params .get(\"material\") .and_then(|v| v.as_str()) .unwrap_or(\"Softwood\")"
+          "source_expression": "params.get(\"material\").and_then(|v| v.as_str())"
         },
         {
           "name": "tool_id",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"tool_id\").and_then(|v| v.as_str()) { id.to_string() } else if let Some(first) = self.tool_database.all_tools().first() { first.id.cl"
+          "source_expression": "params.get(\"tool_id\").and_then(|v| v.as_str())"
         }
       ],
       "source": {
@@ -1627,16 +1627,16 @@
         {
           "name": "file_path",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str()) { std::fs::read_to_string(path_str).map_err(|e| EngineError::BadParams { cmd: \"cam.import_linuxcnc_tbl\".int"
+          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str())"
         },
         {
           "name": "tbl_content",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"tbl_content\").and_then(|v| v.as_str()) { txt.to_string() } else if let Some(path_str) = params.get(\"file_path\").and_then(|v| v.as_str())"
+          "source_expression": "params.get(\"tbl_content\").and_then(|v| v.as_str())"
         }
       ],
       "source": {
@@ -1658,9 +1658,9 @@
         {
           "name": "file_path",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str()) { std::fs::write(path_str, &tbl).map_err(|e| EngineError::BadParams { cmd: \"cam.export_linuxcnc_tbl\".into()"
+          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str())"
         }
       ],
       "source": {
@@ -1845,9 +1845,9 @@
         {
           "name": "params",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"params\") { serde_json::from_value::<gravita_cam::DrillParams>(p_val.clone()).map_err( |e| EngineError::BadParams { c"
+          "source_expression": "params.get(\"params\") deserialized as DrillParams"
         },
         {
           "name": "peck_depth",
@@ -2005,9 +2005,9 @@
         {
           "name": "params",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"params\") { serde_json::from_value::<gravita_cam::VCarveParams>(p_val.clone()).map_err( |e| EngineError::BadParams {"
+          "source_expression": "params.get(\"params\") deserialized as VCarveParams"
         },
         {
           "name": "plunge_rate",
@@ -2099,9 +2099,9 @@
         {
           "name": "boundary",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"boundary\") { let b = serde_json::from_value::<gravita_geom::Polygon2D>(b_val.clone()) .map_err(|e| EngineError::BadParams {"
+          "source_expression": "params.get(\"boundary\") deserialized as Polygon2D"
         },
         {
           "name": "feed_rate",
@@ -2127,9 +2127,9 @@
         {
           "name": "params",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"params\") { serde_json::from_value::<gravita_cam::ZLevelParams>(p_val.clone()).map_err( |e| EngineError::BadParams {"
+          "source_expression": "params.get(\"params\") deserialized as ZLevelParams"
         },
         {
           "name": "plunge_rate",
@@ -2235,9 +2235,9 @@
         {
           "name": "boundary",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"boundary\") { let b = serde_json::from_value::<gravita_geom::clip::Polygon2D>(b_val.clone()) .map_err(|e| EngineError::BadParams {"
+          "source_expression": "params.get(\"boundary\") deserialized as Polygon2D"
         },
         {
           "name": "center_x",
@@ -2386,9 +2386,9 @@
         {
           "name": "boundary",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"boundary\") { let b = serde_json::from_value::<gravita_geom::clip::Polygon2D>(b_val.clone()) .map_err(|e| EngineError::BadParams {"
+          "source_expression": "params.get(\"boundary\") deserialized as Polygon2D"
         },
         {
           "name": "center_x",
@@ -3117,9 +3117,9 @@
         {
           "name": "close_mode",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"close_mode\").is_some() || params.get(\"mode\").is_some() { build_mesh_from_params(&mut self.doc, command, params)? } else {"
+          "source_expression": "params.get(\"close_mode\").or_else(|| params.get(\"mode\")).and_then(Value::as_str)"
         },
         {
           "name": "density",
@@ -3138,9 +3138,9 @@
         {
           "name": "mode",
           "type": {
-            "type": "Any"
+            "type": "String"
           },
-          "source_expression": "params.get(\"mode\").is_some() { build_mesh_from_params(&mut self.doc, command, params)? } else { m.clone() }"
+          "source_expression": "params.get(\"mode\").and_then(Value::as_str)"
         },
         {
           "name": "name",
@@ -3337,9 +3337,9 @@
         {
           "name": "params",
           "type": {
-            "type": "Any"
+            "type": "Object"
           },
-          "source_expression": "params.get(\"params\") { serde_json::from_value::<gravita_cam::PocketParams>(p_val.clone()).map_err( |e| EngineError::BadParams {"
+          "source_expression": "params.get(\"params\") deserialized as PocketParams"
         },
         {
           "name": "previous_allowance",
