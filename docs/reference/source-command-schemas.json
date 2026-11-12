@@ -1,0 +1,5628 @@
+{
+  "bitmap.brush_stroke": {
+    "cmd_id": "bitmap.brush_stroke",
+    "label": "Brush Stroke",
+    "description": null,
+    "fields": [
+      {
+        "name": "color",
+        "label": "Color",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "colour",
+        "label": "Colour",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "radius",
+        "label": "Radius",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 2,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "x0",
+        "label": "X0",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "x1",
+        "label": "X1",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "y0",
+        "label": "Y0",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "y1",
+        "label": "Y1",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "bitmap.flood_fill": {
+    "cmd_id": "bitmap.flood_fill",
+    "label": "Flood Fill",
+    "description": null,
+    "fields": [
+      {
+        "name": "color",
+        "label": "Color",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "colour",
+        "label": "Colour",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "x",
+        "label": "X",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "y",
+        "label": "Y",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "bitmap.set_primary_colour": {
+    "cmd_id": "bitmap.set_primary_colour",
+    "label": "Set Primary Colour",
+    "description": null,
+    "fields": [
+      {
+        "name": "color",
+        "label": "Color",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "colour",
+        "label": "Colour",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "bitmap.set_secondary_colour": {
+    "cmd_id": "bitmap.set_secondary_colour",
+    "label": "Set Secondary Colour",
+    "description": null,
+    "fields": [
+      {
+        "name": "color",
+        "label": "Color",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "colour",
+        "label": "Colour",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "bitmap_layer.delete": {
+    "cmd_id": "bitmap_layer.delete",
+    "label": "Delete",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.bevel_carving": {
+    "cmd_id": "cam.bevel_carving",
+    "label": "Bevel Carving",
+    "description": null,
+    "fields": [
+      {
+        "name": "bevel_max_depth",
+        "label": "Bevel Max Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "feed_rate",
+        "label": "Feed Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 1200.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "half_angle_deg",
+        "label": "Half Angle Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 45.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "plunge_rate",
+        "label": "Plunge Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 300.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "spindle_rpm",
+        "label": "Spindle Rpm",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 500.0,
+            "unit": "rpm"
+          }
+        },
+        "default_value": 18000.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_depth",
+        "label": "Start Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stepdown",
+        "label": "Stepdown",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 2.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stepover",
+        "label": "Stepover",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "style",
+        "label": "Style",
+        "param_type": {
+          "type": "Choice",
+          "details": [
+            "centerline_with_bevels",
+            "multi_pass_offset"
+          ]
+        },
+        "default_value": "centerline_with_bevels",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.calculate_feeds_speeds": {
+    "cmd_id": "cam.calculate_feeds_speeds",
+    "label": "Calculate Feeds and Speeds",
+    "description": null,
+    "fields": [
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "Softwood",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.check_collisions": {
+    "cmd_id": "cam.check_collisions",
+    "label": "Check Toolpath Collisions",
+    "description": null,
+    "fields": [
+      {
+        "name": "holder_diameter",
+        "label": "Holder Diameter",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 35.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "resolution",
+        "label": "Resolution",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "toolpath_id",
+        "label": "Toolpath Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.detect_gouging": {
+    "cmd_id": "cam.detect_gouging",
+    "label": "Detect Design Model Gouging",
+    "description": null,
+    "fields": [
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "toolpath_id",
+        "label": "Toolpath Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.drill_bank": {
+    "cmd_id": "cam.drill_bank",
+    "label": "Drill Banks",
+    "description": null,
+    "fields": [
+      {
+        "name": "finish_depth",
+        "label": "Finish Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "pitch",
+        "label": "Pitch",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 32.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.drill_create": {
+    "cmd_id": "cam.drill_create",
+    "label": "Drilling",
+    "description": null,
+    "fields": [
+      {
+        "name": "cycle",
+        "label": "Cycle",
+        "param_type": {
+          "type": "Choice",
+          "details": [
+            "standard",
+            "peck",
+            "chip_break",
+            "dwell"
+          ]
+        },
+        "default_value": "standard",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "finish_depth",
+        "label": "Finish Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "hole_diameter",
+        "label": "Hole Diameter",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "holes",
+        "label": "Holes",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "peck_depth",
+        "label": "Peck Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.export_linuxcnc_tbl": {
+    "cmd_id": "cam.export_linuxcnc_tbl",
+    "label": "Export LinuxCNC Tool Table",
+    "description": null,
+    "fields": [
+      {
+        "name": "file_path",
+        "label": "File Path",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.import_linuxcnc_tbl": {
+    "cmd_id": "cam.import_linuxcnc_tbl",
+    "label": "Import LinuxCNC Tool Table",
+    "description": null,
+    "fields": [
+      {
+        "name": "file_path",
+        "label": "File Path",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.inlay_wizard": {
+    "cmd_id": "cam.inlay_wizard",
+    "label": "Inlay",
+    "description": null,
+    "fields": [
+      {
+        "name": "corner_radius",
+        "label": "Corner Radius",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "feed_rate",
+        "label": "Feed Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 1200.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "female_depth",
+        "label": "Female Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "glue_gap",
+        "label": "Glue Gap",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "half_angle_deg",
+        "label": "Half Angle Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 45.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "kind",
+        "label": "Kind",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "male_depth",
+        "label": "Male Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "mirror_male",
+        "label": "Mirror Male",
+        "param_type": {
+          "type": "Bool"
+        },
+        "default_value": false,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "plunge_rate",
+        "label": "Plunge Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 300.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "polygon",
+        "label": "Polygon",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "spindle_rpm",
+        "label": "Spindle Rpm",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 500.0,
+            "unit": "rpm"
+          }
+        },
+        "default_value": 18000.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tolerance",
+        "label": "Tolerance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.01,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.optifeed": {
+    "cmd_id": "cam.optifeed",
+    "label": "OptiFeed Feedrate Optimizer",
+    "description": null,
+    "fields": [
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "sim_resolution",
+        "label": "Sim Resolution",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "toolpath_id",
+        "label": "Toolpath Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.profile_options": {
+    "cmd_id": "cam.profile_options",
+    "label": "Profile Options (Bridges)",
+    "description": null,
+    "fields": [
+      {
+        "name": "count",
+        "label": "Count",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 4,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "kind",
+        "label": "Kind",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "3d",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "length",
+        "label": "Length",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "thickness",
+        "label": "Thickness",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 2.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.relief_3d": {
+    "cmd_id": "cam.relief_3d",
+    "label": "Machine Relief",
+    "description": null,
+    "fields": [
+      {
+        "name": "allowance",
+        "label": "Allowance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "boundary",
+        "label": "Boundary",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "center_x",
+        "label": "Center X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "center_y",
+        "label": "Center Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "feed_rate",
+        "label": "Feed Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 1200.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "plunge_rate",
+        "label": "Plunge Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 300.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "raster_angle",
+        "label": "Raster Angle",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "sample_interval",
+        "label": "Sample Interval",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "scallop_height",
+        "label": "Scallop Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "spindle_rpm",
+        "label": "Spindle Rpm",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 500.0,
+            "unit": "rpm"
+          }
+        },
+        "default_value": 18000.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stepover",
+        "label": "Stepover",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "strategy",
+        "label": "Strategy",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.rest_machining_3d": {
+    "cmd_id": "cam.rest_machining_3d",
+    "label": "Rest Machining",
+    "description": null,
+    "fields": [
+      {
+        "name": "allowance",
+        "label": "Allowance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "blend_distance",
+        "label": "Blend Distance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "boundary",
+        "label": "Boundary",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "center_x",
+        "label": "Center X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "center_y",
+        "label": "Center Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "feed_rate",
+        "label": "Feed Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 1200.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "plunge_rate",
+        "label": "Plunge Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 300.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "prev_tool_id",
+        "label": "Prev Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "sample_interval",
+        "label": "Sample Interval",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "scallop_height",
+        "label": "Scallop Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "spindle_rpm",
+        "label": "Spindle Rpm",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 500.0,
+            "unit": "rpm"
+          }
+        },
+        "default_value": 18000.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stepover",
+        "label": "Stepover",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "strategy",
+        "label": "Strategy",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.smart_engrave": {
+    "cmd_id": "cam.smart_engrave",
+    "label": "Smart Engraving",
+    "description": null,
+    "fields": [
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "scribe",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.tool_create": {
+    "cmd_id": "cam.tool_create",
+    "label": "Create Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "diameter",
+        "label": "Diameter",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "group_id",
+        "label": "Group Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool",
+        "label": "Tool",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.tool_db_load": {
+    "cmd_id": "cam.tool_db_load",
+    "label": "Load Tool Database",
+    "description": null,
+    "fields": [
+      {
+        "name": "file_path",
+        "label": "File Path",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.tool_db_save": {
+    "cmd_id": "cam.tool_db_save",
+    "label": "Save Tool Database",
+    "description": null,
+    "fields": [
+      {
+        "name": "file_path",
+        "label": "File Path",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.tool_delete": {
+    "cmd_id": "cam.tool_delete",
+    "label": "Delete Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.tool_get": {
+    "cmd_id": "cam.tool_get",
+    "label": "Get Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_number",
+        "label": "Tool Number",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.tool_group_create": {
+    "cmd_id": "cam.tool_group_create",
+    "label": "Create Tool Group",
+    "description": null,
+    "fields": [
+      {
+        "name": "notes",
+        "label": "Notes",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "parent_id",
+        "label": "Parent Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.tool_list": {
+    "cmd_id": "cam.tool_list",
+    "label": "List Tools",
+    "description": null,
+    "fields": [
+      {
+        "name": "group_id",
+        "label": "Group Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.tool_update": {
+    "cmd_id": "cam.tool_update",
+    "label": "Update Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "diameter",
+        "label": "Diameter",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool",
+        "label": "Tool",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.toolpath_delete": {
+    "cmd_id": "cam.toolpath_delete",
+    "label": "Delete Toolpath",
+    "description": null,
+    "fields": [
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "toolpath_id",
+        "label": "Toolpath Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.toolpath_get": {
+    "cmd_id": "cam.toolpath_get",
+    "label": "Get Toolpath",
+    "description": null,
+    "fields": [
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "toolpath_id",
+        "label": "Toolpath Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.toolpath_list": {
+    "cmd_id": "cam.toolpath_list",
+    "label": "List Toolpaths",
+    "description": null,
+    "fields": [
+      {
+        "name": "output_path",
+        "label": "Output Path",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.toolpath_merge": {
+    "cmd_id": "cam.toolpath_merge",
+    "label": "Merge Toolpaths",
+    "description": null,
+    "fields": [
+      {
+        "name": "all",
+        "label": "All",
+        "param_type": {
+          "type": "Bool"
+        },
+        "default_value": false,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tolerance",
+        "label": "Tolerance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.01,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.toolpath_panelling": {
+    "cmd_id": "cam.toolpath_panelling",
+    "label": "Toolpath Panelling",
+    "description": null,
+    "fields": [
+      {
+        "name": "overcut_distance",
+        "label": "Overcut Distance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 2.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "panel_height",
+        "label": "Panel Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 50.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "panel_width",
+        "label": "Panel Width",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 50.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "toolpath_id",
+        "label": "Toolpath Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "horizontal",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.toolpath_transform": {
+    "cmd_id": "cam.toolpath_transform",
+    "label": "Transform Toolpath",
+    "description": null,
+    "fields": [
+      {
+        "name": "dx",
+        "label": "Dx",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "dy",
+        "label": "Dy",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "dz",
+        "label": "Dz",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "rotation_center",
+        "label": "Rotation Center",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "rotation_deg",
+        "label": "Rotation Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "scale",
+        "label": "Scale",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "toolpath_id",
+        "label": "Toolpath Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "translation",
+        "label": "Translation",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.vcarve": {
+    "cmd_id": "cam.vcarve",
+    "label": "V-Bit Carving",
+    "description": null,
+    "fields": [
+      {
+        "name": "feed_rate",
+        "label": "Feed Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 1200.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "half_angle_deg",
+        "label": "Half Angle Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 45.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "max_depth",
+        "label": "Max Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "plunge_rate",
+        "label": "Plunge Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 300.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "spindle_rpm",
+        "label": "Spindle Rpm",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 500.0,
+            "unit": "rpm"
+          }
+        },
+        "default_value": 18000.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_depth",
+        "label": "Start Depth",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stepdown",
+        "label": "Stepdown",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 2.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stepover",
+        "label": "Stepover",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "style",
+        "label": "Style",
+        "param_type": {
+          "type": "Choice",
+          "details": [
+            "centerline_with_bevels",
+            "multi_pass_offset"
+          ]
+        },
+        "default_value": "centerline_with_bevels",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "cam.z_level_roughing": {
+    "cmd_id": "cam.z_level_roughing",
+    "label": "Z Level Roughing",
+    "description": null,
+    "fields": [
+      {
+        "name": "boundary",
+        "label": "Boundary",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "feed_rate",
+        "label": "Feed Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 1200.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "finish_z",
+        "label": "Finish Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "plunge_rate",
+        "label": "Plunge Rate",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 50.0,
+            "unit": "mm/min"
+          }
+        },
+        "default_value": 300.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "safe_z",
+        "label": "Safe Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "spindle_rpm",
+        "label": "Spindle Rpm",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 500.0,
+            "unit": "rpm"
+          }
+        },
+        "default_value": 18000.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_z",
+        "label": "Start Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stepdown",
+        "label": "Stepdown",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stepover",
+        "label": "Stepover",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "stock_allowance",
+        "label": "Stock Allowance",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "strategy",
+        "label": "Strategy",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool_id",
+        "label": "Tool Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "clipart.instantiate": {
+    "cmd_id": "clipart.instantiate",
+    "label": "Instantiate 3D Clipart",
+    "description": null,
+    "fields": [
+      {
+        "name": "asset_id",
+        "label": "Asset Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "clipart.paste_copy": {
+    "cmd_id": "clipart.paste_copy",
+    "label": "Paste Copy",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "clipart.paste_single": {
+    "cmd_id": "clipart.paste_single",
+    "label": "Paste Single",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "clipart.reset_transform": {
+    "cmd_id": "clipart.reset_transform",
+    "label": "Reset",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "clipart.transform": {
+    "cmd_id": "clipart.transform",
+    "label": "Transform 3D Component",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "rotation_deg",
+        "label": "Rotation Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "scale",
+        "label": "Scale",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "translate_x",
+        "label": "Translate X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "translate_y",
+        "label": "Translate Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "translate_z",
+        "label": "Translate Z",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "file.open": {
+    "cmd_id": "file.open",
+    "label": "Open",
+    "description": null,
+    "fields": [
+      {
+        "name": "filename",
+        "label": "Filename",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "json",
+        "label": "Json",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "history.begin_transaction": {
+    "cmd_id": "history.begin_transaction",
+    "label": "Begin Transaction",
+    "description": null,
+    "fields": [
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "model.set_size": {
+    "cmd_id": "model.set_size",
+    "label": "Set Size",
+    "description": null,
+    "fields": [
+      {
+        "name": "height",
+        "label": "Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 50.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "width",
+        "label": "Width",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 50.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "project.assembly_create_relief": {
+    "cmd_id": "project.assembly_create_relief",
+    "label": "Create Relief",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "project.assembly_delete": {
+    "cmd_id": "project.assembly_delete",
+    "label": "Delete",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "project.assembly_hide": {
+    "cmd_id": "project.assembly_hide",
+    "label": "Hide",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "project.assembly_rename": {
+    "cmd_id": "project.assembly_rename",
+    "label": "Rename",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "project.assembly_show": {
+    "cmd_id": "project.assembly_show",
+    "label": "Show",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "project.group_components": {
+    "cmd_id": "project.group_components",
+    "label": "Group Components",
+    "description": null,
+    "fields": [
+      {
+        "name": "components",
+        "label": "Components",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "project.ungroup": {
+    "cmd_id": "project.ungroup",
+    "label": "Ungroup Components",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.add_draft": {
+    "cmd_id": "relief.add_draft",
+    "label": "Add Draft",
+    "description": null,
+    "fields": [
+      {
+        "name": "angle_deg",
+        "label": "Angle Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.auto_scale_z": {
+    "cmd_id": "relief.auto_scale_z",
+    "label": "Auto Scale Z",
+    "description": null,
+    "fields": [
+      {
+        "name": "target_height",
+        "label": "Target Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.calculate_volume": {
+    "cmd_id": "relief.calculate_volume",
+    "label": "Relief Volume",
+    "description": null,
+    "fields": [
+      {
+        "name": "density",
+        "label": "Density",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.create_cross_section": {
+    "cmd_id": "relief.create_cross_section",
+    "label": "Create Cross-Section",
+    "description": null,
+    "fields": [
+      {
+        "name": "end_x",
+        "label": "End X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "end_y",
+        "label": "End Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "sample_step",
+        "label": "Sample Step",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_x",
+        "label": "Start X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.extrude": {
+    "cmd_id": "relief.extrude",
+    "label": "Extrude",
+    "description": null,
+    "fields": [
+      {
+        "name": "anchor",
+        "label": "Anchor",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.5,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "combine",
+        "label": "Combine",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "add",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "drive_curve",
+        "label": "Drive Curve",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "drive_id",
+        "label": "Drive Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "final_height",
+        "label": "Final Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "invert_profile_z",
+        "label": "Invert Profile Z",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "profile",
+        "label": "Profile",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_height",
+        "label": "Start Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "width",
+        "label": "Width",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 50.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.fade": {
+    "cmd_id": "relief.fade",
+    "label": "Fade Relief",
+    "description": null,
+    "fields": [
+      {
+        "name": "end_ratio",
+        "label": "End Ratio",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.01,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "end_x",
+        "label": "End X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "end_y",
+        "label": "End Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_ratio",
+        "label": "Start Ratio",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.01,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_x",
+        "label": "Start X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_y",
+        "label": "Start Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.offset_to_back": {
+    "cmd_id": "relief.offset_to_back",
+    "label": "Offset Composite To Back",
+    "description": null,
+    "fields": [
+      {
+        "name": "offset",
+        "label": "Offset",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 2.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.offset_z": {
+    "cmd_id": "relief.offset_z",
+    "label": "Offset",
+    "description": null,
+    "fields": [
+      {
+        "name": "delta",
+        "label": "Delta",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.scale_to_volume": {
+    "cmd_id": "relief.scale_to_volume",
+    "label": "Scale to Target Volume",
+    "description": null,
+    "fields": [
+      {
+        "name": "target_volume",
+        "label": "Target Volume",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1000.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.scale_z": {
+    "cmd_id": "relief.scale_z",
+    "label": "Scale",
+    "description": null,
+    "fields": [
+      {
+        "name": "factor",
+        "label": "Factor",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.01,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "target_height",
+        "label": "Target Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.sculpt_carve": {
+    "cmd_id": "relief.sculpt_carve",
+    "label": "Sculpt Carve",
+    "description": null,
+    "fields": [
+      {
+        "name": "brush_mode",
+        "label": "Brush Mode",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool",
+        "label": "Tool",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.sculpt_deposit": {
+    "cmd_id": "relief.sculpt_deposit",
+    "label": "Sculpt Deposit",
+    "description": null,
+    "fields": [
+      {
+        "name": "brush_mode",
+        "label": "Brush Mode",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool",
+        "label": "Tool",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.sculpt_erase": {
+    "cmd_id": "relief.sculpt_erase",
+    "label": "Sculpt Erase",
+    "description": null,
+    "fields": [
+      {
+        "name": "brush_mode",
+        "label": "Brush Mode",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool",
+        "label": "Tool",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.sculpt_smooth": {
+    "cmd_id": "relief.sculpt_smooth",
+    "label": "Sculpt Smooth",
+    "description": null,
+    "fields": [
+      {
+        "name": "brush_mode",
+        "label": "Brush Mode",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool",
+        "label": "Tool",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.sculpt_smudge": {
+    "cmd_id": "relief.sculpt_smudge",
+    "label": "Sculpt Smudge",
+    "description": null,
+    "fields": [
+      {
+        "name": "brush_mode",
+        "label": "Brush Mode",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tool",
+        "label": "Tool",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "deposit",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.shape_editor": {
+    "cmd_id": "relief.shape_editor",
+    "label": "Shape Editor",
+    "description": null,
+    "fields": [
+      {
+        "name": "all",
+        "label": "All",
+        "param_type": {
+          "type": "Bool"
+        },
+        "default_value": false,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "angle",
+        "label": "Angle",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "color",
+        "label": "Color",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "combine",
+        "label": "Combine",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "add",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "entity_indices",
+        "label": "Entity Indices",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "height_limit",
+        "label": "Height Limit",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "layer_idx",
+        "label": "Layer Idx",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "layer_name",
+        "label": "Layer Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "limit",
+        "label": "Limit",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "no_limit",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "limit_value",
+        "label": "Limit Value",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "shape",
+        "label": "Shape",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "plane",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_height",
+        "label": "Start Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tilt_angle",
+        "label": "Tilt Angle",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tolerance",
+        "label": "Tolerance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.slice": {
+    "cmd_id": "relief.slice",
+    "label": "Slice Relief",
+    "description": null,
+    "fields": [
+      {
+        "name": "thickness",
+        "label": "Thickness",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 5.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.smooth": {
+    "cmd_id": "relief.smooth",
+    "label": "Smooth",
+    "description": null,
+    "fields": [
+      {
+        "name": "strength",
+        "label": "Strength",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.spin": {
+    "cmd_id": "relief.spin",
+    "label": "Spin",
+    "description": null,
+    "fields": [
+      {
+        "name": "angle",
+        "label": "Angle",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 360.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "angle_deg",
+        "label": "Angle Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 360.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "center",
+        "label": "Center",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "combine",
+        "label": "Combine",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "add",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "final_height",
+        "label": "Final Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "invert_profile_z",
+        "label": "Invert Profile Z",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "profile",
+        "label": "Profile",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "scale",
+        "label": "Scale",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_angle",
+        "label": "Start Angle",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_angle_deg",
+        "label": "Start Angle Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_height",
+        "label": "Start Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "z_scale",
+        "label": "Z Scale",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.turn": {
+    "cmd_id": "relief.turn",
+    "label": "Turn",
+    "description": null,
+    "fields": [
+      {
+        "name": "axis",
+        "label": "Axis",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "combine",
+        "label": "Combine",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "add",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "final_height",
+        "label": "Final Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "invert_profile_z",
+        "label": "Invert Profile Z",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "profile",
+        "label": "Profile",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "scale",
+        "label": "Scale",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_height",
+        "label": "Start Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "z_scale",
+        "label": "Z Scale",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief.two_rail_sweep": {
+    "cmd_id": "relief.two_rail_sweep",
+    "label": "Two Rail Sweep",
+    "description": null,
+    "fields": [
+      {
+        "name": "combine",
+        "label": "Combine",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "add",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "cross_section_id",
+        "label": "Cross Section Id",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "final_height",
+        "label": "Final Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "invert_profile_z",
+        "label": "Invert Profile Z",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "profile",
+        "label": "Profile",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "rail1",
+        "label": "Rail1",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "rail2",
+        "label": "Rail2",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_height",
+        "label": "Start Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief_layer.delete": {
+    "cmd_id": "relief_layer.delete",
+    "label": "Delete",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief_layer.select": {
+    "cmd_id": "relief_layer.select",
+    "label": "Activate Relief Layer",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief_layer.set_combine_mode": {
+    "cmd_id": "relief_layer.set_combine_mode",
+    "label": "Set Combine Mode",
+    "description": null,
+    "fields": [
+      {
+        "name": "combine_mode",
+        "label": "Combine Mode",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "add",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": "add",
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief_layer.set_opacity": {
+    "cmd_id": "relief_layer.set_opacity",
+    "label": "Set Relief Layer Opacity",
+    "description": null,
+    "fields": [
+      {
+        "name": "opacity",
+        "label": "Opacity",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 1.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief_layer.set_visibility": {
+    "cmd_id": "relief_layer.set_visibility",
+    "label": "Set Visibility",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "relief_layer.toggle_visibility": {
+    "cmd_id": "relief_layer.toggle_visibility",
+    "label": "Toggle Visibility",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.align_nodes_x": {
+    "cmd_id": "vector.align_nodes_x",
+    "label": "in X",
+    "description": null,
+    "fields": [
+      {
+        "name": "nodes",
+        "label": "Nodes",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.align_nodes_y": {
+    "cmd_id": "vector.align_nodes_y",
+    "label": "in Y",
+    "description": null,
+    "fields": [
+      {
+        "name": "nodes",
+        "label": "Nodes",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.assign_to_layer": {
+    "cmd_id": "vector.assign_to_layer",
+    "label": "Assign Vectors To Layer",
+    "description": null,
+    "fields": [
+      {
+        "name": "from_layer",
+        "label": "From Layer",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "indices",
+        "label": "Indices",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "target_layer",
+        "label": "Target Layer",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.convert_to_arc": {
+    "cmd_id": "vector.convert_to_arc",
+    "label": "Convert span to arc",
+    "description": null,
+    "fields": [
+      {
+        "name": "span",
+        "label": "Span",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.convert_to_bezier": {
+    "cmd_id": "vector.convert_to_bezier",
+    "label": "Convert spans to a bezier",
+    "description": null,
+    "fields": [
+      {
+        "name": "span",
+        "label": "Span",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.convert_to_line": {
+    "cmd_id": "vector.convert_to_line",
+    "label": "Convert spans to a line",
+    "description": null,
+    "fields": [
+      {
+        "name": "span",
+        "label": "Span",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.create_arc": {
+    "cmd_id": "vector.create_arc",
+    "label": "Arc Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "end_deg",
+        "label": "End Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 90.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "p1",
+        "label": "P1",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "p2",
+        "label": "P2",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "p3",
+        "label": "P3",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "radius",
+        "label": "Radius",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "start_deg",
+        "label": "Start Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.create_boundary": {
+    "cmd_id": "vector.create_boundary",
+    "label": "Create Boundary From Relief",
+    "description": null,
+    "fields": [
+      {
+        "name": "offset",
+        "label": "Offset",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "threshold",
+        "label": "Threshold",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.create_circle": {
+    "cmd_id": "vector.create_circle",
+    "label": "Circle Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.create_ellipse": {
+    "cmd_id": "vector.create_ellipse",
+    "label": "Ellipse Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "radius_x",
+        "label": "Radius X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 20.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "radius_y",
+        "label": "Radius Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "rotation_deg",
+        "label": "Rotation Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.create_polyline": {
+    "cmd_id": "vector.create_polyline",
+    "label": "Polyline Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "points",
+        "label": "Points",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.create_rectangle": {
+    "cmd_id": "vector.create_rectangle",
+    "label": "Rectangle Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "corner_radius",
+        "label": "Corner Radius",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "height",
+        "label": "Height",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 30.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "width",
+        "label": "Width",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 50.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.create_regular_polygon": {
+    "cmd_id": "vector.create_regular_polygon",
+    "label": "Polygon Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "radius",
+        "label": "Radius",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 25.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "rotation_deg",
+        "label": "Rotation Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "sides",
+        "label": "Sides",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 5,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.create_star": {
+    "cmd_id": "vector.create_star",
+    "label": "Star Tool",
+    "description": null,
+    "fields": [
+      {
+        "name": "points",
+        "label": "Points",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 5,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "radius_inner",
+        "label": "Radius Inner",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "radius_outer",
+        "label": "Radius Outer",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": 0.0,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 25.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "rotation_deg",
+        "label": "Rotation Deg",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 0.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.delete_node": {
+    "cmd_id": "vector.delete_node",
+    "label": "Delete Nodes",
+    "description": null,
+    "fields": [
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.doctor_diagnose": {
+    "cmd_id": "vector.doctor_diagnose",
+    "label": "Diagnose Vectors",
+    "description": null,
+    "fields": [
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.doctor_heal": {
+    "cmd_id": "vector.doctor_heal",
+    "label": "Auto-Heal Vectors",
+    "description": null,
+    "fields": [
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.export_layers_manifest": {
+    "cmd_id": "vector.export_layers_manifest",
+    "label": "Export Layers Manifest",
+    "description": null,
+    "fields": [
+      {
+        "name": "path",
+        "label": "Path",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.insert_midpoint": {
+    "cmd_id": "vector.insert_midpoint",
+    "label": "Insert a mid node",
+    "description": null,
+    "fields": [
+      {
+        "name": "span",
+        "label": "Span",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.insert_node": {
+    "cmd_id": "vector.insert_node",
+    "label": "Insert a node",
+    "description": null,
+    "fields": [
+      {
+        "name": "span",
+        "label": "Span",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "t",
+        "label": "T",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.5,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.insert_start_node": {
+    "cmd_id": "vector.insert_start_node",
+    "label": "Insert Start Node",
+    "description": null,
+    "fields": [
+      {
+        "name": "span",
+        "label": "Span",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "t",
+        "label": "T",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 0.5,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.join_coincident": {
+    "cmd_id": "vector.join_coincident",
+    "label": "With coincident nodes",
+    "description": null,
+    "fields": [
+      {
+        "name": "auto_close",
+        "label": "Auto Close",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "entity1",
+        "label": "Entity1",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "entity2",
+        "label": "Entity2",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "entity_a",
+        "label": "Entity A",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "entity_b",
+        "label": "Entity B",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "entity_ids",
+        "label": "Entity Ids",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "index_a",
+        "label": "Index A",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "index_b",
+        "label": "Index B",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "indices",
+        "label": "Indices",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tolerance",
+        "label": "Tolerance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 0.05,
+        "required": true,
+        "description": null
+      }
+    ]
+  },
+  "vector.join_move_ends": {
+    "cmd_id": "vector.join_move_ends",
+    "label": "Move end nodes",
+    "description": null,
+    "fields": [
+      {
+        "name": "tolerance",
+        "label": "Tolerance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.join_with_curve": {
+    "cmd_id": "vector.join_with_curve",
+    "label": "With a smooth curve",
+    "description": null,
+    "fields": [
+      {
+        "name": "tolerance",
+        "label": "Tolerance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 50.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.join_with_line": {
+    "cmd_id": "vector.join_with_line",
+    "label": "With a line",
+    "description": null,
+    "fields": [
+      {
+        "name": "tolerance",
+        "label": "Tolerance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 50.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.mirror_vertical_bottom": {
+    "cmd_id": "vector.mirror_vertical_bottom",
+    "label": "Vertical (Bottom)",
+    "description": null,
+    "fields": [
+      {
+        "name": "pivot_x",
+        "label": "Pivot X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "pivot_y",
+        "label": "Pivot Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.mirror_vertical_top": {
+    "cmd_id": "vector.mirror_vertical_top",
+    "label": "Vertical (Top)",
+    "description": null,
+    "fields": [
+      {
+        "name": "pivot_x",
+        "label": "Pivot X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "pivot_y",
+        "label": "Pivot Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.move_handle": {
+    "cmd_id": "vector.move_handle",
+    "label": "Move Handle",
+    "description": null,
+    "fields": [
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "pos",
+        "label": "Pos",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "x",
+        "label": "X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 20.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "y",
+        "label": "Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.move_node": {
+    "cmd_id": "vector.move_node",
+    "label": "Move Node",
+    "description": null,
+    "fields": [
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "pos",
+        "label": "Pos",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "x",
+        "label": "X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "y",
+        "label": "Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.offset": {
+    "cmd_id": "vector.offset",
+    "label": "Offset Vectors",
+    "description": null,
+    "fields": [
+      {
+        "name": "distance",
+        "label": "Distance",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "mm"
+          }
+        },
+        "default_value": 10.0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "miter_limit",
+        "label": "Miter Limit",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": 4.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.remove_duplicate_nodes": {
+    "cmd_id": "vector.remove_duplicate_nodes",
+    "label": "Remove Duplicate Nodes",
+    "description": null,
+    "fields": [
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.remove_span": {
+    "cmd_id": "vector.remove_span",
+    "label": "Remove spans",
+    "description": null,
+    "fields": [
+      {
+        "name": "span",
+        "label": "Span",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.rotate_copy": {
+    "cmd_id": "vector.rotate_copy",
+    "label": "Rotate Copy",
+    "description": null,
+    "fields": [
+      {
+        "name": "center_x",
+        "label": "Center X",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "center_y",
+        "label": "Center Y",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 1.0,
+            "unit": null
+          }
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "count",
+        "label": "Count",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 4,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "layer",
+        "label": "Layer",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "total_angle",
+        "label": "Total Angle",
+        "param_type": {
+          "type": "Float",
+          "details": {
+            "min": null,
+            "max": null,
+            "step": 0.1,
+            "unit": "deg"
+          }
+        },
+        "default_value": 360.0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.set_start_node": {
+    "cmd_id": "vector.set_start_node",
+    "label": "Start Node",
+    "description": null,
+    "fields": [
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.smooth_node": {
+    "cmd_id": "vector.smooth_node",
+    "label": "Smooth Nodes",
+    "description": null,
+    "fields": [
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector.split_contour": {
+    "cmd_id": "vector.split_contour",
+    "label": "Cut Vector",
+    "description": null,
+    "fields": [
+      {
+        "name": "index",
+        "label": "Index",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector_layer.create": {
+    "cmd_id": "vector_layer.create",
+    "label": "Create New Layer",
+    "description": null,
+    "fields": [
+      {
+        "name": "color",
+        "label": "Color",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector_layer.delete": {
+    "cmd_id": "vector_layer.delete",
+    "label": "Delete",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      }
+    ]
+  },
+  "vector_layer.select": {
+    "cmd_id": "vector_layer.select",
+    "label": "Activate Layer",
+    "description": null,
+    "fields": [
+      {
+        "name": "id",
+        "label": "Id",
+        "param_type": {
+          "type": "Int",
+          "details": {
+            "min": 0,
+            "max": null
+          }
+        },
+        "default_value": 0,
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "param_type": {
+          "type": "String"
+        },
+        "default_value": null,
+        "required": false,
+        "description": null
+      }
+    ]
+  }
+}
