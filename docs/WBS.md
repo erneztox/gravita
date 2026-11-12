@@ -46,7 +46,7 @@ This is a dependency-ordered product WBS, not a copied progress report. All item
 
 ## Command-level traceability gate
 
-The 116 source command contracts are catalogued in [COMMANDS.md](COMMANDS.md). Before a command is included in the new API, create a trace row linking it to one or more WBS items and recording: keep/exclude/defer decision; canonical command ID; handler evidence from source; typed payload; validation; domain implementation; result/effects; frontend exposure; and acceptance test. Aliases must map to one canonical operation. No WBS item is considered complete merely because a menu ID or schema exists.
+The old Engine registry contains 404 command IDs, catalogued in [ENGINE_COMMAND_CATALOG.md](ENGINE_COMMAND_CATALOG.md); 116 of those have generated parameter schemas, preserved in [COMMANDS.md](COMMANDS.md). Handler-literal evidence is recorded in [COMMAND_TRACE.md](COMMAND_TRACE.md). Before a command is included in the new API, create a trace row linking it to one or more WBS items and recording: keep/exclude/defer decision; canonical command ID; handler evidence from source; typed payload; validation; domain implementation; result/effects; frontend exposure; and acceptance test. Aliases must map to one canonical operation. No WBS item is considered complete merely because a menu ID or schema exists.
 
 ## Release gates
 
