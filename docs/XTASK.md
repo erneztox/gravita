@@ -1,7 +1,5 @@
 # xtask specification
 
-## Purpose
-
 cargo xtask is Gravita's deterministic developer tool. It enforces architecture, command-contract integrity, WBS traceability, fixture validity and release gates. It is not an application command bus.
 
 ## Required command interface
@@ -11,6 +9,7 @@ cargo xtask is Gravita's deterministic developer tool. It enforces architecture,
 | help | List commands and flags | 0 |
 | audit layers | Validate dependency graph against explicit crate-layer policy | Nonzero on violation |
 | audit commands | Compare typed command registry, schemas, documentation and WBS trace; report missing, duplicate and orphan IDs | Nonzero on mismatch |
+| audit rescued-commands | Compare the rescued-operation JSON contract against typed Rust payloads, Command implementations, parameter fields/types and authoritative dispatcher registration | Nonzero on mismatch |
 | audit frontend | Check GUI/CLI/MCP references against public command IDs; detect direct UI mutation | Nonzero on broken references or forbidden mutation |
 | audit params | Validate parameter names, types, defaults, units and schema-generation parity | Nonzero on mismatch |
 | audit fixtures | Validate fixture manifest, licenses, checksums and expected artifacts | Nonzero on missing or changed fixture |
@@ -40,12 +39,8 @@ cargo xtask is Gravita's deterministic developer tool. It enforces architecture,
       src/audit/{layers.rs,commands.rs,frontends.rs,params.rs,fixtures.rs,safety.rs}
       src/report/{mod.rs,wbs.rs,commands.rs}
 
-## Acceptance tests
+## Rescued legacy command contract
 
-- A duplicate command ID fails the command audit.
-- A typed command absent from schema, documentation or WBS trace is reported.
-- A schema entry with a stale parameter type, default or unit fails parity.
-- A UI handler that mutates the document without dispatch fails the frontend audit.
-- A missing or checksum-modified fixture fails the fixture audit.
-- An unsafe toolpath cannot pass safety audit or G-code export.
-- cargo xtask ci produces deterministic results on a clean checkout and a nonzero exit on every injected failure fixture.
+The complete extraction of the old engine Bus is stored at `docs/inventory/legacy-command-bus.json`. The new product's selected operations are defined independently in `docs/contracts/rescued-commands.json`.
+
+`cargo xtask audit rescued-commands` checks the latter against the new implementation. Each rescued operation declares its ID as `Command::ID`, exposes a typed payload struct, implements `Command`, and is registered in the authoritative dispatcher with `CommandBus::register::<Type>()`. The audit checks IDs, payload fields/types and dispatcher registration.
