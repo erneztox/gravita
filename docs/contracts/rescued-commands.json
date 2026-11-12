@@ -278,16 +278,9 @@
     {
       "id": "relief.section.sample",
       "name": "Relief Section Sample",
-      "description": "Sample a relief cross-section between two positions.",
+      "description": "Sample a relief cross-section and return its measurements and height samples without creating vector entities.",
       "domain": "relief",
       "parameters": [
-        {
-          "name": "add_to_vectors",
-          "type": {
-            "type": "Bool"
-          },
-          "source_expression": "params\n                    .get(\"add_to_vectors\" -> Value::as_bool"
-        },
         {
           "name": "end_x",
           "type": {
@@ -327,7 +320,10 @@
       "source": {
         "core_bus_command": "relief.create_cross_section",
         "handler_file": "crates/engine/src/cmd/relief.rs",
-        "parameter_evidence": "Extracted from the Rust handler branch"
+        "parameter_evidence": "Extracted from the Rust handler branch",
+        "excluded_handler_options": [
+          "add_to_vectors"
+        ]
       }
     },
     {
