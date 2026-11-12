@@ -25,7 +25,8 @@
     "PNG relief-heightmap import is present in the previous engine. TIFF import is required by Gravita's product specification and must be added to the new I/O layer.",
     "The previous engine can simulate stock removal and check collisions/gouges, but it does not provide an explicit machine-travel envelope contract or mandatory safety gate before G-code export.",
     "The previous engine has toolpath merge, transform and panelling, but no explicit toolpath sequencing operation.",
-    "The previous engine's shape-generation handler has both imported-geometry and bitmap-color branches. The new contract retains only the imported-geometry path."
+    "The previous engine's shape-generation handler has both imported-geometry and bitmap-color branches. The new contract retains only the imported-geometry path.",
+    "The previous relief-finishing handler implements raster and spiral strategies; offset finishing is required by WBS G5.6 but must be implemented in the new CAM kernel."
   ],
   "commands": [
     {
@@ -2207,7 +2208,7 @@
     {
       "id": "cam.relief.finish_3d",
       "name": "Cam Relief Finish 3d",
-      "description": "Generate a 3D relief finishing toolpath.",
+      "description": "Generate a 3D relief finishing toolpath using raster, spiral or the new offset strategy required by Gravita.",
       "domain": "cam",
       "parameters": [
         {
@@ -2337,7 +2338,15 @@
         ],
         "handler_file": "crates/engine/src/cmd/cam.rs",
         "handler_line": 3123,
-        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch",
+        "required_new_strategy_support": [
+          "offset"
+        ],
+        "legacy_strategy_support": [
+          "raster",
+          "raster_xy",
+          "spiral"
+        ]
       }
     },
     {
@@ -3688,7 +3697,12 @@
         "handler_file": "crates/engine/src/cmd/cam.rs",
         "handler_line": 1593,
         "parameter_evidence": "Read from the previous Gravita Rust handler branch"
-      }
+      },
+      "preconditions": [
+        "safety.export.validate",
+        "postprocessor.gcode.validate"
+      ],
+      "export_rule": "Generate to memory, validate the safety report and parsed G-code, then write the output file. Never write G-code before both preconditions pass."
     },
     {
       "id": "document.create",
@@ -4900,6 +4914,16 @@
         "status": "new_product_requirement",
         "reason": "The previous postprocessor exports G-code but has no explicit G-code validation command; WBS G7.4 requires G-code safety validation."
       }
+    }
+  ],
+  "execution_constraints": [
+    {
+      "operation": "postprocessor.gcode.export",
+      "requires_before_file_write": [
+        "safety.export.validate",
+        "postprocessor.gcode.validate"
+      ],
+      "on_failure": "Do not write or publish the G-code artifact."
     }
   ]
 }
