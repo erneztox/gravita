@@ -1,0 +1,4962 @@
+{
+  "format_version": 1,
+  "contract_id": "gravita.selected-operations.v2",
+  "purpose": "Audited functional contract for the lighter Gravita product, based on the previous Gravita Rust Core Bus and the current product architecture/WBS.",
+  "status": "audited_candidate",
+  "selection_policy": "Select operations required by Gravita's document, relief, geometry ingestion, CAM, simulation, safety and postprocessing workflows. Exclude interactive vector authoring, bitmap editing, UI/dialog/window commands, clipart/assembly workbenches and unrelated legacy wizards.",
+  "parameter_policy": "Legacy parameter names and JSON value families are derived from the relevant Rust handler branch. The parameter list records fields read by the old handler; it does not imply every field is required. New-only requirements are explicitly marked and are not attributed to the legacy engine.",
+  "source": {
+    "origin": "Previous Gravita Rust engine Core Bus",
+    "handler_root": "crates/engine/src/cmd",
+    "reviewed_modules": [
+      "doc.rs",
+      "relief.rs",
+      "cam.rs",
+      "sim.rs",
+      "vector.rs (geometry import branch only)"
+    ],
+    "excluded_modules": [
+      "vector.rs (interactive vector authoring branches)",
+      "bitmap.rs (bitmap editing and bitmap layers)"
+    ]
+  },
+  "compatibility_notes": [
+    "DXF/SVG import remains as machining geometry ingestion; no vector drawing, node editing, Boolean editing or vector-layer authoring is exposed.",
+    "PNG relief-heightmap import is present in the previous engine. TIFF import is required by Gravita's product specification and must be added to the new I/O layer.",
+    "The previous engine can simulate stock removal and check collisions/gouges, but it does not provide an explicit machine-travel envelope contract or mandatory safety gate before G-code export.",
+    "The previous engine has toolpath merge, transform and panelling, but no explicit toolpath sequencing operation.",
+    "The previous engine's shape-generation handler has both imported-geometry and bitmap-color branches. The new contract retains only the imported-geometry path.",
+    "The previous relief-finishing handler implements raster and spiral strategies; offset finishing is required by WBS G5.6 but must be implemented in the new CAM kernel.",
+    "The previous PNG heightmap I/O supports 8-bit and 16-bit grayscale, plus RGB/RGBA conversion. TIFF remains a new format requirement.",
+    "The previous mesh-import handler also creates a clipart asset, instantiates it and rasterizes it; new Gravita should store imported meshes in its own document model and expose mesh-to-heightfield sampling without restoring the clipart/assembly workbench.",
+    "Do not copy legacy demo fallbacks: heightmap import without input reuses the active relief, and mesh import without input synthesizes a tetrahedron. New import commands must require real input.",
+    "Do not copy silent strategy/controller fallbacks: the old relief finisher treats unknown strategies as raster, and G-code export treats unknown dialect names as Mach3. New Gravita should reject unsupported values explicitly.",
+    "The old collision command makes gouge checking optional and defaults it off. The mandatory export safety gate must explicitly enable gouge and holder checks."
+  ],
+  "commands": [
+    {
+      "id": "document.resize",
+      "name": "Document Resize",
+      "description": "Resize the project workspace in physical dimensions.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"height\""
+        },
+        {
+          "name": "resample_relieves",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"resample_relieves\") .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "width",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"width\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "model.set_size",
+        "core_bus_commands": [
+          "model.set_size"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 321,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "project.open",
+      "name": "Project Open",
+      "description": "Load a saved native project.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "content",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"content\") .or_else(|| params.get(\"json\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "filename",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"filename\")) .and_then(Value::as_str) { let loaded = gravita_io::import_project_file(path).map_err(|e| { Engi"
+        },
+        {
+          "name": "json",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"json\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"path\") .or_else(|| params.get(\"filename\")) .and_then(Value::as_str) { let loaded = gravita_"
+        }
+      ],
+      "source": {
+        "core_bus_command": "file.open",
+        "core_bus_commands": [
+          "file.open"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 138,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "history.transaction.begin",
+      "name": "History Transaction Begin",
+      "description": "Begin a named grouped edit transaction.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "get_str_opt(params, \"name\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "history.begin_transaction",
+        "core_bus_commands": [
+          "history.begin_transaction"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1467,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.height.scale_to_height",
+      "name": "Relief Height Scale To Height",
+      "description": "Scale relief height to a target Z height.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "target_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"target_height\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.auto_scale_z",
+        "core_bus_commands": [
+          "relief.auto_scale_z"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 259,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.height.fade",
+      "name": "Relief Height Fade",
+      "description": "Apply a spatial fade between start and end height ratios.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "end_ratio",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"end_ratio\""
+        },
+        {
+          "name": "end_x",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"end_x\""
+        },
+        {
+          "name": "end_y",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"end_y\""
+        },
+        {
+          "name": "start_ratio",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_ratio\""
+        },
+        {
+          "name": "start_x",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_x\""
+        },
+        {
+          "name": "start_y",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_y\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.fade",
+        "core_bus_commands": [
+          "relief.fade"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 307,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.draft.apply",
+      "name": "Relief Draft Apply",
+      "description": "Apply draft angle to a relief.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"angle_deg\""
+        },
+        {
+          "name": "base_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"base_z\") .and_then(Value::as_f64) .map(|z| z as f32)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.add_draft",
+        "core_bus_commands": [
+          "relief.add_draft"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 334,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.slice",
+      "name": "Relief Slice",
+      "description": "Slice a relief into layers of a specified thickness.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "create_layers",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"create_layers\") .and_then(Value::as_bool) .unwrap_or(true)"
+        },
+        {
+          "name": "end_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"end_z\") .and_then(Value::as_f64) .map(|z| z as f32)"
+        },
+        {
+          "name": "start_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"start_z\") .and_then(Value::as_f64) .map(|z| z as f32)"
+        },
+        {
+          "name": "thickness",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"thickness\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.slice",
+        "core_bus_commands": [
+          "relief.slice"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 351,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.volume.calculate",
+      "name": "Relief Volume Calculate",
+      "description": "Calculate relief volume using a supplied material density.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "base_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"base_z\") .and_then(Value::as_f64) .map(|z| z as f32)"
+        },
+        {
+          "name": "density",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"density\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.calculate_volume",
+        "core_bus_commands": [
+          "relief.calculate_volume"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 413,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.section.sample",
+      "name": "Relief Section Sample",
+      "description": "Sample a relief cross-section and return its measurements and height samples without creating vector entities.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "add_to_vectors",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"add_to_vectors\") .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "end_x",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"end_x\""
+        },
+        {
+          "name": "end_y",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"end_y\""
+        },
+        {
+          "name": "sample_step",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"sample_step\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "start_x",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_x\""
+        },
+        {
+          "name": "start_y",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt( params, \"start_y\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.create_cross_section",
+        "core_bus_commands": [
+          "relief.create_cross_section"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 451,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.volume.scale",
+      "name": "Relief Volume Scale",
+      "description": "Scale a relief to a target volume.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "base_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"base_z\") .and_then(Value::as_f64) .map(|z| z as f32)"
+        },
+        {
+          "name": "target_volume",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"target_volume\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.scale_to_volume",
+        "core_bus_commands": [
+          "relief.scale_to_volume"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 498,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.height.scale",
+      "name": "Relief Height Scale",
+      "description": "Scale relief Z values.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "factor",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"factor\""
+        },
+        {
+          "name": "target_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"target_height\").and_then(Value::as_f64) { gravita_relief::scale_relief_to_height(hm, target as f32)?"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.scale_z",
+        "core_bus_commands": [
+          "relief.scale_z"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 244,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.height.smooth",
+      "name": "Relief Height Smooth",
+      "description": "Smooth relief height values.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "passes",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"passes\") .and_then(Value::as_u64) .unwrap_or(1) .clamp(1, 20) as usize"
+        },
+        {
+          "name": "strength",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"strength\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.smooth",
+        "core_bus_commands": [
+          "relief.smooth"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 286,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.height.offset",
+      "name": "Relief Height Offset",
+      "description": "Offset relief height values by a delta.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "delta",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"delta\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.offset_z",
+        "core_bus_commands": [
+          "relief.offset_z"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 274,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.shape.generate",
+      "name": "Relief Shape Generate",
+      "description": "Generate a parametric shape on the relief using the selected combine mode and limits.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "all",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"all\").and_then(Value::as_bool).unwrap_or(false) { entities } else { // By default in CAD/CAM, the Shape Editor operates"
+        },
+        {
+          "name": "angle",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"angle\""
+        },
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"combine_mode\") .or_else(|| params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "entity_index",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"entity_index\") .and_then(Value::as_u64) .map(|n| n as usize) { if idx <"
+        },
+        {
+          "name": "entity_indices",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"entity_indices\").and_then(Value::as_array) { let mut selected = Vec::new()"
+        },
+        {
+          "name": "height_limit",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"height_limit\""
+        },
+        {
+          "name": "layer",
+          "type": {
+            "type": "Choice"
+          },
+          "source_expression": "Legacy handler accepts a layer name (String) or layer index (Integer) in the same field."
+        },
+        {
+          "name": "layer_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"layer_id\") .or_else(|| params.get(\"layer_idx\")) .or_else(|| params.get(\"layer\")) .and_then("
+        },
+        {
+          "name": "layer_idx",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"layer_idx\")) .or_else(|| params.get(\"layer\")) .and_then(Value::as_u64) { self.doc"
+        },
+        {
+          "name": "layer_name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"layer_name\")) .and_then(Value::as_str) { self.doc .vector_layers"
+        },
+        {
+          "name": "limit",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"limit\")) .and_then(Value::as_str) .unwrap_or(\"no_limit\")"
+        },
+        {
+          "name": "limit_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"limit_mode\") .or_else(|| params.get(\"limit\")) .and_then(Value::as_str) .unwrap_or(\"no_limit\")"
+        },
+        {
+          "name": "limit_value",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"limit_value\""
+        },
+        {
+          "name": "shape",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"shape\")) .and_then(Value::as_str) .unwrap_or(\"plane\")"
+        },
+        {
+          "name": "shape_type",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"shape_type\") .or_else(|| params.get(\"shape\")) .and_then(Value::as_str) .unwrap_or(\"plane\")"
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_height\""
+        },
+        {
+          "name": "tilt_angle",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"tilt_angle\""
+        },
+        {
+          "name": "vector_layer",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"vector_layer\") .or_else(|| params.get(\"layer_name\")) .and_then(Value::as_str) {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.shape_editor",
+        "core_bus_commands": [
+          "relief.shape_editor"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 889,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch",
+        "excluded_handler_options": [
+          "color",
+          "tolerance"
+        ]
+      }
+    },
+    {
+      "id": "relief.sweep.two_rail",
+      "name": "Relief Sweep Two Rail",
+      "description": "Generate a relief by sweeping a cross-section along two rails.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"combine_mode\") .or_else(|| params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "cross_section_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"cross_section_id\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "final_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"final_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "invert_profile_z",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"invert_profile_z\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "invert_z",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"invert_z\") .or_else(|| params.get(\"invert_profile_z\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"profile\")) .or_else(|| params.get(\"cross_section_id\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "profile_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"profile_id\") .or_else(|| params.get(\"profile\")) .or_else(|| params.get(\"cross_section_id\")) .and_then(Value"
+        },
+        {
+          "name": "rail1",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"rail1\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "rail1_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"rail1_id\") .or_else(|| params.get(\"rail1\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "rail2",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"rail2\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "rail2_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"rail2_id\") .or_else(|| params.get(\"rail2\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "reverse_rail1",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"reverse_rail1\") .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "reverse_rail2",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"reverse_rail2\") .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "scale_final_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"scale_final_height\") .or_else(|| params.get(\"final_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "scale_height_with_width",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"scale_height_with_width\") .and_then(Value::as_bool) .unwrap_or(true)"
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_height\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.two_rail_sweep",
+        "core_bus_commands": [
+          "relief.two_rail_sweep"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 1065,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.extrude",
+      "name": "Relief Extrude",
+      "description": "Generate a relief by extruding a profile along a width.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "anchor",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"anchor\""
+        },
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"combine_mode\") .or_else(|| params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "drive_curve",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"drive_curve\")) .or_else(|| params.get(\"drive_id\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "drive_curve_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"drive_curve_id\") .or_else(|| params.get(\"drive_curve\")) .or_else(|| params.get(\"drive_id\")) .and_then(Value"
+        },
+        {
+          "name": "drive_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"drive_id\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "final_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"final_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "invert_profile_z",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"invert_profile_z\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "invert_z",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"invert_z\") .or_else(|| params.get(\"invert_profile_z\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"profile\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "profile_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"profile_id\") .or_else(|| params.get(\"profile\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "scale_final_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"scale_final_height\") .or_else(|| params.get(\"final_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_height\""
+        },
+        {
+          "name": "width",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"width\").and_then(Value::as_f64)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.extrude",
+        "core_bus_commands": [
+          "relief.extrude"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 1208,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.revolve",
+      "name": "Relief Revolve",
+      "description": "Generate a relief by revolving a profile around a center axis.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"angle\""
+        },
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"angle_deg\""
+        },
+        {
+          "name": "center",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"center\").and_then(Value::as_array) { if c.len() >= 2 { let x = c.first().and_then(Value::as_f64).unwrap_or(50.0)"
+        },
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"combine_mode\") .or_else(|| params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "final_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"final_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "invert_profile_z",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"invert_profile_z\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "invert_z",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"invert_z\") .or_else(|| params.get(\"invert_profile_z\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"profile\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "profile_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"profile_id\") .or_else(|| params.get(\"profile\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "scale",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"scale\""
+        },
+        {
+          "name": "scale_final_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"scale_final_height\") .or_else(|| params.get(\"final_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "start_angle",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_angle\""
+        },
+        {
+          "name": "start_angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_angle_deg\""
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_height\""
+        },
+        {
+          "name": "z_scale",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"z_scale\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.spin",
+        "core_bus_commands": [
+          "relief.spin"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 1323,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.turn",
+      "name": "Relief Turn",
+      "description": "Generate a turned relief around a defined axis.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "axis",
+          "type": {
+            "type": "Choice"
+          },
+          "source_expression": "Legacy handler accepts either an axis line coordinate array or a vector-entity ID."
+        },
+        {
+          "name": "axis_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"axis_id\") .or_else(|| params.get(\"axis\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "combine",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"combine_mode\") .or_else(|| params.get(\"combine\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "final_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"final_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "invert_profile_z",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"invert_profile_z\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "invert_z",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"invert_z\") .or_else(|| params.get(\"invert_profile_z\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"profile\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "profile_id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"profile_id\") .or_else(|| params.get(\"profile\")) .and_then(Value::as_u64)"
+        },
+        {
+          "name": "scale",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"scale\""
+        },
+        {
+          "name": "scale_final_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"scale_final_height\") .or_else(|| params.get(\"final_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "start_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_height\""
+        },
+        {
+          "name": "z_scale",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"z_scale\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.turn",
+        "core_bus_commands": [
+          "relief.turn"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 1430,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.select",
+      "name": "Relief Layer Select",
+      "description": "Select the active relief layer.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"id\").and_then(Value::as_u64) { Some(id) => id, None => match params.get(\"name\").and_then(Value::as_str) { Some(name) => self"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"name\").and_then(Value::as_str) { Some(name) => self .doc .relief_layers .iter()"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.select",
+        "core_bus_commands": [
+          "relief_layer.select"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 824,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.delete",
+      "name": "Relief Layer Delete",
+      "description": "Delete a relief layer.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"id\").and_then(Value::as_u64) { Some(id) => id, None => { if self.doc.relief_layers.len() <= 1 {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.delete",
+        "core_bus_commands": [
+          "relief_layer.delete"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 853,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.set_visibility",
+      "name": "Relief Layer Set Visibility",
+      "description": "Set relief-layer visibility explicitly.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"id\").and_then(Value::as_u64) { Some(id) => id, None => match params.get(\"name\").and_then(Value::as_str) { Some(name) => self"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"name\").and_then(Value::as_str) { Some(name) => self .doc .relief_layers .iter()"
+        },
+        {
+          "name": "visible",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"visible\") .and_then(Value::as_bool) .unwrap_or(true)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.set_visibility",
+        "core_bus_commands": [
+          "relief_layer.set_visibility"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 937,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.set_combine_mode",
+      "name": "Relief Layer Set Combine Mode",
+      "description": "Set how a relief layer combines with the composite relief.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"combine_mode\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"id\").and_then(Value::as_u64) { Some(id) => id, None => match params.get(\"name\").and_then(Value::as_str) { Some(name) => self"
+        },
+        {
+          "name": "mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"mode\") .or_else(|| params.get(\"combine_mode\")) .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"name\").and_then(Value::as_str) { Some(name) => self .doc .relief_layers .iter()"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.set_combine_mode",
+        "core_bus_commands": [
+          "relief_layer.set_combine_mode",
+          "relief_layer.set_combine_add",
+          "relief_layer.set_combine_subtract",
+          "relief_layer.set_combine_merge_high",
+          "relief_layer.set_combine_merge_low",
+          "relief_layer.set_combine_multiply"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1003,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.set_opacity",
+      "name": "Relief Layer Set Opacity",
+      "description": "Set relief-layer opacity.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"id\") .and_then(Value::as_u64) .unwrap_or(self.doc.active_relief_layer_id)"
+        },
+        {
+          "name": "opacity",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"opacity\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.set_opacity",
+        "core_bus_commands": [
+          "relief_layer.set_opacity"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1125,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.load_database",
+      "name": "Cam Tools Load Database",
+      "description": "Load the cutter/tool database from a file.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str())"
+        },
+        {
+          "name": "json_content",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"json_content\").and_then(|v| v.as_str())"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.tool_db_load",
+        "core_bus_commands": [
+          "cam.tool_db_load"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 375,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.save_database",
+      "name": "Cam Tools Save Database",
+      "description": "Save the cutter/tool database to a file.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str())"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.tool_db_save",
+        "core_bus_commands": [
+          "cam.tool_db_save"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 397,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.create",
+      "name": "Cam Tools Create",
+      "description": "Create a cutter/tool definition.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "diameter",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "ToolDefinition.geometry.diameter (f64), accepted in flattened ToolDefinition JSON"
+        },
+        {
+          "name": "group_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"group_id\").and_then(|v| v.as_str())"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "ToolDefinition.name (String), accepted in flattened ToolDefinition JSON"
+        },
+        {
+          "name": "tool",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"tool\") deserialized as ToolDefinition"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.tool_create",
+        "core_bus_commands": [
+          "cam.tool_create"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 413,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.update",
+      "name": "Cam Tools Update",
+      "description": "Update a cutter/tool definition.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "diameter",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "ToolDefinition.geometry.diameter (f64), accepted in flattened ToolDefinition JSON"
+        },
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "ToolDefinition.id (String), accepted in flattened ToolDefinition JSON"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "ToolDefinition.name (String), accepted in flattened ToolDefinition JSON"
+        },
+        {
+          "name": "tool",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"tool\") deserialized as ToolDefinition"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.tool_update",
+        "core_bus_commands": [
+          "cam.tool_update"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 449,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.delete",
+      "name": "Cam Tools Delete",
+      "description": "Delete a cutter/tool definition.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"id\").and_then(|v| v.as_str())"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.tool_delete",
+        "core_bus_commands": [
+          "cam.tool_delete"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 480,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.create_group",
+      "name": "Cam Tools Create Group",
+      "description": "Create a group in the tool database.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"id\").and_then(|v| v.as_str())"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"name\").and_then(|v| v.as_str())"
+        },
+        {
+          "name": "notes",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"notes\").and_then(|v| v.as_str())"
+        },
+        {
+          "name": "parent_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"parent_id\").and_then(|v| v.as_str())"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.tool_group_create",
+        "core_bus_commands": [
+          "cam.tool_group_create"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 500,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.list",
+      "name": "Cam Tools List",
+      "description": "List tools, optionally filtered by group.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "group_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"group_id\").and_then(|v| v.as_str())"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.tool_list",
+        "core_bus_commands": [
+          "cam.tool_list"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 524,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.get",
+      "name": "Cam Tools Get",
+      "description": "Retrieve a tool by identifier or tool number.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"id\").and_then(|v| v.as_str())"
+        },
+        {
+          "name": "tool_number",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"tool_number\").and_then(Value::as_u64)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.tool_get",
+        "core_bus_commands": [
+          "cam.tool_get"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 572,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.calculate_feeds_speeds",
+      "name": "Cam Tools Calculate Feeds Speeds",
+      "description": "Calculate feeds and speeds for a selected tool/material context.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "material",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"material\").and_then(|v| v.as_str())"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(|v| v.as_str())"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.calculate_feeds_speeds",
+        "core_bus_commands": [
+          "cam.calculate_feeds_speeds"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 601,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.import_linuxcnc_table",
+      "name": "Cam Tools Import Linuxcnc Table",
+      "description": "Import a LinuxCNC tool table.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str())"
+        },
+        {
+          "name": "tbl_content",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tbl_content\").and_then(|v| v.as_str())"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.import_linuxcnc_tbl",
+        "core_bus_commands": [
+          "cam.import_linuxcnc_tbl"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 652,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.export_linuxcnc_table",
+      "name": "Cam Tools Export Linuxcnc Table",
+      "description": "Export the tool database as a LinuxCNC tool table.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"file_path\").and_then(|v| v.as_str())"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.export_linuxcnc_tbl",
+        "core_bus_commands": [
+          "cam.export_linuxcnc_tbl"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 638,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.toolpaths.list",
+      "name": "Cam Toolpaths List",
+      "description": "List generated toolpaths.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "output_path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"output_path\")) .and_then(Value::as_str) { let formatted = serde_json::to_string_pretty(&res_json).map_err(|e| {"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"path\") .or_else(|| params.get(\"output_path\")) .and_then(Value::as_str) { let formatted = se"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.toolpath_list",
+        "core_bus_commands": [
+          "cam.toolpath_list"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 836,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.toolpaths.get",
+      "name": "Cam Toolpaths Get",
+      "description": "Retrieve a toolpath by ID or index.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"index\").and_then(Value::as_u64) { let i = idx as usize"
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"toolpath_id\").and_then(Value::as_str) { if let Some(tp) = self.toolpaths.iter().find(|t| t.id == id) { return Ok(serde_json::json!({"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.toolpath_get",
+        "core_bus_commands": [
+          "cam.toolpath_get"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 969,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.toolpaths.delete",
+      "name": "Cam Toolpaths Delete",
+      "description": "Delete a toolpath by ID or index.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "index",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"index\").and_then(Value::as_u64) { let i = idx as usize"
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"toolpath_id\").and_then(Value::as_str) { if let Some(pos) = self.toolpaths.iter().position(|t| t.id == id) { Some(self.toolpaths."
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.toolpath_delete",
+        "core_bus_commands": [
+          "cam.toolpath_delete"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1140,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.drill.create",
+      "name": "Cam Drill Create",
+      "description": "Generate drilling cycles for supplied holes and machining parameters.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "cycle",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"cycle\").and_then(Value::as_str) { match cycle_str { \"peck\" | \"g83\" => p.cycle = gravita_cam::DrillCycle::Peck,"
+        },
+        {
+          "name": "diameter",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"diameter\") .or_else(|| params.get(\"hole_diameter\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "dwell_seconds",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"dwell_seconds\") .and_then(Value::as_f64) .unwrap_or(1.0)"
+        },
+        {
+          "name": "filter_by_tool_diameter",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"filter_by_tool_diameter\") .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "finish_depth",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"finish_depth\").and_then(Value::as_f64) { p.finish_depth = fd"
+        },
+        {
+          "name": "hole_diameter",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"hole_diameter\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "holes",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"holes\").and_then(Value::as_array) { let mut pts = Vec::with_capacity(holes_val.len())"
+        },
+        {
+          "name": "layer",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"layer\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "layer_name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"layer_name\") .or_else(|| params.get(\"layer\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Drilling 1\")"
+        },
+        {
+          "name": "params",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"params\") deserialized as DrillParams"
+        },
+        {
+          "name": "peck_depth",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"peck_depth\").and_then(Value::as_f64) { p.peck_depth = Some(pd)"
+        },
+        {
+          "name": "radius",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"radius\") .and_then(Value::as_f64) .or_else(|| target_dia.map(|d| d / 2.0))"
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"safe_z\").and_then(Value::as_f64) { p.safe_z = sz"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(tid) .ok_or_else(|| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.drill_create",
+        "core_bus_commands": [
+          "cam.drill_create"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 2038,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.drill.create_bank",
+      "name": "Cam Drill Create Bank",
+      "description": "Generate a repeated drilling pattern using a pitch and selected tool.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "finish_depth",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"finish_depth\").and_then(Value::as_f64) { drill_params.finish_depth = fd"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Drill Bank 32mm\")"
+        },
+        {
+          "name": "pitch",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"pitch\").and_then(Value::as_f64).unwrap_or(32.0)"
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"safe_z\").and_then(Value::as_f64) { drill_params.safe_z = sz"
+        },
+        {
+          "name": "spindles_x",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"spindles_x\") .and_then(Value::as_u64) .unwrap_or(5) as usize"
+        },
+        {
+          "name": "spindles_y",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"spindles_y\") .and_then(Value::as_u64) .unwrap_or(1) as usize"
+        },
+        {
+          "name": "start_x",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"start_x\") .and_then(Value::as_f64) .unwrap_or(32.0)"
+        },
+        {
+          "name": "start_y",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"start_y\") .and_then(Value::as_f64) .unwrap_or(32.0)"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(tid) .ok_or_else(|| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.drill_bank",
+        "core_bus_commands": [
+          "cam.drill_bank"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 2206,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.vcarve.create",
+      "name": "Cam Vcarve Create",
+      "description": "Generate a V-bit carving toolpath.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"feed_rate\").and_then(Value::as_f64) { p.feed_rate = Some(fr)"
+        },
+        {
+          "name": "half_angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"half_angle_deg\").and_then(Value::as_f64) { p.half_angle_deg = Some(ha)"
+        },
+        {
+          "name": "max_depth",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"max_depth\").and_then(Value::as_f64) { p.max_depth = Some(md)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"V-Bit Carving 1\")"
+        },
+        {
+          "name": "params",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"params\") deserialized as VCarveParams"
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"plunge_rate\").and_then(Value::as_f64) { p.plunge_rate = Some(pr)"
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"safe_z\").and_then(Value::as_f64) { p.safe_z = sz"
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"spindle_rpm\").and_then(Value::as_f64) { p.spindle_rpm = Some(rpm)"
+        },
+        {
+          "name": "start_depth",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"start_depth\").and_then(Value::as_f64) { p.start_depth = sd"
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepdown\").and_then(Value::as_f64) { p.stepdown = Some(sd)"
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepover\").and_then(Value::as_f64) { p.stepover = Some(so)"
+        },
+        {
+          "name": "style",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"style\").and_then(Value::as_str) { Some(\"multi_pass_offset\") | Some(\"offset\") => { gravita_cam::VCarveStyle::MultiPassOffset"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(tid) .ok_or_else(|| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.vcarve",
+        "core_bus_commands": [
+          "cam.vcarve"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 2566,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.roughing.z_level",
+      "name": "Cam Roughing Z Level",
+      "description": "Generate Z-level 3D roughing passes.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"allowance\") .or_else(|| params.get(\"stock_allowance\")) .and_then(Value::as_f64) {"
+        },
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"angle_deg\") .and_then(Value::as_f64) .unwrap_or(0.0)"
+        },
+        {
+          "name": "boundary",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"boundary\") deserialized as Polygon2D"
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"feed_rate\").and_then(Value::as_f64) { p.feed_rate = Some(feed)"
+        },
+        {
+          "name": "finish_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"finish_z\").and_then(Value::as_f64) { p.finish_z = Some(finish_z)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Z Level Roughing 1\")"
+        },
+        {
+          "name": "params",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"params\") deserialized as ZLevelParams"
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"plunge_rate\").and_then(Value::as_f64) { p.plunge_rate = Some(plunge)"
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"safe_z\").and_then(Value::as_f64) { p.safe_z = sz"
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"spindle_rpm\").and_then(Value::as_f64) { p.spindle_rpm = Some(rpm)"
+        },
+        {
+          "name": "start_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"start_z\").and_then(Value::as_f64) { p.start_z = Some(start_z)"
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepdown\").and_then(Value::as_f64) { p.stepdown = stepdown"
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepover\").and_then(Value::as_f64) { p.stepover = Some(stepover)"
+        },
+        {
+          "name": "stock_allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stock_allowance\")) .and_then(Value::as_f64) { p.allowance = allowance"
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"strategy\").and_then(Value::as_str) { if strat_str == \"raster\" { let angle = params .get(\"angle_deg\")"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(tid) .ok_or_else(|| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.z_level_roughing",
+        "core_bus_commands": [
+          "cam.z_level_roughing"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 3010,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.relief.finish_3d",
+      "name": "Cam Relief Finish 3d",
+      "description": "Generate a 3D relief finishing toolpath using raster, spiral or the new offset strategy required by Gravita.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"allowance\").and_then(Value::as_f64) { p.allowance = allowance"
+        },
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"angle_deg\") .and_then(Value::as_f64) .unwrap_or(0.0)"
+        },
+        {
+          "name": "bidirectional",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"bidirectional\") .and_then(Value::as_bool) .unwrap_or(true)"
+        },
+        {
+          "name": "boundary",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"boundary\") deserialized as Polygon2D"
+        },
+        {
+          "name": "center_x",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"center_x\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "center_y",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"center_y\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"feed_rate\").and_then(Value::as_f64) { p.feed_rate = Some(feed)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Relief 3D Finishing\")"
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"plunge_rate\").and_then(Value::as_f64) { p.plunge_rate = Some(plunge)"
+        },
+        {
+          "name": "raster_angle",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"raster_angle\")) .and_then(Value::as_f64) .unwrap_or(0.0)"
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"safe_z\").and_then(Value::as_f64) { p.safe_z = safe_z"
+        },
+        {
+          "name": "sample_interval",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"sample_interval\").and_then(Value::as_f64) { p.sample_interval = Some(si)"
+        },
+        {
+          "name": "scallop_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"scallop_height\").and_then(Value::as_f64) { p.scallop_height = Some(scallop)"
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"spindle_rpm\").and_then(Value::as_f64) { p.spindle_rpm = Some(rpm)"
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepover\").and_then(Value::as_f64) { p.stepover = Some(stepover)"
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"strategy\").and_then(Value::as_str) { match strat_str.to_lowercase().as_str() { \"spiral\" => { let cx = pa"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(tid) .ok_or_else(|| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.relief_3d",
+        "core_bus_commands": [
+          "cam.relief_3d"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 3123,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch",
+        "required_new_strategy_support": [
+          "offset"
+        ],
+        "legacy_strategy_support": [
+          "raster",
+          "raster_xy",
+          "spiral"
+        ]
+      }
+    },
+    {
+      "id": "cam.rest_machining.create",
+      "name": "Cam Rest Machining Create",
+      "description": "Generate a rest-machining toolpath from prior-tool residual material.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"allowance\").and_then(Value::as_f64) { p.allowance = allowance"
+        },
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"angle_deg\") .and_then(Value::as_f64) .unwrap_or(0.0)"
+        },
+        {
+          "name": "bidirectional",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"bidirectional\") .and_then(Value::as_bool) .unwrap_or(true)"
+        },
+        {
+          "name": "blend_distance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"blend_distance\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "boundary",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"boundary\") deserialized as Polygon2D"
+        },
+        {
+          "name": "center_x",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"center_x\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "center_y",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"center_y\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "cusp_tolerance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"cusp_tolerance\") .and_then(Value::as_f64) .unwrap_or(0.05)"
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"feed_rate\").and_then(Value::as_f64) { p.feed_rate = Some(feed)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Relief 3D Rest Machining\")"
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"plunge_rate\").and_then(Value::as_f64) { p.plunge_rate = Some(plunge)"
+        },
+        {
+          "name": "prev_tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"prev_tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(ptid) .ok_or_else(|| EngineError::Bad"
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"safe_z\").and_then(Value::as_f64) { p.safe_z = safe_z"
+        },
+        {
+          "name": "sample_interval",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"sample_interval\").and_then(Value::as_f64) { p.sample_interval = Some(si)"
+        },
+        {
+          "name": "scallop_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"scallop_height\").and_then(Value::as_f64) { p.scallop_height = Some(scallop)"
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"spindle_rpm\").and_then(Value::as_f64) { p.spindle_rpm = Some(rpm)"
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepover\").and_then(Value::as_f64) { p.stepover = Some(stepover)"
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"strategy\").and_then(Value::as_str) { match strat_str.to_lowercase().as_str() { \"spiral\" => { let cx = pa"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(tid) .ok_or_else(|| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.rest_machining_3d",
+        "core_bus_commands": [
+          "cam.rest_machining_3d"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 3248,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.toolpaths.merge",
+      "name": "Cam Toolpaths Merge",
+      "description": "Merge toolpaths with a configurable tolerance.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "all",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"all\").and_then(Value::as_bool).unwrap_or(false)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Merged Toolpath 1\")"
+        },
+        {
+          "name": "order",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"order\") .and_then(Value::as_str) .unwrap_or(\"automatic\")"
+        },
+        {
+          "name": "tolerance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"tolerance\""
+        },
+        {
+          "name": "toolpath_ids",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params .get(\"toolpath_ids\") .and_then(Value::as_array) .map(|arr| { arr.iter() .filter_m"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.toolpath_merge",
+        "core_bus_commands": [
+          "cam.toolpath_merge"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1241,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.toolpaths.transform",
+      "name": "Cam Toolpaths Transform",
+      "description": "Translate, rotate or scale a toolpath.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "dx",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"dx\""
+        },
+        {
+          "name": "dy",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"dy\""
+        },
+        {
+          "name": "dz",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"dz\""
+        },
+        {
+          "name": "rotation_center",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"rotation_center\").and_then(Value::as_array) { let cx = arr.first().and_then(Value::as_f64).unwrap_or(0.0)"
+        },
+        {
+          "name": "rotation_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"rotation_deg\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "scale",
+          "type": {
+            "type": "Choice"
+          },
+          "source_expression": "Legacy handler accepts either a uniform scalar scale or an XYZ scale array."
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"toolpath_id\").and_then(Value::as_str)"
+        },
+        {
+          "name": "translation",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"translation\").and_then(Value::as_array) { let tx = arr.first().and_then(Value::as_f64).unwrap_or(0.0)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.toolpath_transform",
+        "core_bus_commands": [
+          "cam.toolpath_transform"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1319,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.toolpaths.panel",
+      "name": "Cam Toolpaths Panel",
+      "description": "Split a toolpath across panels with safe transitions and overcut.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "order",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"order\") .and_then(Value::as_str) .unwrap_or(\"horizontal\")"
+        },
+        {
+          "name": "overcut_distance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"overcut_distance\""
+        },
+        {
+          "name": "panel_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"panel_height\""
+        },
+        {
+          "name": "panel_width",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"panel_width\""
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"safe_z\""
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"toolpath_id\").and_then(Value::as_str)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.toolpath_panelling",
+        "core_bus_commands": [
+          "cam.toolpath_panelling"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1397,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "simulation.collisions.check",
+      "name": "Simulation Collisions Check",
+      "description": "Check a toolpath for tool/holder collisions.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "check_gouging",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"check_gouging\") .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "cols",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"cols\") .or_else(|| params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) ."
+        },
+        {
+          "name": "gauge_length",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"gauge_length\") .and_then(Value::as_f64) .unwrap_or(35.0)"
+        },
+        {
+          "name": "holder_diameter",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"holder_diameter\").and_then(Value::as_f64) { let gl = params .get(\"gauge_length\") .and_then(Value::as_f64)"
+        },
+        {
+          "name": "holder_length",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"holder_length\") .and_then(Value::as_f64) .unwrap_or(45.0)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"name\")) .or_else(|| params.get(\"toolpath_id\")) .and_then(Value::as_str) { all_tps .iter("
+        },
+        {
+          "name": "resolution",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) .clamp(10, 4000) as usize"
+        },
+        {
+          "name": "rows",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"rows\") .or_else(|| params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) ."
+        },
+        {
+          "name": "tolerance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"tolerance\") .and_then(Value::as_f64) .unwrap_or(0.01)"
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"toolpath_id\")) .and_then(Value::as_str) { all_tps .iter() .filter(|tp| tp.name == ta"
+        },
+        {
+          "name": "toolpath_name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"toolpath_name\") .or_else(|| params.get(\"name\")) .or_else(|| params.get(\"toolpath_id\")) .and_then(Value::as_"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.check_collisions",
+        "core_bus_commands": [
+          "cam.check_collisions"
+        ],
+        "handler_file": "crates/engine/src/cmd/sim.rs",
+        "handler_line": 188,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "simulation.gouging.detect",
+      "name": "Simulation Gouging Detect",
+      "description": "Detect gouging against the design model.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"name\")) .or_else(|| params.get(\"toolpath_id\")) .and_then(Value::as_str) { all_tps .iter("
+        },
+        {
+          "name": "tolerance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"tolerance\") .and_then(Value::as_f64) .unwrap_or(0.01)"
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"toolpath_id\")) .and_then(Value::as_str) { all_tps .iter() .filter(|tp| tp.name == ta"
+        },
+        {
+          "name": "toolpath_name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"toolpath_name\") .or_else(|| params.get(\"name\")) .or_else(|| params.get(\"toolpath_id\")) .and_then(Value::as_"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.detect_gouging",
+        "core_bus_commands": [
+          "cam.detect_gouging"
+        ],
+        "handler_file": "crates/engine/src/cmd/sim.rs",
+        "handler_line": 312,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "simulation.feedrate.optimize",
+      "name": "Simulation Feedrate Optimize",
+      "description": "Optimize toolpath feedrate using simulation resolution.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "lead_in_distance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"lead_in_distance\") .and_then(Value::as_f64) .unwrap_or(5.0), lead_in_factor: params"
+        },
+        {
+          "name": "lead_in_factor",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"lead_in_factor\") .and_then(Value::as_f64) .unwrap_or(0.8), lead_out_distance: params"
+        },
+        {
+          "name": "lead_out_distance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"lead_out_distance\") .and_then(Value::as_f64) .unwrap_or(5.0), lead_out_factor: params"
+        },
+        {
+          "name": "lead_out_factor",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"lead_out_factor\") .and_then(Value::as_f64) .unwrap_or(1.0), min_feed_change_pct: params"
+        },
+        {
+          "name": "max_feed_pct",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"max_feed_pct\") .and_then(Value::as_f64) .unwrap_or(180.0), lead_in_distance: params"
+        },
+        {
+          "name": "min_change_distance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"min_change_distance\") .and_then(Value::as_f64) .unwrap_or(1.0), sim_resolution: params.get(\"sim"
+        },
+        {
+          "name": "min_feed_change_pct",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"min_feed_change_pct\") .and_then(Value::as_f64) .unwrap_or(5.0), min_change_distance: params"
+        },
+        {
+          "name": "min_feed_pct",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"min_feed_pct\") .and_then(Value::as_f64) .unwrap_or(50.0), max_feed_pct: params"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"name\")) .or_else(|| params.get(\"toolpath_id\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "sim_resolution",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"sim_resolution\").and_then(Value::as_f64), }"
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"toolpath_id\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "toolpath_name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"toolpath_name\") .or_else(|| params.get(\"name\")) .or_else(|| params.get(\"toolpath_id\")) .and_then(Value::as_"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.optifeed",
+        "core_bus_commands": [
+          "cam.optifeed"
+        ],
+        "handler_file": "crates/engine/src/cmd/sim.rs",
+        "handler_line": 439,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "project.save",
+      "name": "Project Save",
+      "description": "Save the current native Gravita project, optionally returning its serialized JSON.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "file_path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"file_path\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "filename",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"filename\")) .or_else(|| params.get(\"file_path\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"path\") .or_else(|| params.get(\"filename\")) .or_else(|| params.get(\"file_path\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "return_json",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"return_json\") .and_then(Value::as_bool) .unwrap_or(false)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "project.save",
+        "core_bus_commands": [
+          "file.save",
+          "project.save",
+          "project.save_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 193,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.create",
+      "name": "Relief Layer Create",
+      "description": "Create a relief layer with an optional name and combine mode.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"combine_mode\") .or_else(|| params.get(\"mode\")) .and_then(Value::as_str) .and_then(parse_combine_mode)"
+        },
+        {
+          "name": "mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"mode\")) .and_then(Value::as_str) .and_then(parse_combine_mode)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .map(str::to_string)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.create",
+        "core_bus_commands": [
+          "relief_layer.create",
+          "relief.create_layer"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 801,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "geometry.import_2d",
+      "name": "Geometry Import 2d",
+      "description": "Import DXF, SVG or serialized vector geometry as machining geometry; this does not expose vector drawing or editing tools.",
+      "domain": "geometry",
+      "parameters": [
+        {
+          "name": "data",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"data\").and_then(Value::as_str) { (Some(data.to_string()), format.unwrap_or(\"json\")) } else { (None, format.unwrap_or(\"js"
+        },
+        {
+          "name": "entities",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"entities\").and_then(Value::as_array) { let json_str = serde_json::to_string(arr).map_err(|e| EngineError::BadParams {"
+        },
+        {
+          "name": "format",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"format\").and_then(Value::as_str)"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"path\").and_then(Value::as_str) { let content = std::fs::read_to_string(path).map_err(|e| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "vector.import",
+        "core_bus_commands": [
+          "vector.import",
+          "vector.import_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/vector.rs",
+        "handler_line": 1875,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.mesh.import",
+      "name": "Relief Mesh Import",
+      "description": "Import an STL or OBJ mesh and rasterize it into the active relief heightfield.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "bytes",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"bytes\").and_then(Value::as_array) { let byte_vec: Vec<u8> = arr .iter() .filter_map(Value::as_u64)"
+        },
+        {
+          "name": "data",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"data\").and_then(Value::as_str) { let fmt = params .get(\"format\") .and_then(Value::as_str) .unwra"
+        },
+        {
+          "name": "format",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"format\") .and_then(Value::as_str) .unwrap_or(\"stl\")"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Imported3D\")"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"path\").and_then(Value::as_str) { let bytes = std::fs::read(path).map_err(|e| EngineError::BadParams { cmd: command.to_string(),"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.import_3d",
+        "core_bus_commands": [
+          "relief.import_3d",
+          "relief.import_3d_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 589,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "mesh.export",
+      "name": "Mesh Export",
+      "description": "Build and export the relief surface as STL or OBJ.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "close_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"close_mode\").or_else(|| params.get(\"mode\")).and_then(Value::as_str)"
+        },
+        {
+          "name": "density",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"density\""
+        },
+        {
+          "name": "format",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"format\").and_then(Value::as_str)"
+        },
+        {
+          "name": "mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"mode\").and_then(Value::as_str)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"ReliefMesh\")"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"path\").and_then(Value::as_str)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "mesh.export",
+        "core_bus_commands": [
+          "mesh.export",
+          "mesh.export_alt",
+          "relief.export_3d",
+          "relief.export_stl"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 658,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.profile.create",
+      "name": "CAM Profile Create",
+      "description": "Generate a 2D profile toolpath from a closed boundary and optional islands.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"allowance\""
+        },
+        {
+          "name": "bridges",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"bridges\") { if let Some(en) = b_val.get(\"enabled\").and_then(Value::as_bool) { bridges.enabled = en"
+        },
+        {
+          "name": "direction",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"direction\").and_then(Value::as_str) { Some(\"conventional\") => gravita_cam::profile::CuttingDirection::Conventional, _ => gravita_cam::profile::Cutti"
+        },
+        {
+          "name": "feed_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"feed_rate\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "finish_depth",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"finish_depth\""
+        },
+        {
+          "name": "lead_in_out",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"lead_in_out\") { if let Some(en) = l_val.get(\"enabled\").and_then(Value::as_bool) { lead_in_out.enabled = en"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Profile Toolpath\")"
+        },
+        {
+          "name": "plunge_rate",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"plunge_rate\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "ramping",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"ramping\").and_then(Value::as_str) { Some(\"spiral\") => gravita_cam::profile::RampType::Spiral, _ => gravita_cam::profile::RampType::Plunge,"
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"safe_z\""
+        },
+        {
+          "name": "side",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"side\").and_then(Value::as_str) { Some(\"inside\") => gravita_cam::profile::ProfileSide::Inside, Some(\"along\") => gravita_cam::profile::ProfileSide::Al"
+        },
+        {
+          "name": "spindle_rpm",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"spindle_rpm\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "start_depth",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"start_depth\""
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepdown\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(tid) .ok_or_else(|| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.profile_2d",
+        "core_bus_commands": [
+          "cam.calculate_toolpath",
+          "cam.profile_2d"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 673,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.pocket.create",
+      "name": "CAM Pocket Create",
+      "description": "Generate pocket toolpaths from a polygon or selected boundary and islands.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"allowance\").and_then(Value::as_f64) { p.allowance = al"
+        },
+        {
+          "name": "angle_deg",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"angle_deg\") .and_then(Value::as_f64) .unwrap_or(0.0)"
+        },
+        {
+          "name": "final_tool_allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"final_tool_allowance\").and_then(Value::as_f64) { p.final_tool_allowance = fta"
+        },
+        {
+          "name": "finish_depth",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"finish_depth\").and_then(Value::as_f64) { p.finish_depth = fd"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"2D Area Clearance 1\")"
+        },
+        {
+          "name": "params",
+          "type": {
+            "type": "Object"
+          },
+          "source_expression": "params.get(\"params\") deserialized as PocketParams"
+        },
+        {
+          "name": "previous_allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"previous_allowance\") .or_else(|| params.get(\"rest_previous_allowance\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "previous_tool_diameter",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"previous_tool_diameter\") .or_else(|| params.get(\"rest_from_tool_diameter\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "previous_tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"previous_tool_id\") .or_else(|| params.get(\"rest_from_tool_id\")) .and_then(Value::as_str) {"
+        },
+        {
+          "name": "rest_from_tool_diameter",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"rest_from_tool_diameter\")) .and_then(Value::as_f64) { p.rest_from_tool_diameter = Some(pd)"
+        },
+        {
+          "name": "rest_from_tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"rest_from_tool_id\")) .and_then(Value::as_str) { if let Some(prev_tool) = self.tool_database.find_tool(prev_id) {"
+        },
+        {
+          "name": "rest_previous_allowance",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"rest_previous_allowance\")) .and_then(Value::as_f64) { p.rest_previous_allowance = Some(pa)"
+        },
+        {
+          "name": "safe_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"safe_z\").and_then(Value::as_f64) { p.safe_z = sz"
+        },
+        {
+          "name": "stepdown",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepdown\").and_then(Value::as_f64) { p.stepdown = Some(sd)"
+        },
+        {
+          "name": "stepover",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"stepover\").and_then(Value::as_f64) { p.stepover = Some(so)"
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"strategy\").and_then(Value::as_str) == Some(\"raster\") { let angle = params .get(\"angle_deg\") .and_then(Value:"
+        },
+        {
+          "name": "tool_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool_id\").and_then(Value::as_str) { self.tool_database .find_tool(tid) .ok_or_else(|| EngineError::BadParams {"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.pocket_2d",
+        "core_bus_commands": [
+          "cam.pocket_2d",
+          "cam.area_clearance"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1887,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "simulation.run",
+      "name": "Simulation Run",
+      "description": "Simulate stock removal for one selected toolpath or the most recently generated toolpath.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "cols",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"cols\") .or_else(|| params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) ."
+        },
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"id\")) .and_then(Value::as_str) { self.get_toolpath_as_unified(id) .ok_or_else(|| EngineError::BadParams {"
+        },
+        {
+          "name": "index",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"index\") .or_else(|| params.get(\"toolpath_index\")) .and_then(Value::as_u64) .map(|n| n as usize)"
+        },
+        {
+          "name": "reset",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"reset\") .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "resolution",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) .clamp(10, 4000) as usize"
+        },
+        {
+          "name": "rows",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"rows\") .or_else(|| params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) ."
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"toolpath_id\") .or_else(|| params.get(\"id\")) .and_then(Value::as_str) { self.get_toolpath_as"
+        },
+        {
+          "name": "toolpath_index",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"toolpath_index\")) .and_then(Value::as_u64) .map(|n| n as usize) { all_tps .get(idx)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.simulate_toolpath",
+        "core_bus_commands": [
+          "cam.simulate_toolpath",
+          "cam.simulate_toolpath_alt",
+          "cam.simulate",
+          "cam.popup_simulate",
+          "cam.popup_simulate_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/sim.rs",
+        "handler_line": 13,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "simulation.reset",
+      "name": "Simulation Reset",
+      "description": "Reset the stock-removal simulation to the original material.",
+      "domain": "simulation",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "cam.reset_simulation",
+        "core_bus_commands": [
+          "cam.reset_simulation",
+          "cam.reset_simulation_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1862,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "postprocessor.gcode.export",
+      "name": "Postprocessor Gcode Export",
+      "description": "Post-process selected toolpaths into controller-specific G-code and optionally write the output file.",
+      "domain": "postprocessor",
+      "parameters": [
+        {
+          "name": "arc_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"arc_mode\") .and_then(Value::as_str) .unwrap_or(\"incremental\")"
+        },
+        {
+          "name": "comments",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"comments\") .and_then(Value::as_bool) .unwrap_or(true), arc_mode, modal_gcod"
+        },
+        {
+          "name": "dialect",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"dialect\") .or_else(|| params.get(\"machine\")) .or_else(|| params.get(\"post_processor\")) .and_then(Value::as_"
+        },
+        {
+          "name": "feed_precision",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"feed_precision\") .and_then(Value::as_u64) .map(|n| n as usize) .unwrap_or(1),"
+        },
+        {
+          "name": "id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"id\")) .and_then(Value::as_str) .map(|s| vec![s.to_string()]) })"
+        },
+        {
+          "name": "line_number_increment",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"line_number_increment\") .and_then(Value::as_u64) .map(|n| n as usize) .unwrap_or(10),"
+        },
+        {
+          "name": "line_numbers",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"line_numbers\") .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "machine",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"machine\")) .or_else(|| params.get(\"post_processor\")) .and_then(Value::as_str) .unwrap_or(\"mach3\")"
+        },
+        {
+          "name": "modal",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"modal\").and_then(Value::as_bool).unwrap_or(true), spindle_dwell_seconds: spindle_dwell, rotary, custom_preamble: params"
+        },
+        {
+          "name": "output_path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"output_path\") .or_else(|| params.get(\"path\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"path\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "post_processor",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"post_processor\")) .and_then(Value::as_str) .unwrap_or(\"mach3\")"
+        },
+        {
+          "name": "postamble",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"postamble\") .and_then(Value::as_str) .map(String::from), program_number: params"
+        },
+        {
+          "name": "preamble",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"preamble\") .and_then(Value::as_str) .map(String::from), custom_postamble: params"
+        },
+        {
+          "name": "precision",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"precision\") .and_then(Value::as_u64) .map(|n| n as usize) .unwrap_or(units.default_precisio"
+        },
+        {
+          "name": "program_name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"program_name\") .and_then(Value::as_str) .map(String::from), }"
+        },
+        {
+          "name": "program_number",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"program_number\") .and_then(Value::as_u64) .map(|n| n as u32), program_name: params"
+        },
+        {
+          "name": "rotary",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"rotary\") { let axis = r_val .get(\"axis\") .and_then(Value::as_str) .and_then(|s| s.chars().next()"
+        },
+        {
+          "name": "spindle_dwell",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"spindle_dwell\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "toolpath_id",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"toolpath_id\") .or_else(|| params.get(\"id\")) .and_then(Value::as_str) .map(|"
+        },
+        {
+          "name": "toolpath_ids",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params .get(\"toolpath_ids\") .and_then(Value::as_array) .map(|arr| { arr.iter() .filter_m"
+        },
+        {
+          "name": "units",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"units\") .and_then(Value::as_str) .unwrap_or(\"metric\")"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.save_toolpath",
+        "core_bus_commands": [
+          "cam.save_toolpath",
+          "cam.save_toolpath_alt",
+          "cam.post_process",
+          "cam.popup_save_toolpath",
+          "cam.popup_save_toolpath_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1593,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      },
+      "preconditions": [
+        "safety.export.validate",
+        "postprocessor.gcode.validate"
+      ],
+      "export_rule": "Generate to memory, validate the safety report and parsed G-code, then write the output file. Never write G-code before both preconditions pass."
+    },
+    {
+      "id": "document.create",
+      "name": "Document Create",
+      "description": "Create a new document with physical dimensions and raster resolution.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"height\""
+        },
+        {
+          "name": "resolution_x",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"resolution_x\").and_then(Value::as_u64) && rx > 0 { self.doc.dimensions.resolution_x = rx as usize"
+        },
+        {
+          "name": "resolution_y",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"resolution_y\").and_then(Value::as_u64) && ry > 0 { self.doc.dimensions.resolution_y = ry as usize"
+        },
+        {
+          "name": "width",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"width\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "model.new",
+        "core_bus_commands": [
+          "model.new",
+          "model.new_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 17,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "project.save_as",
+      "name": "Project Save As",
+      "description": "Save the native project to an explicitly selected path.",
+      "domain": "document",
+      "parameters": [
+        {
+          "name": "filename",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"filename\")) .and_then(Value::as_str)"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"path\") .or_else(|| params.get(\"filename\")) .and_then(Value::as_str)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "file.save_as",
+        "core_bus_commands": [
+          "file.save_as",
+          "project.save_as",
+          "project.save_as_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 257,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "project.close",
+      "name": "Project Close",
+      "description": "Close the active project and clear session state.",
+      "domain": "document",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "file.close",
+        "core_bus_commands": [
+          "file.close",
+          "file.close_model",
+          "file.close_model_alt",
+          "project.close",
+          "project.close_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 295,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "history.undo",
+      "name": "Undo",
+      "description": "Undo the previous committed document transaction.",
+      "domain": "document",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "history.undo",
+        "core_bus_commands": [
+          "edit.undo",
+          "history.undo"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1427,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "history.redo",
+      "name": "Redo",
+      "description": "Redo the previously undone document transaction.",
+      "domain": "document",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "history.redo",
+        "core_bus_commands": [
+          "edit.redo",
+          "history.redo"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1447,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "history.transaction.commit",
+      "name": "Commit History Transaction",
+      "description": "Commit the active grouped document transaction.",
+      "domain": "document",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "history.commit_transaction",
+        "core_bus_commands": [
+          "history.commit_transaction"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1475,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "history.transaction.rollback",
+      "name": "Rollback History Transaction",
+      "description": "Roll back the active grouped document transaction.",
+      "domain": "document",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "history.rollback_transaction",
+        "core_bus_commands": [
+          "history.rollback_transaction"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1483,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.heightmap.import",
+      "name": "Import Heightmap",
+      "description": "Import a grayscale PNG heightmap into a relief layer; TIFF support is a new-product extension.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "bytes",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"bytes\").and_then(Value::as_array) { arr.iter() .filter_map(Value::as_u64) .map(|b| b as u8) .col"
+        },
+        {
+          "name": "combine_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"combine_mode\") .and_then(Value::as_str) .unwrap_or(\"add\")"
+        },
+        {
+          "name": "height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"height\""
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Imported Relief\")"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"path\").and_then(Value::as_str) { std::fs::read(path).map_err(|e| EngineError::BadParams { cmd: command.to_string(), msg:"
+        },
+        {
+          "name": "pixel_size",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"pixel_size\""
+        },
+        {
+          "name": "format",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "New Gravita format selector; previous handler imports PNG"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.import",
+        "core_bus_commands": [
+          "relief.import",
+          "relief.import_alt",
+          "relief.load_layer",
+          "relief.load_layer_alt",
+          "relief_layer.import"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 823,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch",
+        "legacy_format_support": [
+          "PNG"
+        ],
+        "required_new_format_support": [
+          "TIFF"
+        ]
+      }
+    },
+    {
+      "id": "relief.heightmap.export",
+      "name": "Export Heightmap",
+      "description": "Export a relief heightfield as a calibrated PNG heightmap.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "bit_depth",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"bit_depth\") .and_then(Value::as_u64) .unwrap_or(16) as u8"
+        },
+        {
+          "name": "composite",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params .get(\"composite\") .or_else(|| params.get(\"use_composite\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "layer",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"layer\") .and_then(Value::as_u64) .map(|i| i as usize)"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"path\").and_then(Value::as_str)"
+        },
+        {
+          "name": "use_composite",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"use_composite\")) .and_then(Value::as_bool) .unwrap_or(false)"
+        },
+        {
+          "name": "z_max",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"z_max\").and_then(Value::as_f64), ) { if min < max { Some((min, max)) } else { None } } else { None }"
+        },
+        {
+          "name": "z_min",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"z_min\").and_then(Value::as_f64), params.get(\"z_max\").and_then(Value::as_f64), ) { if min < max { Some((min, max)) } else { None }"
+        },
+        {
+          "name": "z_range",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"z_range\").and_then(Value::as_array) { if arr.len() == 2 && let (Some(min), Some(max)) = ( arr.first().and_then(Value"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.export_png",
+        "core_bus_commands": [
+          "relief.save_layer",
+          "relief.save_layer_alt",
+          "relief_layer.export",
+          "relief.export_png"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 738,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.reset",
+      "name": "Reset Relief",
+      "description": "Clear the active relief heightfield.",
+      "domain": "relief",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "relief.reset",
+        "core_bus_commands": [
+          "relief.reset"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 165,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.height.invert",
+      "name": "Invert Relief Height",
+      "description": "Invert the active relief height values.",
+      "domain": "relief",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "relief.invert_z",
+        "core_bus_commands": [
+          "relief.invert_z"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 175,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.height.invert_male_female",
+      "name": "Invert Male/Female Relief",
+      "description": "Invert the relief using male/female machining semantics.",
+      "domain": "relief",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "relief.invert_male_female",
+        "core_bus_commands": [
+          "relief.invert_male_female"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 185,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.back.invert",
+      "name": "Create Inverted Back Relief",
+      "description": "Create the inverted composite relief on the back side.",
+      "domain": "relief",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "relief.invert_to_back",
+        "core_bus_commands": [
+          "relief.invert_to_back"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 195,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.back.offset",
+      "name": "Create Offset Back Relief",
+      "description": "Create the back-side relief using a Z offset.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "offset",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"offset\""
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.offset_to_back",
+        "core_bus_commands": [
+          "relief.offset_to_back"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 209,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.stack.select",
+      "name": "Select Relief Stack",
+      "description": "Select the active front or back relief stack.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "side",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"side\")) .and_then(Value::as_str) { let side = match side_str.to_lowercase().as_str() { \"back\" => gravita_doc"
+        },
+        {
+          "name": "stack",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"stack\") .or_else(|| params.get(\"side\")) .and_then(Value::as_str) { let side = match side_st"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.toggle_stack",
+        "core_bus_commands": [
+          "relief.toggle_stack",
+          "relief.select_stack",
+          "view.toggle_back_relief"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 224,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.combine.apply",
+      "name": "Combine Relief",
+      "description": "Combine the active relief with a constant-height overlay using a selected combine mode.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "execute_relief_calculate: get_f64_opt(params, \"height\", 1.0)"
+        },
+        {
+          "name": "opacity",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "execute_relief_calculate: get_f64_opt(params, \"opacity\", 1.0)"
+        },
+        {
+          "name": "mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "New Gravita combine-mode selector; legacy mode is encoded by command ID"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.calculate_add",
+        "core_bus_commands": [
+          "relief.calculate_add",
+          "relief.calculate_subtract",
+          "relief.calculate_merge_high",
+          "relief.calculate_merge_low",
+          "relief.calculate_replace"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 520,
+        "parameter_evidence": "Shared Rust helper execute_relief_calculate plus five command dispatch arms"
+      }
+    },
+    {
+      "id": "relief.surface_area.calculate",
+      "name": "Calculate Relief Surface Area",
+      "description": "Calculate the surface area of the active composite relief.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "base_z",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"base_z\") .and_then(Value::as_f64) .map(|z| z as f32)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.surface_area",
+        "core_bus_commands": [
+          "relief.surface_area"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 438,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.mesh.create",
+      "name": "Create Mesh From Relief",
+      "description": "Generate a triangle mesh from the active relief and optionally export it.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "close_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"close_mode\") .or_else(|| params.get(\"mode\")) .and_then(Value::as_str) .unwrap_or(\"open\")"
+        },
+        {
+          "name": "density",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"density\""
+        },
+        {
+          "name": "mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"mode\")) .and_then(Value::as_str) .unwrap_or(\"open\")"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"ReliefMesh\")"
+        },
+        {
+          "name": "path",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"path\").and_then(Value::as_str) { let name = params .get(\"name\") .and_then(Value::as_str) .unwrap"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.create_mesh",
+        "core_bus_commands": [
+          "relief.create_mesh",
+          "relief.create_mesh_alt",
+          "model.create_mesh",
+          "model.create_mesh_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 535,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.sculpt.apply",
+      "name": "Apply Relief Sculpt Stroke",
+      "description": "Apply a typed brush stroke to the active heightfield relief.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "brush_mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"brush_mode\")) .or_else(|| params.get(\"tool\")) .and_then(Value::as_str) .unwrap_or(\"deposit\"), }"
+        },
+        {
+          "name": "center",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params .get(\"center\") .or_else(|| params.get(\"point\")) .and_then(Value::as_array) {"
+        },
+        {
+          "name": "diameter",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"diameter\").and_then(Value::as_f64) { d * 0.5 } else { get_f64_opt(params, \"radius\", 10.0) .or_else(|_| get_f"
+        },
+        {
+          "name": "erase_base_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"erase_base_height\""
+        },
+        {
+          "name": "flow",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"flow\""
+        },
+        {
+          "name": "intensity",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"intensity\""
+        },
+        {
+          "name": "limit_height",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"limit_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "max_limit",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params .get(\"max_limit\") .or_else(|| params.get(\"limit_height\")) .and_then(Value::as_f64)"
+        },
+        {
+          "name": "min_limit",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "params.get(\"min_limit\").and_then(Value::as_f64)"
+        },
+        {
+          "name": "mode",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"mode\") .or_else(|| params.get(\"brush_mode\")) .or_else(|| params.get(\"tool\")) .and_then(Valu"
+        },
+        {
+          "name": "passes",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"passes\")) .and_then(Value::as_u64) .unwrap_or(1) as usize"
+        },
+        {
+          "name": "point",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"point\")) .and_then(Value::as_array) { let x = c.first().and_then(Value::as_f64).unwrap_or(50.0)"
+        },
+        {
+          "name": "profile",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"profile\") .or_else(|| params.get(\"shape\")) .and_then(Value::as_str) .unwrap_or(\"cosine\")"
+        },
+        {
+          "name": "radius",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"radius\""
+        },
+        {
+          "name": "shape",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"shape\")) .and_then(Value::as_str) .unwrap_or(\"cosine\")"
+        },
+        {
+          "name": "size",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"size\""
+        },
+        {
+          "name": "smooth_passes",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"smooth_passes\") .or_else(|| params.get(\"passes\")) .and_then(Value::as_u64) .unwrap_or(1) as usize"
+        },
+        {
+          "name": "strength",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"strength\""
+        },
+        {
+          "name": "stroke",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params.get(\"stroke\").and_then(Value::as_array) { let mut s = Vec::with_capacity(pts.len())"
+        },
+        {
+          "name": "tool",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"tool\")) .and_then(Value::as_str) .unwrap_or(\"deposit\"), }"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief.sculpt",
+        "core_bus_commands": [
+          "relief.sculpt",
+          "relief.toggle_sculpting",
+          "relief.sculpt_smooth",
+          "relief.sculpt_deposit",
+          "relief.sculpt_carve",
+          "relief.sculpt_smudge",
+          "relief.sculpt_erase"
+        ],
+        "handler_file": "crates/engine/src/cmd/relief.rs",
+        "handler_line": 1622,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.duplicate",
+      "name": "Duplicate Relief Layer",
+      "description": "Duplicate an existing relief layer.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"id\") .and_then(Value::as_u64) .unwrap_or(self.doc.active_relief_layer_id)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.duplicate",
+        "core_bus_commands": [
+          "relief_layer.duplicate"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 873,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.rename",
+      "name": "Rename Relief Layer",
+      "description": "Rename an existing relief layer.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"id\") .and_then(Value::as_u64) .unwrap_or(self.doc.active_relief_layer_id)"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"name\") .and_then(Value::as_str) .unwrap_or(\"Renamed Relief Layer\") .to_string()"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.rename",
+        "core_bus_commands": [
+          "relief_layer.rename"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 890,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.visibility.toggle",
+      "name": "Toggle Relief Layer Visibility",
+      "description": "Toggle visibility of a relief layer.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"id\").and_then(Value::as_u64) { Some(id) => id, None => match params.get(\"name\").and_then(Value::as_str) { Some(name) => self"
+        },
+        {
+          "name": "name",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params.get(\"name\").and_then(Value::as_str) { Some(name) => self .doc .relief_layers .iter()"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.toggle_visibility",
+        "core_bus_commands": [
+          "relief_layer.toggle_visibility"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 907,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.visibility.toggle_all",
+      "name": "Toggle All Relief Layer Visibility",
+      "description": "Toggle visibility for all relief layers.",
+      "domain": "relief",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "relief_layer.toggle_all_visibility",
+        "core_bus_commands": [
+          "relief_layer.toggle_all_visibility"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 971,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.move_up",
+      "name": "Move Relief Layer Up",
+      "description": "Move a relief layer one position up in the stack.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"id\") .and_then(Value::as_u64) .unwrap_or(self.doc.active_relief_layer_id)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.move_up",
+        "core_bus_commands": [
+          "relief_layer.move_up"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 979,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.move_down",
+      "name": "Move Relief Layer Down",
+      "description": "Move a relief layer one position down in the stack.",
+      "domain": "relief",
+      "parameters": [
+        {
+          "name": "id",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"id\") .and_then(Value::as_u64) .unwrap_or(self.doc.active_relief_layer_id)"
+        }
+      ],
+      "source": {
+        "core_bus_command": "relief_layer.move_down",
+        "core_bus_commands": [
+          "relief_layer.move_down"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 991,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.merge_visible",
+      "name": "Merge Visible Relief Layers",
+      "description": "Merge the visible relief layers into one layer.",
+      "domain": "relief",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "relief_layer.merge_visible",
+        "core_bus_commands": [
+          "relief_layer.merge_visible"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1104,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "relief.layer.compute_composite",
+      "name": "Compute Composite Relief",
+      "description": "Compute the composite heightfield from the relief stack.",
+      "domain": "relief",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "relief_layer.compute_composite",
+        "core_bus_commands": [
+          "relief_layer.compute_composite"
+        ],
+        "handler_file": "crates/engine/src/cmd/doc.rs",
+        "handler_line": 1112,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.tools.list_database",
+      "name": "List Tool Database",
+      "description": "List the available tool database entries.",
+      "domain": "cam",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "cam.tool_database",
+        "core_bus_commands": [
+          "cam.tool_database"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 351,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.toolpaths.batch_recalculate",
+      "name": "Recalculate Toolpath Metrics",
+      "description": "Recalculate metrics for selected or all stored toolpaths.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "toolpath_ids",
+          "type": {
+            "type": "Array"
+          },
+          "source_expression": "params .get(\"toolpath_ids\") .and_then(Value::as_array) .map(|arr| { arr.iter() .filter_m"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.toolpath_batch_calculate",
+        "core_bus_commands": [
+          "cam.toolpath_batch_calculate"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1453,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.postprocessors.list",
+      "name": "List Postprocessors",
+      "description": "List supported postprocessor dialects.",
+      "domain": "cam",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "cam.post_processor_list",
+        "core_bus_commands": [
+          "cam.post_processor_list"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 1841,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.setup.material",
+      "name": "Set Stock Material",
+      "description": "Set stock thickness, Z-zero plane and Z offset.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "thickness",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"thickness\""
+        },
+        {
+          "name": "z_offset",
+          "type": {
+            "type": "Float"
+          },
+          "source_expression": "get_f64_opt(params, \"z_offset\""
+        },
+        {
+          "name": "z_zero",
+          "type": {
+            "type": "String"
+          },
+          "source_expression": "params .get(\"z_zero\") .and_then(Value::as_str) .unwrap_or(\"top\")"
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.material_setup",
+        "core_bus_commands": [
+          "cam.material_setup",
+          "cam.position_model"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 3421,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.setup.material.reset",
+      "name": "Reset Stock Material",
+      "description": "Restore default stock material parameters.",
+      "domain": "cam",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "cam.delete_material",
+        "core_bus_commands": [
+          "cam.delete_material"
+        ],
+        "handler_file": "crates/engine/src/cmd/cam.rs",
+        "handler_line": 3447,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "simulation.run_all",
+      "name": "Simulate All Toolpaths",
+      "description": "Simulate all stored toolpaths against the stock model.",
+      "domain": "simulation",
+      "parameters": [
+        {
+          "name": "cols",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"cols\") .or_else(|| params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) ."
+        },
+        {
+          "name": "reset",
+          "type": {
+            "type": "Bool"
+          },
+          "source_expression": "params.get(\"reset\").and_then(Value::as_bool).unwrap_or(true)"
+        },
+        {
+          "name": "resolution",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) .clamp(10, 4000) as usize"
+        },
+        {
+          "name": "rows",
+          "type": {
+            "type": "Int"
+          },
+          "source_expression": "params .get(\"rows\") .or_else(|| params.get(\"resolution\")) .and_then(Value::as_u64) .unwrap_or(100) ."
+        }
+      ],
+      "source": {
+        "core_bus_command": "cam.simulate_all",
+        "core_bus_commands": [
+          "cam.simulate_all",
+          "cam.simulate_all_alt",
+          "cam.simulate_all_toolpaths",
+          "cam.popup_simulate_group",
+          "cam.popup_simulate_group_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/sim.rs",
+        "handler_line": 116,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "simulation.delete",
+      "name": "Delete Simulation",
+      "description": "Clear the current stock-removal simulation state.",
+      "domain": "simulation",
+      "parameters": [],
+      "source": {
+        "core_bus_command": "cam.delete_simulation",
+        "core_bus_commands": [
+          "cam.delete_simulation",
+          "cam.delete_simulation_alt"
+        ],
+        "handler_file": "crates/engine/src/cmd/sim.rs",
+        "handler_line": 179,
+        "parameter_evidence": "Read from the previous Gravita Rust handler branch"
+      }
+    },
+    {
+      "id": "cam.toolpaths.sequence",
+      "name": "Sequence Toolpaths",
+      "description": "Order toolpaths and establish safe transitions between operations.",
+      "domain": "cam",
+      "parameters": [
+        {
+          "name": "toolpath_ids",
+          "type": {
+            "type": "Array"
+          }
+        },
+        {
+          "name": "strategy",
+          "type": {
+            "type": "String"
+          }
+        },
+        {
+          "name": "safe_transition",
+          "type": {
+            "type": "Bool"
+          }
+        }
+      ],
+      "source": {
+        "core_bus_commands": [],
+        "status": "new_product_requirement",
+        "reason": "The previous Core Bus has merge, transform and panelling operations but no explicit sequencing operation."
+      }
+    },
+    {
+      "id": "safety.machine_bounds.check",
+      "name": "Check Machine Bounds",
+      "description": "Reject toolpaths that exceed the configured machine travel envelope.",
+      "domain": "safety",
+      "parameters": [
+        {
+          "name": "toolpath_ids",
+          "type": {
+            "type": "Array"
+          }
+        },
+        {
+          "name": "machine_bounds",
+          "type": {
+            "type": "Object"
+          }
+        },
+        {
+          "name": "tolerance",
+          "type": {
+            "type": "Float"
+          }
+        }
+      ],
+      "source": {
+        "core_bus_commands": [],
+        "status": "new_product_requirement",
+        "reason": "The previous collision command checks tool, holder and gouging conditions but does not provide a machine-travel envelope contract."
+      }
+    },
+    {
+      "id": "safety.export.validate",
+      "name": "Validate Toolpath Before Export",
+      "description": "Run mandatory stock, collision, gouge and machine-bound checks before a toolpath can be postprocessed.",
+      "domain": "safety",
+      "parameters": [
+        {
+          "name": "toolpath_ids",
+          "type": {
+            "type": "Array"
+          }
+        },
+        {
+          "name": "machine_bounds",
+          "type": {
+            "type": "Object"
+          }
+        },
+        {
+          "name": "stock",
+          "type": {
+            "type": "Object"
+          }
+        },
+        {
+          "name": "tolerance",
+          "type": {
+            "type": "Float"
+          }
+        }
+      ],
+      "source": {
+        "core_bus_commands": [],
+        "status": "new_product_requirement",
+        "reason": "The previous G-code export handler does not enforce a safety-validation gate. Gravita architecture requires validated toolpaths before export."
+      }
+    },
+    {
+      "id": "postprocessor.gcode.validate",
+      "name": "Validate Generated G-code",
+      "description": "Parse and validate postprocessed G-code for supported dialect semantics, units, bounds and safe transitions.",
+      "domain": "postprocessor",
+      "parameters": [
+        {
+          "name": "gcode",
+          "type": {
+            "type": "String"
+          }
+        },
+        {
+          "name": "dialect",
+          "type": {
+            "type": "String"
+          }
+        },
+        {
+          "name": "machine_bounds",
+          "type": {
+            "type": "Object"
+          }
+        }
+      ],
+      "source": {
+        "core_bus_commands": [],
+        "status": "new_product_requirement",
+        "reason": "The previous postprocessor exports G-code but has no explicit G-code validation command; WBS G7.4 requires G-code safety validation."
+      }
+    }
+  ],
+  "execution_constraints": [
+    {
+      "operation": "postprocessor.gcode.export",
+      "requires_before_file_write": [
+        "safety.export.validate",
+        "postprocessor.gcode.validate"
+      ],
+      "on_failure": "Do not write or publish the G-code artifact."
+    }
+  ],
+  "execution_model_notes": [
+    "Previous Session::execute is the single dispatch entry point for document, vector, bitmap, relief, CAM and simulation handlers.",
+    "Mutating legacy commands are normally wrapped in automatic history transactions; returned errors trigger rollback. The old panic snapshot guard is not a design requirement for new Gravita: preserve atomicity through typed Result-based transactions.",
+    "The legacy generated schema registry is used for schema introspection, while command execution reads parameters in the handler branches. The selected contract is therefore based on handler behavior rather than copied schema metadata.",
+    "The legacy workflow runner executes ordered steps through Session::execute. Desktop, CLI, MCP and programmatic workflows in new Gravita should share one typed execution path."
+  ],
+  "behavioral_exclusions": [
+    {
+      "operation": "relief.heightmap.import",
+      "behavior": "Require a real PNG/TIFF path or byte buffer; do not clone and re-import the active relief when input is absent."
+    },
+    {
+      "operation": "relief.mesh.import",
+      "behavior": "Require a real STL/OBJ path or byte buffer; do not synthesize a sample tetrahedron or instantiate a clipart component."
+    },
+    {
+      "operation": "cam.relief.finish_3d",
+      "behavior": "Reject unsupported strategy values; do not silently turn them into raster finishing."
+    },
+    {
+      "operation": "postprocessor.gcode.export",
+      "behavior": "Reject unknown controller dialects; do not silently default to Mach3."
+    },
+    {
+      "operation": "safety.export.validate",
+      "behavior": "Always run gouge, holder and machine-bound checks regardless of legacy optional flags."
+    }
+  ]
+}
