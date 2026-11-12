@@ -12,7 +12,9 @@ The repository is being established from a source audit of [erneztox/artcam-inve
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Work breakdown structure](docs/WBS.md)
-- [Command contract inventory](docs/COMMANDS.md)
+- [Full Engine Command Bus catalog (404 IDs)](docs/ENGINE_COMMAND_CATALOG.md)
+- [Command-to-handler trace](docs/COMMAND_TRACE.md)
+- [Parameterized command contracts (116 schemas)](docs/COMMANDS.md)
 - [Command schema snapshot](docs/reference/source-command-schemas.json)
 - [xtask specification](docs/XTASK.md)
 - [Programmatic vertical slice](docs/PROGRAMMATIC_CRAFT.md)
