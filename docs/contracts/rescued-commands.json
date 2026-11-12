@@ -26,7 +26,12 @@
     "The previous engine can simulate stock removal and check collisions/gouges, but it does not provide an explicit machine-travel envelope contract or mandatory safety gate before G-code export.",
     "The previous engine has toolpath merge, transform and panelling, but no explicit toolpath sequencing operation.",
     "The previous engine's shape-generation handler has both imported-geometry and bitmap-color branches. The new contract retains only the imported-geometry path.",
-    "The previous relief-finishing handler implements raster and spiral strategies; offset finishing is required by WBS G5.6 but must be implemented in the new CAM kernel."
+    "The previous relief-finishing handler implements raster and spiral strategies; offset finishing is required by WBS G5.6 but must be implemented in the new CAM kernel.",
+    "The previous PNG heightmap I/O supports 8-bit and 16-bit grayscale, plus RGB/RGBA conversion. TIFF remains a new format requirement.",
+    "The previous mesh-import handler also creates a clipart asset, instantiates it and rasterizes it; new Gravita should store imported meshes in its own document model and expose mesh-to-heightfield sampling without restoring the clipart/assembly workbench.",
+    "Do not copy legacy demo fallbacks: heightmap import without input reuses the active relief, and mesh import without input synthesizes a tetrahedron. New import commands must require real input.",
+    "Do not copy silent strategy/controller fallbacks: the old relief finisher treats unknown strategies as raster, and G-code export treats unknown dialect names as Mach3. New Gravita should reject unsupported values explicitly.",
+    "The old collision command makes gouge checking optional and defaults it off. The mandatory export safety gate must explicitly enable gouge and holder checks."
   ],
   "commands": [
     {
@@ -4931,5 +4936,27 @@
     "Mutating legacy commands are normally wrapped in automatic history transactions; returned errors trigger rollback. The old panic snapshot guard is not a design requirement for new Gravita: preserve atomicity through typed Result-based transactions.",
     "The legacy generated schema registry is used for schema introspection, while command execution reads parameters in the handler branches. The selected contract is therefore based on handler behavior rather than copied schema metadata.",
     "The legacy workflow runner executes ordered steps through Session::execute. Desktop, CLI, MCP and programmatic workflows in new Gravita should share one typed execution path."
+  ],
+  "behavioral_exclusions": [
+    {
+      "operation": "relief.heightmap.import",
+      "behavior": "Require a real PNG/TIFF path or byte buffer; do not clone and re-import the active relief when input is absent."
+    },
+    {
+      "operation": "relief.mesh.import",
+      "behavior": "Require a real STL/OBJ path or byte buffer; do not synthesize a sample tetrahedron or instantiate a clipart component."
+    },
+    {
+      "operation": "cam.relief.finish_3d",
+      "behavior": "Reject unsupported strategy values; do not silently turn them into raster finishing."
+    },
+    {
+      "operation": "postprocessor.gcode.export",
+      "behavior": "Reject unknown controller dialects; do not silently default to Mach3."
+    },
+    {
+      "operation": "safety.export.validate",
+      "behavior": "Always run gouge, holder and machine-bound checks regardless of legacy optional flags."
+    }
   ]
 }

@@ -61,3 +61,18 @@ Mutating calls are normally wrapped in an automatic history transaction. A retur
 The old `schema.rs` reads a generated JSON registry for schema introspection (`command_schema` / `command_signature`). The execution path itself dispatches to handlers that read JSON fields directly; it does not validate every call against that generated schema first. That is why this contract is derived from handler behavior rather than copying the old generated schema file.
 
 The workflow runner executes ordered steps by calling the same `Session::execute` entry point and collects generated artifacts. Gravita should preserve that single execution path for desktop, CLI, MCP and programmatic workflows, with typed payloads at the engine boundary.
+
+
+## Legacy behavior that must not be copied
+
+The previous PNG heightmap I/O supports 8-bit and 16-bit grayscale, plus RGB/RGBA conversion. Gravita still needs TIFF decoding.
+
+Some legacy handler defaults are unsuitable for a production contract:
+
+- Heightmap import without a path or byte buffer re-exports and re-imports the current active relief.
+- Mesh import without a path or bytes synthesizes a sample tetrahedron; the same handler also creates a clipart asset and instance before rasterizing the mesh.
+- Unknown 3D finishing strategies fall back to raster.
+- Unknown G-code dialect names fall back to Mach3.
+- Collision checking defaults gouge checking to off unless explicitly requested.
+
+New Gravita should require real import input, store meshes in its own document model, reject unsupported strategy/dialect values, and make gouge, holder and machine-bound checks mandatory before export. Mesh-to-heightfield sampling remains in scope, but clipart and assembly behavior does not.

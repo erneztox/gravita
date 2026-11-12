@@ -61,3 +61,10 @@ The previous engine has a single `Session::execute` entry point that dispatches 
 Mutating commands are normally grouped in automatic history transactions. Errors trigger rollback, and the previous implementation additionally snapshots session state to recover from panics. The new engine should preserve atomic command execution using the typed transaction system and `Result` propagation rather than copying panic recovery as normal control flow.
 
 The previous workflow runner executes each declared step through that same session entry point. Gravita's desktop, CLI, MCP and programmatic workflows should likewise share one typed engine API.
+
+
+## Legacy behavior not to carry forward
+
+The old PNG heightmap importer supports 8-bit and 16-bit grayscale as well as RGB/RGBA conversion; TIFF remains a new I/O requirement. The old heightmap importer also has a fallback that reuses the active relief when no input is supplied. The old mesh importer synthesizes a sample tetrahedron when no file/bytes are supplied and instantiates the mesh through clipart/assembly state. New Gravita must require real input and store meshes in its own document model.
+
+The old 3D relief finisher silently treats unknown strategies as raster, G-code export silently defaults unknown controller names to Mach3, and collision checking leaves gouge checks disabled by default. The new API should reject unsupported values and make gouge, holder and machine-bound validation mandatory before writing G-code.
