@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use serde::{Deserialize, Serialize};
@@ -106,7 +108,7 @@ fn collect_sources(root: &Path) -> Result<SourceIndex> {
     if !root.exists() { return Ok(SourceIndex::default()); }
     let mut index = SourceIndex::default();
     let mut sources = Vec::new();
-    for entry in WalkDir::new(root).into_iter().filter_map(Result::ok) {
+    for entry in WalkDir::new(root).into_iter().filter_map(|entry| entry.ok()) {
         let path = entry.path();
         if !entry.file_type().is_file() || path.extension() != Some(std::ffi::OsStr::new("rs")) { continue; }
         let source = fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
