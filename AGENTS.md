@@ -1,48 +1,58 @@
-# AGENTS.md — Gravita engineering rules
+# AGENTS.md — Gravita
 
-## Product scope
+## First principles
 
-Read `docs/ARCHITECTURE.md` and `docs/WBS.md` before making architectural changes. The approved relief-centric scope is authoritative. Gravita is not a vector editor, bitmap editor, general-purpose parametric solid CAD system, or 3D-printing tool.
+Read README.md, docs/ARCHITECTURE.md and docs/WBS.md before making architectural or product-scope changes.
 
-## Source-of-truth rules
+Gravita is a relief-centric CAD/CAM application for artistic CNC machining. Its purpose is to create or import relief data, prepare machining geometry, generate toolpaths, simulate stock removal, validate machining safety and produce G-code.
 
-- The typed domain model and command API are authoritative.
-- GUI, CLI and MCP are adapters; they must not implement domain behavior independently.
-- A menu item, command ID, schema entry or TODO is not an implementation.
-- Every retained command must trace to its handler, typed payload, validation, effects, result and acceptance tests.
-- Never report progress from old repository counts or stale roadmap percentages.
+Do not add interactive vector editing, bitmap editing, general-purpose parametric CAD, sketch constraints, 3D printing or machine-control connectivity. DXF/SVG, PNG/TIFF and STL/OBJ are import formats for domain data, not invitations to build general-purpose editors.
+
+## Architecture rules
+
+- The domain model and typed command API are authoritative.
+- Desktop UI, CLI and MCP are adapters over the same engine API.
+- Frontends must never implement domain behavior independently or mutate document state directly.
+- Commands have stable IDs, typed payloads, validation, explicit effects and typed results.
+- Transactions own mutations. Failed commands must not leave partial document changes.
+- Domain crates must not depend on egui, wgpu, winit, CLI, MCP or application crates.
+- Keep dependency direction inward-to-outward.
 
 ## Domain correctness
 
 - Use real geometry, reliefs, tools, toolpaths, stock and postprocessors in integration tests.
-- No mocks for domain workflows. Test doubles may be used only for external boundaries (filesystem failures, clocks, process execution) and must not replace geometry/CAM/simulation.
-- Reject NaN/infinity, invalid units, invalid topology and unsafe machining parameters at boundaries.
-- Preserve physical units and coordinate conventions explicitly.
+- Do not mock geometry, CAM, simulation, safety validation or G-code generation.
+- Test doubles are permitted only at external boundaries such as filesystem failures or clocks.
+- Reject non-finite values, invalid units, invalid topology and unsafe machining parameters at boundaries.
+- Define physical units and coordinate conventions explicitly.
 - Never silently change machining intent or export unsupported postprocessor semantics.
 - Safety validation must gate G-code export.
 
 ## Rust rules
 
 - Forbid unsafe Rust in every crate.
-- No `unwrap()`, `expect()`, `panic!`, or `unreachable!` in production paths. Tests may use assertions and explicit fixture setup.
+- No unwrap(), expect(), panic! or unreachable! in production paths.
 - Use typed errors and propagate failures with context.
-- Keep domain crates free of UI, CLI and MCP dependencies.
-- Run `cargo fmt --all -- --check`, `cargo clippy --workspace --all-targets -- -D warnings`, and `cargo test --workspace` before declaring a change complete.
+- Run cargo fmt --all -- --check, cargo clippy --workspace --all-targets -- -D warnings and cargo test --workspace before declaring a change complete.
 
 ## Dependency policy
 
-Prefer maintained, mature Rust libraries for established geometry/CAM algorithms. Before adding a dependency, record version, license, maintenance signals, unsafe surface, transitive dependencies, API fit, numerical behavior and benchmark/fixture evidence. Do not add SolidCraft/SolidCore family crates. Do not reimplement a mature algorithm solely to avoid a dependency.
+Prefer maintained, mature Rust libraries for established geometry and CAM algorithms. Before adding a dependency, evaluate its API semantics, license, maintenance, unsafe surface, dependency tree, numerical robustness, topology handling, determinism and performance. Wrap selected libraries behind narrow Gravita interfaces. Do not reimplement a mature algorithm merely to avoid a dependency.
 
 ## Implementation workflow
 
-1. Identify the WBS item and command IDs affected.
-2. Inspect existing code and tests before changing behavior.
-3. Implement the domain behavior behind a typed API.
+1. Identify the relevant WBS item.
+2. Inspect existing code and tests.
+3. Implement behavior behind a typed domain API.
 4. Add unit and acceptance tests using real domain data.
-5. Update command traceability, schema and WBS status from evidence.
-6. Run the narrow test, then workspace quality gates.
-7. Document limitations and unsupported inputs explicitly.
+5. Update command contracts, traceability and WBS status based on repository evidence.
+6. Run focused tests, then workspace quality gates.
+7. Document unsupported inputs and actual limitations.
 
-## Documentation
+## Documentation and reporting
 
-All repository instructions and technical docs are written in English. Prefer exact contracts, source paths, commands, acceptance conditions and status labels over broad prose. Do not invent Rust signatures, test results, dependencies, performance numbers or completed functionality.
+- Technical documentation is written in English.
+- Prefer exact contracts, source paths, commands and acceptance conditions.
+- Do not invent Rust signatures, test results, dependencies, performance numbers or completed functionality.
+- Distinguish specified, implemented and verified behavior.
+- The product scope in this repository is the sole product authority.

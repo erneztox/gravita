@@ -1,43 +1,50 @@
 # Gravita
 
-Gravita is a Rust desktop CAD/CAM application for artistic CNC relief production.
+Gravita is a pure-Rust desktop application for artistic CNC relief design and machining.
 
-The product scope is relief-centric: 2.5D heightfield modeling, imported 2D geometry, relief and mesh operations, 2.5D/3D toolpath generation, stock simulation, machining safety checks, and G-code post-processing.
+Its product scope is deliberately focused:
+- 2.5D heightfield relief modeling and 3D relief operations.
+- Imported 2D geometry for machining.
+- Imported heightmaps and triangle meshes.
+- 2.5D and 3D CAM toolpath generation.
+- Stock-removal simulation and machining safety validation.
+- Controller-specific G-code post-processing.
+- A native project/document format.
 
-This repository is the clean implementation workspace. It does not inherit the history or source tree of the earlier `artcam-investigation` repository.
+## Project status
 
-## Current status
-
-The repository is being established from a source audit of [erneztox/artcam-investigation](https://github.com/erneztox/artcam-investigation), with the approved architecture pivot treated as authoritative. The first engineering baseline is documented under `docs/`.
+Gravita is in its architecture and implementation-baseline phase. The repository currently contains product specifications; Rust implementation has not yet started.
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Work breakdown structure](docs/WBS.md)
-- [Full Engine Command Bus catalog (404 IDs)](docs/ENGINE_COMMAND_CATALOG.md)
-- [Command-to-handler trace](docs/COMMAND_TRACE.md)
-- [Parameterized command contracts (116 schemas)](docs/COMMANDS.md)
-- [Command schema snapshot](docs/reference/source-command-schemas.json)
+- [Programmatic end-to-end craft](docs/PROGRAMMATIC_CRAFT.md)
 - [xtask specification](docs/XTASK.md)
-- [Programmatic vertical slice](docs/PROGRAMMATIC_CRAFT.md)
-- [Source audit and decisions](docs/SOURCE_AUDIT.md)
 - [Agent instructions](AGENTS.md)
 
-## Non-goals
+## Input formats
 
-- Interactive vector drawing or node editing.
-- Bitmap painting or image-editing tools.
-- Parametric sketching or a general-purpose solid CAD workbench.
-- 3D printing workflows.
-- Recreating ArtCAM's original project-file compatibility.
+- **DXF/SVG:** imported 2D regions, loops and curves for CAM.
+- **PNG/TIFF:** imported grayscale heightmaps.
+- **STL/OBJ:** imported triangle meshes and relief sources.
 
-DXF and SVG are import formats for 2D CAM geometry. PNG/TIFF are heightmap inputs. STL/OBJ are mesh inputs.
+These are data-ingestion paths, not interactive editing workbenches.
+
+## Out of scope
+
+- Interactive vector drawing, node editing or vector-illustration tools.
+- Bitmap painting, pixel editing or image-manipulation tools.
+- General-purpose parametric solid CAD or sketch workbenches.
+- 3D-printing workflows.
+- Machine-control connectivity and controller streaming.
 
 ## Engineering constraints
 
-- Rust workspace; safe Rust only (`unsafe_code = "forbid"`).
-- No panic-based domain control flow.
-- Strict Clippy and formatting gates.
-- One typed command execution model shared by GUI, CLI, and MCP.
-- Real domain data in acceptance tests; no mocked geometry, toolpaths, simulation, or post-processing.
-- Reuse mature Rust geometry/CAM crates when their semantics and maintenance status fit; do not build replacement algorithms merely for ownership.
+- Rust workspace; safe Rust only (unsafe_code = forbid).
+- No panic-based production control flow.
+- Typed errors, strict Clippy and formatting gates.
+- One typed command execution model shared by desktop UI, CLI and MCP.
+- Domain crates remain independent of UI and frontend frameworks.
+- Real geometry, toolpaths, simulation and post-processing in acceptance tests.
+- Reuse mature Rust algorithms behind narrow domain interfaces; do not reimplement established algorithms without a concrete technical reason.
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the authoritative design and [docs/WBS.md](docs/WBS.md) for implementation sequencing.
+The product definition and architecture in this repository are authoritative. Do not introduce functionality outside this scope without an explicit product decision.
