@@ -1,58 +1,34 @@
-# Recovering and rescuing the legacy command bus
+# Rescuing the previous Gravita Core Bus
 
-This work has two distinct outputs and a one-way flow:
+This work uses the previous Gravita engine as an engineering reference. Its command bus was implemented in Rust; it is not an ArtCAM command bus.
 
-1. `inventory/legacy-command-bus.json` records the complete old engine Bus and how callers used it.
-2. `contracts/rescued-commands.json` defines the smaller set of operations selected for the new Gravita product. It is a new functional contract, not a copy of the old registry.
-3. `cargo xtask audit rescued-commands` checks that the new typed Rust commands, their payload fields and their registration in the authoritative dispatcher match that contract.
+## Scope
 
-## What was extracted
+The previous engine is inspected to understand the operations it implemented, their behavior, their inputs and how the application invoked them. The new Gravita product deliberately keeps only the operations required by its current product definition.
 
-Source repository: [erneztox/artcam-investigation](https://github.com/erneztox/artcam-investigation), branch `main`.
+The rescued contract in `docs/contracts/rescued-commands.json` is therefore a **selected subset**, not a port of the previous command registry. It covers document persistence, relief modeling and layers, imported geometry and meshes, tool management, CAM, simulation and G-code post-processing.
 
-The old engine exposes `Session::execute(command, params)`. It resolves canonical dotted IDs, numeric command IDs and `ID_*` source symbols, then dispatches in this order: document, vector, bitmap, relief, CAM and simulation.
+Interactive vector authoring and bitmap editing are excluded. The geometry import operation remains because the new product accepts imported DXF/SVG geometry as CAM input; it does not expose vector drawing, node editing or a bitmap workbench.
 
-The session automatically wraps ordinary commands in a history transaction when no transaction is active. It commits successful execution, rolls back returned errors and restores snapshots if execution panics. History and read/query operations are excluded from automatic transactions by an explicit allowlist.
+## Functional contract
 
-The full extraction contains **404 unique registry entries** and **116 generated parameter schemas**: 111 match registered commands and 5 are orphan schema entries. The inventory preserves the complete schema objects, registry metadata, handler-module references, source file SHAs, command resolution and transaction behavior. A missing schema is recorded as `not_described`; it is never interpreted as proof that a command takes no parameters. Registry status is preserved as source metadata, not treated as proof of behavior.
+Each operation records:
 
-## Rescue contract
+- its stable Gravita command ID and human-readable purpose;
+- the corresponding command handled by the previous Rust Core Bus;
+- the Rust handler source file;
+- the parameter names and JSON value types read by that handler;
+- the source expression used to identify each parameter.
 
-The first rescue contract contains **63 operations** from document/project persistence, 2D geometry ingestion, mesh ingestion/export, relief construction and manipulation, relief-layer control, tool management, CAM profile/pocket/drilling/3D machining, toolpath management, simulation and G-code post-processing.
+The parameter list is based on the handler implementation, not on ArtCAM registry metadata or generated ArtCAM schemas. Where the old handler accepts dynamic JSON values, the contract preserves that boundary as `Any`, `Array` or `Object` instead of inventing a more specific type.
 
-It deliberately excludes interactive vector authoring, bitmap editing and presentation/UI commands. The 2D geometry import operation is retained because Gravita needs imported DXF/SVG geometry as CAM input; that does not bring back a vector editor.
+The contract is a product decision: operations outside the new Gravita scope are not required to be implemented.
 
-Where a generated legacy schema exists, parameter names, types, required flags and defaults are carried forward. For important operations without generated schemas (geometry import, mesh import/export, profile/pocket generation, simulation and G-code export), parameters were extracted from the actual handler code. The new IDs are normalized and do not have to match old command IDs. Each operation retains its legacy ID, handler module and parameter provenance.
+## New implementation audit
 
-This is the initial rescue contract, not a claim that every useful legacy operation has already been selected. The complete inventory makes the remaining candidates visible for deliberate inclusion. In particular, the five orphan schemas are preserved separately and are not silently attached to unrelated commands.
+`cargo xtask audit rescued-commands` checks the selected contract against the new Rust source tree. It reports missing command IDs, duplicate IDs, missing typed payloads, missing parameters, type-family mismatches, undocumented payload fields and missing dispatcher registrations.
 
-## New implementation convention audited by xtask
-
-A rescued operation declares its stable ID in the `Command` trait implementation and its parameters in a typed payload:
-
-```rust
-pub struct SmoothRelief {
-    pub strength: f64,
-}
-
-impl Command for SmoothRelief {
-    const ID: &'static str = "relief.height.smooth";
-    // typed validation and execution contract
-}
-```
-
-The authoritative engine dispatcher registers it explicitly:
-
-```rust
-CommandBus::register::<SmoothRelief>();
-```
-
-The audit verifies:
-- every contract ID has an `impl Command` with the matching associated `ID`;
-- the command has a typed Rust payload;
-- the authoritative dispatcher registers the payload;
-- every declared parameter exists with a compatible Rust type;
-- no undocumented payload field silently expands the contract.
+The new implementation is not required to reproduce the previous engine's internal structure. The audit checks the new command API and its authoritative dispatcher against the selected functional contract.
 
 Run:
 
@@ -61,4 +37,4 @@ cargo xtask audit rescued-commands
 cargo xtask audit rescued-commands --json target/audits/rescued-commands.json
 ```
 
-The clean Gravita repository currently contains product/architecture documents only, not application crates. Therefore this first audit baseline is expected to fail with all 63 operations missing. That is an accurate baseline: it does not manufacture implementation evidence or mark specified work as implemented.
+The audit is expected to report pending operations while the new engine implementation is still absent. That is a baseline, not an implementation claim.
