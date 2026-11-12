@@ -18,26 +18,23 @@
       "parameters": [
         {
           "name": "height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"height\""
         },
         {
           "name": "resample_relieves",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"resample_relieves\" -> Value::as_bool"
         },
         {
           "name": "width",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"width\""
         }
       ],
@@ -55,34 +52,30 @@
       "parameters": [
         {
           "name": "content",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"content\" -> Value::as_str"
         },
         {
           "name": "filename",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"filename\" -> Value::as_str"
         },
         {
           "name": "json",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"json\" -> Value::as_str"
         },
         {
           "name": "path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"path\" -> Value::as_str"
         }
       ],
@@ -100,10 +93,9 @@
       "parameters": [
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "get_str_opt(params, \"name\""
         }
       ],
@@ -121,10 +113,9 @@
       "parameters": [
         {
           "name": "target_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"target_height\""
         }
       ],
@@ -142,50 +133,44 @@
       "parameters": [
         {
           "name": "end_ratio",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"end_ratio\""
         },
         {
           "name": "end_x",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"end_x\""
         },
         {
           "name": "end_y",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"end_y\""
         },
         {
           "name": "start_ratio",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_ratio\""
         },
         {
           "name": "start_x",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_x\""
         },
         {
           "name": "start_y",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_y\""
         }
       ],
@@ -203,18 +188,16 @@
       "parameters": [
         {
           "name": "angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"angle_deg\""
         },
         {
           "name": "base_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"base_z\" -> Value::as_f64"
         }
       ],
@@ -232,34 +215,30 @@
       "parameters": [
         {
           "name": "create_layers",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"create_layers\" -> Value::as_bool"
         },
         {
           "name": "end_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"end_z\" -> Value::as_f64"
         },
         {
           "name": "start_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"start_z\" -> Value::as_f64"
         },
         {
           "name": "thickness",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"thickness\""
         }
       ],
@@ -277,18 +256,16 @@
       "parameters": [
         {
           "name": "base_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"base_z\" -> Value::as_f64"
         },
         {
           "name": "density",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"density\""
         }
       ],
@@ -306,50 +283,44 @@
       "parameters": [
         {
           "name": "add_to_vectors",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"add_to_vectors\" -> Value::as_bool"
         },
         {
           "name": "end_x",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"end_x\""
         },
         {
           "name": "end_y",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"end_y\""
         },
         {
           "name": "sample_step",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"sample_step\" -> Value::as_f64"
         },
         {
           "name": "start_x",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_x\""
         },
         {
           "name": "start_y",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(\n                    params,\n                    \"start_y\""
         }
       ],
@@ -367,18 +338,16 @@
       "parameters": [
         {
           "name": "base_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"base_z\" -> Value::as_f64"
         },
         {
           "name": "target_volume",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"target_volume\""
         }
       ],
@@ -396,18 +365,16 @@
       "parameters": [
         {
           "name": "factor",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"factor\""
         },
         {
           "name": "target_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"target_height\" -> Value::as_f64"
         }
       ],
@@ -425,18 +392,16 @@
       "parameters": [
         {
           "name": "passes",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"passes\" -> Value::as_u64"
         },
         {
           "name": "strength",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"strength\""
         }
       ],
@@ -454,10 +419,9 @@
       "parameters": [
         {
           "name": "delta",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"delta\""
         }
       ],
@@ -475,170 +439,149 @@
       "parameters": [
         {
           "name": "all",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"all\" -> Value::as_bool"
         },
         {
           "name": "angle",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"angle\""
         },
         {
           "name": "color",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"color\""
         },
         {
           "name": "combine",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"combine\" -> Value::as_str"
         },
         {
           "name": "combine_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"combine_mode\" -> Value::as_str"
         },
         {
           "name": "entity_index",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                        .get(\"entity_index\" -> Value::as_u64"
         },
         {
           "name": "entity_indices",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"entity_indices\" -> Value::as_array"
         },
         {
           "name": "height_limit",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"height_limit\""
         },
         {
           "name": "layer",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"layer\" -> Value::as_str"
         },
         {
           "name": "layer_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                        .get(\"layer_id\" -> Value::as_u64"
         },
         {
           "name": "layer_idx",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"layer_idx\" -> Value::as_u64"
         },
         {
           "name": "layer_name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"layer_name\" -> Value::as_str"
         },
         {
           "name": "limit",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"limit\" -> Value::as_str"
         },
         {
           "name": "limit_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"limit_mode\" -> Value::as_str"
         },
         {
           "name": "limit_value",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"limit_value\""
         },
         {
           "name": "shape",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"shape\" -> Value::as_str"
         },
         {
           "name": "shape_type",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"shape_type\" -> Value::as_str"
         },
         {
           "name": "start_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_height\""
         },
         {
           "name": "tilt_angle",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"tilt_angle\""
         },
         {
           "name": "tolerance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"tolerance\""
         },
         {
           "name": "vector_layer",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                        .get(\"vector_layer\" -> Value::as_str"
         }
       ],
@@ -656,138 +599,121 @@
       "parameters": [
         {
           "name": "combine",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"combine\" -> Value::as_str"
         },
         {
           "name": "combine_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"combine_mode\" -> Value::as_str"
         },
         {
           "name": "cross_section_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"cross_section_id\" -> Value::as_u64"
         },
         {
           "name": "final_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"final_height\" -> Value::as_f64"
         },
         {
           "name": "invert_profile_z",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"invert_profile_z\" -> Value::as_bool"
         },
         {
           "name": "invert_z",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"invert_z\" -> Value::as_bool"
         },
         {
           "name": "profile",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"profile\" -> Value::as_u64"
         },
         {
           "name": "profile_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"profile_id\" -> Value::as_u64"
         },
         {
           "name": "rail1",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"rail1\" -> Value::as_u64"
         },
         {
           "name": "rail1_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"rail1_id\" -> Value::as_u64"
         },
         {
           "name": "rail2",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"rail2\" -> Value::as_u64"
         },
         {
           "name": "rail2_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"rail2_id\" -> Value::as_u64"
         },
         {
           "name": "reverse_rail1",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"reverse_rail1\" -> Value::as_bool"
         },
         {
           "name": "reverse_rail2",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"reverse_rail2\" -> Value::as_bool"
         },
         {
           "name": "scale_final_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"scale_final_height\" -> Value::as_f64"
         },
         {
           "name": "scale_height_with_width",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"scale_height_with_width\" -> Value::as_bool"
         },
         {
           "name": "start_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_height\""
         }
       ],
@@ -805,114 +731,100 @@
       "parameters": [
         {
           "name": "anchor",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"anchor\""
         },
         {
           "name": "combine",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"combine\" -> Value::as_str"
         },
         {
           "name": "combine_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"combine_mode\" -> Value::as_str"
         },
         {
           "name": "drive_curve",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"drive_curve\" -> Value::as_u64"
         },
         {
           "name": "drive_curve_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"drive_curve_id\" -> Value::as_u64"
         },
         {
           "name": "drive_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"drive_id\" -> Value::as_u64"
         },
         {
           "name": "final_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"final_height\" -> Value::as_f64"
         },
         {
           "name": "invert_profile_z",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"invert_profile_z\" -> Value::as_bool"
         },
         {
           "name": "invert_z",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"invert_z\" -> Value::as_bool"
         },
         {
           "name": "profile",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"profile\" -> Value::as_u64"
         },
         {
           "name": "profile_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"profile_id\" -> Value::as_u64"
         },
         {
           "name": "scale_final_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"scale_final_height\" -> Value::as_f64"
         },
         {
           "name": "start_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_height\""
         },
         {
           "name": "width",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"width\" -> Value::as_f64"
         }
       ],
@@ -930,130 +842,114 @@
       "parameters": [
         {
           "name": "angle",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"angle\""
         },
         {
           "name": "angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"angle_deg\""
         },
         {
           "name": "center",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"center\" -> Value::as_array"
         },
         {
           "name": "combine",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"combine\" -> Value::as_str"
         },
         {
           "name": "combine_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"combine_mode\" -> Value::as_str"
         },
         {
           "name": "final_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"final_height\" -> Value::as_f64"
         },
         {
           "name": "invert_profile_z",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"invert_profile_z\" -> Value::as_bool"
         },
         {
           "name": "invert_z",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"invert_z\" -> Value::as_bool"
         },
         {
           "name": "profile",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"profile\" -> Value::as_u64"
         },
         {
           "name": "profile_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"profile_id\" -> Value::as_u64"
         },
         {
           "name": "scale",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"scale\""
         },
         {
           "name": "scale_final_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"scale_final_height\" -> Value::as_f64"
         },
         {
           "name": "start_angle",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_angle\""
         },
         {
           "name": "start_angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_angle_deg\""
         },
         {
           "name": "start_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_height\""
         },
         {
           "name": "z_scale",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"z_scale\""
         }
       ],
@@ -1071,106 +967,93 @@
       "parameters": [
         {
           "name": "axis",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"axis\" -> Value::as_array"
         },
         {
           "name": "axis_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"axis_id\" -> Value::as_u64"
         },
         {
           "name": "combine",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"combine\" -> Value::as_str"
         },
         {
           "name": "combine_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"combine_mode\" -> Value::as_str"
         },
         {
           "name": "final_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"final_height\" -> Value::as_f64"
         },
         {
           "name": "invert_profile_z",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"invert_profile_z\" -> Value::as_bool"
         },
         {
           "name": "invert_z",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"invert_z\" -> Value::as_bool"
         },
         {
           "name": "profile",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"profile\" -> Value::as_u64"
         },
         {
           "name": "profile_id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"profile_id\" -> Value::as_u64"
         },
         {
           "name": "scale",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"scale\""
         },
         {
           "name": "scale_final_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"scale_final_height\" -> Value::as_f64"
         },
         {
           "name": "start_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_height\""
         },
         {
           "name": "z_scale",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"z_scale\""
         }
       ],
@@ -1188,18 +1071,16 @@
       "parameters": [
         {
           "name": "id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"id\" -> Value::as_u64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"name\" -> Value::as_str"
         }
       ],
@@ -1217,10 +1098,9 @@
       "parameters": [
         {
           "name": "id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"id\" -> Value::as_u64"
         }
       ],
@@ -1238,26 +1118,23 @@
       "parameters": [
         {
           "name": "id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"id\" -> Value::as_u64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"name\" -> Value::as_str"
         },
         {
           "name": "visible",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"visible\" -> Value::as_bool"
         }
       ],
@@ -1275,34 +1152,30 @@
       "parameters": [
         {
           "name": "combine_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"combine_mode\" -> Value::as_str"
         },
         {
           "name": "id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"id\" -> Value::as_u64"
         },
         {
           "name": "mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"mode\" -> Value::as_str"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"name\" -> Value::as_str"
         }
       ],
@@ -1320,18 +1193,16 @@
       "parameters": [
         {
           "name": "id",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"id\" -> Value::as_u64"
         },
         {
           "name": "opacity",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"opacity\""
         }
       ],
@@ -1349,18 +1220,16 @@
       "parameters": [
         {
           "name": "file_path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"file_path\" -> .as_str"
         },
         {
           "name": "json_content",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"json_content\" -> .as_str"
         }
       ],
@@ -1378,10 +1247,9 @@
       "parameters": [
         {
           "name": "file_path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"file_path\" -> .as_str"
         }
       ],
@@ -1399,34 +1267,30 @@
       "parameters": [
         {
           "name": "diameter",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"diameter\""
         },
         {
           "name": "group_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"group_id\" -> .as_str"
         },
         {
           "name": "name",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"name\""
         },
         {
           "name": "tool",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"tool\""
         }
       ],
@@ -1444,34 +1308,30 @@
       "parameters": [
         {
           "name": "diameter",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"diameter\""
         },
         {
           "name": "id",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"id\""
         },
         {
           "name": "name",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"name\""
         },
         {
           "name": "tool",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"tool\""
         }
       ],
@@ -1489,10 +1349,9 @@
       "parameters": [
         {
           "name": "id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"id\" -> .as_str"
         }
       ],
@@ -1510,34 +1369,30 @@
       "parameters": [
         {
           "name": "id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"id\" -> .as_str"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> .as_str"
         },
         {
           "name": "notes",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"notes\" -> .as_str"
         },
         {
           "name": "parent_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"parent_id\" -> .as_str"
         }
       ],
@@ -1555,10 +1410,9 @@
       "parameters": [
         {
           "name": "group_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"group_id\" -> .as_str"
         }
       ],
@@ -1576,18 +1430,16 @@
       "parameters": [
         {
           "name": "id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"id\" -> .as_str"
         },
         {
           "name": "tool_number",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"tool_number\" -> .as_u64"
         }
       ],
@@ -1605,18 +1457,16 @@
       "parameters": [
         {
           "name": "material",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"material\" -> .as_str"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> .as_str"
         }
       ],
@@ -1634,18 +1484,16 @@
       "parameters": [
         {
           "name": "file_path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"file_path\" -> .as_str"
         },
         {
           "name": "tbl_content",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tbl_content\" -> .as_str"
         }
       ],
@@ -1663,10 +1511,9 @@
       "parameters": [
         {
           "name": "file_path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"file_path\" -> .as_str"
         }
       ],
@@ -1684,42 +1531,37 @@
       "parameters": [
         {
           "name": "count",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"count\" -> Value::as_u64"
         },
         {
           "name": "enabled",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"enabled\" -> Value::as_bool"
         },
         {
           "name": "kind",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"kind\" -> Value::as_str"
         },
         {
           "name": "length",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"length\""
         },
         {
           "name": "thickness",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"thickness\""
         }
       ],
@@ -1737,18 +1579,16 @@
       "parameters": [
         {
           "name": "output_path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"output_path\" -> Value::as_str"
         },
         {
           "name": "path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"path\" -> Value::as_str"
         }
       ],
@@ -1766,18 +1606,16 @@
       "parameters": [
         {
           "name": "index",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"index\" -> Value::as_u64"
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"toolpath_id\" -> Value::as_str"
         }
       ],
@@ -1795,18 +1633,16 @@
       "parameters": [
         {
           "name": "index",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"index\" -> Value::as_u64"
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"toolpath_id\" -> Value::as_str"
         }
       ],
@@ -1824,122 +1660,107 @@
       "parameters": [
         {
           "name": "cycle",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"cycle\" -> Value::as_str"
         },
         {
           "name": "diameter",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"diameter\" -> Value::as_f64"
         },
         {
           "name": "dwell_seconds",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                                    .get(\"dwell_seconds\" -> Value::as_f64"
         },
         {
           "name": "filter_by_tool_diameter",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                        .get(\"filter_by_tool_diameter\" -> Value::as_bool"
         },
         {
           "name": "finish_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"finish_depth\" -> Value::as_f64"
         },
         {
           "name": "hole_diameter",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"hole_diameter\" -> Value::as_f64"
         },
         {
           "name": "holes",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"holes\" -> Value::as_array"
         },
         {
           "name": "layer",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"layer\" -> Value::as_str"
         },
         {
           "name": "layer_name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                        .get(\"layer_name\" -> Value::as_str"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "params",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"params\""
         },
         {
           "name": "peck_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"peck_depth\" -> Value::as_f64"
         },
         {
           "name": "radius",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"radius\" -> Value::as_f64"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -1957,74 +1778,65 @@
       "parameters": [
         {
           "name": "finish_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"finish_depth\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "pitch",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"pitch\" -> Value::as_f64"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "spindles_x",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"spindles_x\" -> Value::as_u64"
         },
         {
           "name": "spindles_y",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"spindles_y\" -> Value::as_u64"
         },
         {
           "name": "start_x",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"start_x\" -> Value::as_f64"
         },
         {
           "name": "start_y",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"start_y\" -> Value::as_f64"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -2042,90 +1854,79 @@
       "parameters": [
         {
           "name": "feed_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"feed_rate\" -> Value::as_f64"
         },
         {
           "name": "finish_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"finish_depth\" -> Value::as_f64"
         },
         {
           "name": "layer",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"layer\" -> Value::as_str"
         },
         {
           "name": "layer_name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                            .get(\"layer_name\" -> Value::as_str"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "plunge_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"plunge_rate\" -> Value::as_f64"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "spindle_rpm",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"spindle_rpm\" -> Value::as_f64"
         },
         {
           "name": "start_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"start_depth\" -> Value::as_f64"
         },
         {
           "name": "strategy",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"strategy\" -> Value::as_str"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -2143,106 +1944,93 @@
       "parameters": [
         {
           "name": "feed_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"feed_rate\" -> Value::as_f64"
         },
         {
           "name": "half_angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"half_angle_deg\" -> Value::as_f64"
         },
         {
           "name": "max_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"max_depth\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "params",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"params\""
         },
         {
           "name": "plunge_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"plunge_rate\" -> Value::as_f64"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "spindle_rpm",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"spindle_rpm\" -> Value::as_f64"
         },
         {
           "name": "start_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"start_depth\" -> Value::as_f64"
         },
         {
           "name": "stepdown",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepdown\" -> Value::as_f64"
         },
         {
           "name": "stepover",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepover\" -> Value::as_f64"
         },
         {
           "name": "style",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"style\" -> Value::as_str"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -2260,114 +2048,100 @@
       "parameters": [
         {
           "name": "bevel_max_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"bevel_max_depth\" -> Value::as_f64"
         },
         {
           "name": "feed_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"feed_rate\" -> Value::as_f64"
         },
         {
           "name": "half_angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"half_angle_deg\" -> Value::as_f64"
         },
         {
           "name": "max_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"max_depth\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "params",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"params\""
         },
         {
           "name": "plunge_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"plunge_rate\" -> Value::as_f64"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "spindle_rpm",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"spindle_rpm\" -> Value::as_f64"
         },
         {
           "name": "start_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"start_depth\" -> Value::as_f64"
         },
         {
           "name": "stepdown",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepdown\" -> Value::as_f64"
         },
         {
           "name": "stepover",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepover\" -> Value::as_f64"
         },
         {
           "name": "style",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"style\" -> Value::as_str"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -2385,130 +2159,114 @@
       "parameters": [
         {
           "name": "corner_radius",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"corner_radius\" -> Value::as_f64"
         },
         {
           "name": "feed_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"feed_rate\" -> Value::as_f64"
         },
         {
           "name": "female_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"female_depth\" -> Value::as_f64"
         },
         {
           "name": "glue_gap",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"glue_gap\" -> Value::as_f64"
         },
         {
           "name": "half_angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"half_angle_deg\" -> Value::as_f64"
         },
         {
           "name": "kind",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"kind\" -> Value::as_str"
         },
         {
           "name": "male_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"male_depth\" -> Value::as_f64"
         },
         {
           "name": "mirror_male",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"mirror_male\" -> Value::as_bool"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "params",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"params\""
         },
         {
           "name": "plunge_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"plunge_rate\" -> Value::as_f64"
         },
         {
           "name": "polygon",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"polygon\""
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "spindle_rpm",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"spindle_rpm\" -> Value::as_f64"
         },
         {
           "name": "tolerance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"tolerance\" -> Value::as_f64"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -2526,130 +2284,114 @@
       "parameters": [
         {
           "name": "allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"allowance\" -> Value::as_f64"
         },
         {
           "name": "angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                                .get(\"angle_deg\" -> Value::as_f64"
         },
         {
           "name": "boundary",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"boundary\""
         },
         {
           "name": "feed_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"feed_rate\" -> Value::as_f64"
         },
         {
           "name": "finish_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"finish_z\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "params",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"params\""
         },
         {
           "name": "plunge_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"plunge_rate\" -> Value::as_f64"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "spindle_rpm",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"spindle_rpm\" -> Value::as_f64"
         },
         {
           "name": "start_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"start_z\" -> Value::as_f64"
         },
         {
           "name": "stepdown",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepdown\" -> Value::as_f64"
         },
         {
           "name": "stepover",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepover\" -> Value::as_f64"
         },
         {
           "name": "stock_allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stock_allowance\" -> Value::as_f64"
         },
         {
           "name": "strategy",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"strategy\" -> Value::as_str"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -2667,138 +2409,121 @@
       "parameters": [
         {
           "name": "allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"allowance\" -> Value::as_f64"
         },
         {
           "name": "angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                                    .get(\"angle_deg\" -> Value::as_f64"
         },
         {
           "name": "bidirectional",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                                    .get(\"bidirectional\" -> Value::as_bool"
         },
         {
           "name": "boundary",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"boundary\""
         },
         {
           "name": "center_x",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"center_x\" -> Value::as_f64"
         },
         {
           "name": "center_y",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"center_y\" -> Value::as_f64"
         },
         {
           "name": "feed_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"feed_rate\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "plunge_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"plunge_rate\" -> Value::as_f64"
         },
         {
           "name": "raster_angle",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"raster_angle\" -> Value::as_f64"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "sample_interval",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"sample_interval\" -> Value::as_f64"
         },
         {
           "name": "scallop_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"scallop_height\" -> Value::as_f64"
         },
         {
           "name": "spindle_rpm",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"spindle_rpm\" -> Value::as_f64"
         },
         {
           "name": "stepover",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepover\" -> Value::as_f64"
         },
         {
           "name": "strategy",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"strategy\" -> Value::as_str"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -2816,154 +2541,135 @@
       "parameters": [
         {
           "name": "allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"allowance\" -> Value::as_f64"
         },
         {
           "name": "angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                                    .get(\"angle_deg\" -> Value::as_f64"
         },
         {
           "name": "bidirectional",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                                    .get(\"bidirectional\" -> Value::as_bool"
         },
         {
           "name": "blend_distance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"blend_distance\" -> Value::as_f64"
         },
         {
           "name": "boundary",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"boundary\""
         },
         {
           "name": "center_x",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"center_x\" -> Value::as_f64"
         },
         {
           "name": "center_y",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"center_y\" -> Value::as_f64"
         },
         {
           "name": "cusp_tolerance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"cusp_tolerance\" -> Value::as_f64"
         },
         {
           "name": "feed_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"feed_rate\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "plunge_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"plunge_rate\" -> Value::as_f64"
         },
         {
           "name": "prev_tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"prev_tool_id\" -> Value::as_str"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "sample_interval",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"sample_interval\" -> Value::as_f64"
         },
         {
           "name": "scallop_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"scallop_height\" -> Value::as_f64"
         },
         {
           "name": "spindle_rpm",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"spindle_rpm\" -> Value::as_f64"
         },
         {
           "name": "stepover",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepover\" -> Value::as_f64"
         },
         {
           "name": "strategy",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"strategy\" -> Value::as_str"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -2981,42 +2687,37 @@
       "parameters": [
         {
           "name": "all",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"all\" -> Value::as_bool"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "order",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"order\" -> Value::as_str"
         },
         {
           "name": "tolerance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"tolerance\""
         },
         {
           "name": "toolpath_ids",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params\n                    .get(\"toolpath_ids\" -> Value::as_array"
         }
       ],
@@ -3034,66 +2735,58 @@
       "parameters": [
         {
           "name": "dx",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"dx\""
         },
         {
           "name": "dy",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"dy\""
         },
         {
           "name": "dz",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"dz\""
         },
         {
           "name": "rotation_center",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"rotation_center\" -> Value::as_array"
         },
         {
           "name": "rotation_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"rotation_deg\" -> Value::as_f64"
         },
         {
           "name": "scale",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"scale\" -> Value::as_array"
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"toolpath_id\" -> Value::as_str"
         },
         {
           "name": "translation",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"translation\" -> Value::as_array"
         }
       ],
@@ -3111,50 +2804,44 @@
       "parameters": [
         {
           "name": "order",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"order\" -> Value::as_str"
         },
         {
           "name": "overcut_distance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"overcut_distance\""
         },
         {
           "name": "panel_height",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"panel_height\""
         },
         {
           "name": "panel_width",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"panel_width\""
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"safe_z\""
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"toolpath_id\" -> Value::as_str"
         }
       ],
@@ -3172,90 +2859,79 @@
       "parameters": [
         {
           "name": "check_gouging",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"check_gouging\" -> Value::as_bool"
         },
         {
           "name": "cols",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"cols\" -> Value::as_u64"
         },
         {
           "name": "gauge_length",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                            .get(\"gauge_length\" -> Value::as_f64"
         },
         {
           "name": "holder_diameter",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"holder_diameter\" -> Value::as_f64"
         },
         {
           "name": "holder_length",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                            .get(\"holder_length\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"name\" -> Value::as_str"
         },
         {
           "name": "resolution",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"resolution\" -> Value::as_u64"
         },
         {
           "name": "rows",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"rows\" -> Value::as_u64"
         },
         {
           "name": "tolerance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"tolerance\" -> Value::as_f64"
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"toolpath_id\" -> Value::as_str"
         },
         {
           "name": "toolpath_name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"toolpath_name\" -> Value::as_str"
         }
       ],
@@ -3273,34 +2949,30 @@
       "parameters": [
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"name\" -> Value::as_str"
         },
         {
           "name": "tolerance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                    .get(\"tolerance\" -> Value::as_f64"
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"toolpath_id\" -> Value::as_str"
         },
         {
           "name": "toolpath_name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"toolpath_name\" -> Value::as_str"
         }
       ],
@@ -3318,98 +2990,86 @@
       "parameters": [
         {
           "name": "lead_in_distance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"lead_in_distance\" -> Value::as_f64"
         },
         {
           "name": "lead_in_factor",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"lead_in_factor\" -> Value::as_f64"
         },
         {
           "name": "lead_out_distance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"lead_out_distance\" -> Value::as_f64"
         },
         {
           "name": "lead_out_factor",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"lead_out_factor\" -> Value::as_f64"
         },
         {
           "name": "max_feed_pct",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"max_feed_pct\" -> Value::as_f64"
         },
         {
           "name": "min_change_distance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"min_change_distance\" -> Value::as_f64"
         },
         {
           "name": "min_feed_change_pct",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"min_feed_change_pct\" -> Value::as_f64"
         },
         {
           "name": "min_feed_pct",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"min_feed_pct\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"name\" -> Value::as_str"
         },
         {
           "name": "sim_resolution",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"sim_resolution\" -> Value::as_f64"
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"toolpath_id\" -> Value::as_str"
         },
         {
           "name": "toolpath_name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"toolpath_name\" -> Value::as_str"
         }
       ],
@@ -3427,34 +3087,30 @@
       "parameters": [
         {
           "name": "file_path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"file_path\" -> Value::as_str"
         },
         {
           "name": "filename",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"filename\" -> Value::as_str"
         },
         {
           "name": "path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"path\" -> Value::as_str"
         },
         {
           "name": "return_json",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"return_json\" -> Value::as_bool"
         }
       ],
@@ -3472,26 +3128,23 @@
       "parameters": [
         {
           "name": "combine_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"combine_mode\" -> Value::as_str"
         },
         {
           "name": "mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"mode\" -> Value::as_str"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         }
       ],
@@ -3509,34 +3162,30 @@
       "parameters": [
         {
           "name": "data",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"data\" -> Value::as_str"
         },
         {
           "name": "entities",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"entities\" -> Value::as_array"
         },
         {
           "name": "format",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"format\" -> Value::as_str"
         },
         {
           "name": "path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"path\" -> Value::as_str"
         }
       ],
@@ -3554,42 +3203,37 @@
       "parameters": [
         {
           "name": "bytes",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params.get(\"bytes\" -> Value::as_array"
         },
         {
           "name": "data",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"data\" -> Value::as_str"
         },
         {
           "name": "format",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                        .get(\"format\" -> Value::as_str"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"path\" -> Value::as_str"
         }
       ],
@@ -3607,50 +3251,44 @@
       "parameters": [
         {
           "name": "close_mode",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"close_mode\""
         },
         {
           "name": "density",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"density\""
         },
         {
           "name": "format",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"format\" -> Value::as_str"
         },
         {
           "name": "mode",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"mode\""
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"path\" -> Value::as_str"
         }
       ],
@@ -3668,122 +3306,107 @@
       "parameters": [
         {
           "name": "allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"allowance\""
         },
         {
           "name": "bridges",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"bridges\" -> Value::as_bool"
         },
         {
           "name": "direction",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"direction\" -> Value::as_str"
         },
         {
           "name": "feed_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"feed_rate\" -> Value::as_f64"
         },
         {
           "name": "finish_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"finish_depth\""
         },
         {
           "name": "lead_in_out",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"lead_in_out\" -> Value::as_bool"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "plunge_rate",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"plunge_rate\" -> Value::as_f64"
         },
         {
           "name": "ramping",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"ramping\" -> Value::as_str"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"safe_z\""
         },
         {
           "name": "side",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"side\" -> Value::as_str"
         },
         {
           "name": "spindle_rpm",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"spindle_rpm\" -> Value::as_f64"
         },
         {
           "name": "start_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "get_f64_opt(params, \"start_depth\""
         },
         {
           "name": "stepdown",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepdown\" -> Value::as_f64"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -3801,138 +3424,121 @@
       "parameters": [
         {
           "name": "allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"allowance\" -> Value::as_f64"
         },
         {
           "name": "angle_deg",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                            .get(\"angle_deg\" -> Value::as_f64"
         },
         {
           "name": "final_tool_allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"final_tool_allowance\" -> Value::as_f64"
         },
         {
           "name": "finish_depth",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"finish_depth\" -> Value::as_f64"
         },
         {
           "name": "name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"name\" -> Value::as_str"
         },
         {
           "name": "params",
-          "type": "Any",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Any"
+          },
           "source_expression": "params.get(\"params\""
         },
         {
           "name": "previous_allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"previous_allowance\" -> Value::as_f64"
         },
         {
           "name": "previous_tool_diameter",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params\n                        .get(\"previous_tool_diameter\" -> Value::as_f64"
         },
         {
           "name": "previous_tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                        .get(\"previous_tool_id\" -> Value::as_str"
         },
         {
           "name": "rest_from_tool_diameter",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"rest_from_tool_diameter\" -> Value::as_f64"
         },
         {
           "name": "rest_from_tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"rest_from_tool_id\" -> Value::as_str"
         },
         {
           "name": "rest_previous_allowance",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"rest_previous_allowance\" -> Value::as_f64"
         },
         {
           "name": "safe_z",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"safe_z\" -> Value::as_f64"
         },
         {
           "name": "stepdown",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepdown\" -> Value::as_f64"
         },
         {
           "name": "stepover",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"stepover\" -> Value::as_f64"
         },
         {
           "name": "strategy",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"strategy\" -> Value::as_str"
         },
         {
           "name": "tool_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"tool_id\" -> Value::as_str"
         }
       ],
@@ -3950,66 +3556,58 @@
       "parameters": [
         {
           "name": "cols",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"cols\" -> Value::as_u64"
         },
         {
           "name": "id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"id\" -> Value::as_str"
         },
         {
           "name": "index",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"index\" -> Value::as_u64"
         },
         {
           "name": "reset",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"reset\" -> Value::as_bool"
         },
         {
           "name": "resolution",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"resolution\" -> Value::as_u64"
         },
         {
           "name": "rows",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                    .get(\"rows\" -> Value::as_u64"
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"toolpath_id\" -> Value::as_str"
         },
         {
           "name": "toolpath_index",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params.get(\"toolpath_index\" -> Value::as_u64"
         }
       ],
@@ -4039,178 +3637,156 @@
       "parameters": [
         {
           "name": "arc_mode",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"arc_mode\" -> Value::as_str"
         },
         {
           "name": "comments",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                        .get(\"comments\" -> Value::as_bool"
         },
         {
           "name": "dialect",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"dialect\" -> Value::as_str"
         },
         {
           "name": "feed_precision",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                        .get(\"feed_precision\" -> Value::as_u64"
         },
         {
           "name": "id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"id\" -> Value::as_str"
         },
         {
           "name": "line_number_increment",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                        .get(\"line_number_increment\" -> Value::as_u64"
         },
         {
           "name": "line_numbers",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params\n                    .get(\"line_numbers\" -> Value::as_bool"
         },
         {
           "name": "machine",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"machine\" -> Value::as_str"
         },
         {
           "name": "modal",
-          "type": "Bool",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Bool"
+          },
           "source_expression": "params.get(\"modal\" -> Value::as_bool"
         },
         {
           "name": "output_path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"output_path\" -> Value::as_str"
         },
         {
           "name": "path",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"path\" -> Value::as_str"
         },
         {
           "name": "post_processor",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"post_processor\" -> Value::as_str"
         },
         {
           "name": "postamble",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                        .get(\"postamble\" -> Value::as_str"
         },
         {
           "name": "preamble",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                        .get(\"preamble\" -> Value::as_str"
         },
         {
           "name": "precision",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                        .get(\"precision\" -> Value::as_u64"
         },
         {
           "name": "program_name",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                        .get(\"program_name\" -> Value::as_str"
         },
         {
           "name": "program_number",
-          "type": "Int",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Int"
+          },
           "source_expression": "params\n                        .get(\"program_number\" -> Value::as_u64"
         },
         {
           "name": "rotary",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params.get(\"rotary\" -> Value::as_str"
         },
         {
           "name": "spindle_dwell",
-          "type": "Float",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Float"
+          },
           "source_expression": "params.get(\"spindle_dwell\" -> Value::as_f64"
         },
         {
           "name": "toolpath_id",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                            .get(\"toolpath_id\" -> Value::as_str"
         },
         {
           "name": "toolpath_ids",
-          "type": "Array",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "Array"
+          },
           "source_expression": "params\n                    .get(\"toolpath_ids\" -> Value::as_array"
         },
         {
           "name": "units",
-          "type": "String",
-          "required": false,
-          "default": null,
-          "description": null,
+          "type": {
+            "type": "String"
+          },
           "source_expression": "params\n                    .get(\"units\" -> Value::as_str"
         }
       ],

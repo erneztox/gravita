@@ -20,7 +20,7 @@ Each operation records:
 - the parameter names and JSON value types read by that handler;
 - the source expression used to identify each parameter.
 
-The parameter list is based on the handler implementation, not on ArtCAM registry metadata or generated ArtCAM schemas. Where the old handler accepts dynamic JSON values, the contract preserves that boundary as `Any`, `Array` or `Object` instead of inventing a more specific type.
+The parameter list is based on the handler implementation, not on external command registries or generated schemas. It records the JSON value family the handler reads. Optionality and defaults are intentionally omitted until verified from the full control flow. Where the handler accepts dynamic JSON values, the contract preserves that boundary as `Any`, `Array` or `Object` instead of inventing a more specific type.
 
 The contract is a product decision: operations outside the new Gravita scope are not required to be implemented.
 

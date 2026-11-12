@@ -58,6 +58,9 @@ fn rust_type_family(raw: &str) -> &'static str {
     else if ["i8","i16","i32","i64","u8","u16","u32","u64","usize","isize"].iter().any(|n| s.contains(n)) { "Int" }
     else if s.contains("bool") { "Bool" }
     else if s.contains("string") || s.contains("str") { "String" }
+    else if s.contains("vec<") || s.starts_with("vec") || s.contains("array") { "Array" }
+    else if s.contains("serde_json::value") { "Any" }
+    else if s.contains("serde_json::map") { "Object" }
     else { "Other" }
 }
 fn contract_type_family(value: &serde_json::Value) -> &'static str {
