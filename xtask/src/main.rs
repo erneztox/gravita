@@ -31,7 +31,7 @@ struct ContractCommand { id: String, name: String, parameters: Vec<ContractParam
 #[derive(Deserialize)]
 struct ContractParameter { name: String, #[serde(rename = "type")] parameter_type: serde_json::Value }
 #[derive(Clone)]
-struct Payload { type_name: String, fields: BTreeMap<String, String>, file: String }
+struct Payload { fields: BTreeMap<String, String>, file: String }
 #[derive(Default)]
 struct SourceIndex {
     payloads: BTreeMap<String, Payload>,
@@ -71,7 +71,7 @@ impl<'ast> Visit<'ast> for Collector<'_> {
             _ => BTreeMap::new(),
         };
         self.index.payloads.insert(item.ident.to_string(), Payload {
-            type_name: item.ident.to_string(), fields, file: self.file.to_owned(),
+            fields, file: self.file.to_owned(),
         });
         syn::visit::visit_item_struct(self, item);
     }
@@ -148,7 +148,7 @@ fn audit(contract_path: &Path, source_root: &Path, json_path: Option<&Path>) -> 
     for command in &contract.commands {
         let Some(type_names) = index.command_ids.get(&command.id) else {
             issues.push(Issue { command_id: command.id.clone(), code: "missing_command_impl".into(),
-                detail: format!("No impl Command declares ID {} (expected an associated const ID).", command.id) });
+                detail: format!("No impl Command for {} declares ID {} (expected an associated const ID).", command.name, command.id) });
             continue;
         };
         if type_names.len() != 1 {
