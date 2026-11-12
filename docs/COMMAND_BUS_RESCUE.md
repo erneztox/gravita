@@ -1,40 +1,53 @@
-# Rescuing the previous Gravita Core Bus
+# Gravita command contract and Core Bus audit
 
-This work uses the previous Gravita engine as an engineering reference. Its command bus was implemented in Rust from the ground up.
+This audit uses the previous Gravita engine as a Rust implementation reference. The previous Core Bus is not a porting target: the new product keeps only operations required by its own architecture and WBS.
 
-## Scope
+## Result
 
-The previous engine is inspected to understand the operations it implemented, their behavior, their inputs and how the application invoked them. The new Gravita product deliberately keeps only the operations required by its current product definition.
+The selected contract contains 97 canonical operations:
 
-The rescued contract in `docs/contracts/rescued-commands.json` is therefore a **selected subset**, not a port of the previous command registry. It covers document persistence, relief modeling and layers, imported geometry and meshes, tool management, CAM, simulation and G-code post-processing.
+- 93 operations grounded in executable handlers from the previous Gravita Rust engine.
+- 4 explicit new-product requirements where the previous engine did not provide the required behavior.
+- 457 parameter entries, derived from the handler branches or defined explicitly for new requirements.
 
-Interactive vector authoring and bitmap editing are excluded. The geometry import operation remains because the new product accepts imported DXF/SVG geometry as CAM input; it does not expose vector drawing, node editing or a bitmap workbench.
+The contract is in `docs/contracts/rescued-commands.json`. It records source handler files and all legacy command aliases for each selected operation. It does not reproduce the previous engine's full command catalog.
 
-## Functional contract
+## Product boundary
 
-Each operation records:
+Included workflows are document lifecycle and transactions; DXF/SVG geometry ingestion; PNG heightmap ingestion/export; STL/OBJ mesh ingestion/export; relief generation, transformation, sculpting and layer compositing; tool database and stock setup; 2D/3D CAM; toolpath management; simulation; machining safety; and G-code post-processing.
 
-- its stable Gravita command ID and human-readable purpose;
-- the corresponding command handled by the previous Rust Core Bus;
-- the Rust handler source file;
-- the parameter names and JSON value types read by that handler;
-- the source expression used to identify each parameter.
+DXF/SVG remain input formats for machining geometry. The new product does not expose vector authoring, node editing, vector Boolean/trim/offset tools, vector text, or vector/bitmap conversion. PNG/TIFF are heightmap inputs, not a bitmap editing workbench.
 
-The parameter list is based on the handler implementation, not on external command registries or generated schemas. It records the JSON value family the handler reads. Optionality and defaults are intentionally omitted until verified from the full control flow. Where the handler accepts dynamic JSON values, the contract preserves that boundary as `Any`, `Array` or `Object` instead of inventing a more specific type.
+The previous shape-generation handler contains both geometry-driven and bitmap-color modes. The contract retains only the geometry-driven path.
 
-The contract is a product decision: operations outside the new Gravita scope are not required to be implemented.
+## Coverage gaps carried into the new product
+
+The previous engine is a useful starting point, but it does not fully satisfy the current product specification:
+
+1. **TIFF heightmaps:** the old relief importer reads PNG. Gravita must add TIFF ingestion in its I/O layer.
+2. **Toolpath sequencing:** the old engine can merge, transform and panel toolpaths, but has no explicit operation for sequencing and safe transitions.
+3. **Machine travel bounds:** the old collision checker covers tool/holder collisions and optional gouge checks, not a configured machine travel envelope.
+4. **Mandatory export gate:** the old G-code command generates output without requiring a successful safety report. Gravita must block export until stock, collision, gouge and machine-bound validation passes.
+5. **G-code validation:** the old postprocessor generates dialect-specific output but does not expose the G-code parser/validation stage required by WBS G7.4.
+
+These are represented as four new operations in the contract: toolpath sequencing, machine-bounds checking, pre-export safety validation and generated-G-code validation. TIFF is recorded as an additional required format on the heightmap import operation.
+
+## Deliberate exclusions
+
+- Interactive vector creation/editing, node manipulation, transforms, Boolean operations, trimming, nesting, text and vector-layer management.
+- Bitmap layers, painting, brushes, flood fill, palette/color operations, bitmap filters, and vector/bitmap conversion.
+- View, window, dialog and layout commands.
+- Clipart and assembly workbenches.
+- Legacy bevel, inlay and smart-engraving wizards not included in the current WBS.
+- The old `cam.feature_machining_3d` branch is disabled in the source and is not counted as implemented functionality.
+- `cam.profile_options` is not a separate operation: bridge, lead-in/out and ramp parameters are already part of profile toolpath creation.
+
+## Postprocessor coverage
+
+The previous postprocessor has dialect implementations for GRBL, LinuxCNC, Mach3, Mach4, Fanuc and Haas, plus a generic ISO mode. This covers the six controller families named in WBS G7.2/G7.3.
 
 ## New implementation audit
 
-`cargo xtask audit rescued-commands` checks the selected contract against the new Rust source tree. It reports missing command IDs, duplicate IDs, missing typed payloads, missing parameters, type-family mismatches, undocumented payload fields and missing dispatcher registrations.
+`cargo xtask audit rescued-commands` checks the selected contract against typed Rust command payloads, execution implementations and dispatcher registration. It intentionally audits only this selected contract; excluded legacy operations are not porting failures.
 
-The new implementation is not required to reproduce the previous engine's internal structure. The audit checks the new command API and its authoritative dispatcher against the selected functional contract.
-
-Run:
-
-```sh
-cargo xtask audit rescued-commands
-cargo xtask audit rescued-commands --json target/audits/rescued-commands.json
-```
-
-The audit is expected to report pending operations while the new engine implementation is still absent. That is a baseline, not an implementation claim.
+The current Gravita repository is still at its specification baseline and has no application crates, so the audit will report the selected commands as pending until the implementation is added. The contract is a product baseline, not a claim that the engine has already been implemented or verified.

@@ -11,7 +11,7 @@ cargo xtask is Gravita's deterministic developer tool. It enforces architecture,
 | help | List commands and flags | 0 |
 | audit layers | Validate dependency graph against explicit crate-layer policy | Nonzero on violation |
 | audit commands | Compare typed command registry, schemas, documentation and WBS trace; report missing, duplicate and orphan IDs | Nonzero on mismatch |
-| audit rescued-commands | Compare the selected Gravita Core Bus functional contract against typed Rust commands, payload parameters and authoritative dispatcher registration | Nonzero on mismatch |
+| audit rescued-commands | Compare the selected 97-operation Gravita contract against typed Rust commands, payload parameters and authoritative dispatcher registration | Nonzero on mismatch |
 | audit frontend | Check GUI/CLI/MCP references against public command IDs; detect direct UI mutation | Nonzero on broken references or forbidden mutation |
 | audit params | Validate parameter names, types, defaults, units and schema-generation parity | Nonzero on mismatch |
 | audit fixtures | Validate fixture manifest, licenses, checksums and expected artifacts | Nonzero on missing or changed fixture |
@@ -53,6 +53,6 @@ cargo xtask is Gravita's deterministic developer tool. It enforces architecture,
 
 ## Rescued Core Bus contract
 
-The selected operations are defined in `docs/contracts/rescued-commands.json`. The contract is derived from the previous Gravita Rust Core Bus handlers and contains only operations within the new product scope. It excludes interactive vector authoring and bitmap editing. Imported 2D geometry remains an input to CAM, not an editing workbench.
+The selected operations are defined in `docs/contracts/rescued-commands.json`. The contract contains 93 operations grounded in the previous Gravita Rust handlers and four new product requirements absent from that engine. It excludes interactive vector authoring and bitmap editing. Imported 2D geometry remains an input to CAM, not an editing workbench. The detailed gap analysis is in `docs/COMMAND_BUS_RESCUE.md` and `docs/COMMAND_BUS_AUDIT.md`.
 
 `cargo xtask audit rescued-commands` compares this selected contract with the new implementation. It does not require the new Gravita to reproduce the previous Core Bus in full.

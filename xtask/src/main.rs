@@ -31,7 +31,8 @@ struct ContractCommand { id: String, name: String, parameters: Vec<ContractParam
 #[derive(Deserialize)]
 struct ContractParameter { name: String, #[serde(rename = "type")] parameter_type: serde_json::Value }
 #[derive(Clone)]
-struct Payload { fields: BTreeMap<String, String>, file: String }
+struct FieldInfo { family: String, rust_type: String }
+struct Payload { fields: BTreeMap<String, FieldInfo>, file: String }
 #[derive(Default)]
 struct SourceIndex {
     payloads: BTreeMap<String, Payload>,
@@ -52,16 +53,36 @@ fn type_name(ty: &Type) -> Option<String> {
     }
 }
 fn type_tokens(ty: &Type) -> String { format!("{ty:?}") }
-fn rust_type_family(raw: &str) -> &'static str {
-    let s = raw.to_ascii_lowercase();
-    if s.contains("vec<") || s.starts_with("vec") || s.contains("slice") || s.contains("array") { "Array" }
-    else if s.contains("serde_json::value") { "Any" }
-    else if s.contains("serde_json::map") || s.contains("hashmap<") || s.contains("btreemap<") { "Object" }
-    else if s.contains("f32") || s.contains("f64") { "Float" }
-    else if ["i8","i16","i32","i64","u8","u16","u32","u64","usize","isize"].iter().any(|n| s.contains(n)) { "Int" }
-    else if s.contains("bool") { "Bool" }
-    else if s.contains("string") || s.contains("str") { "String" }
-    else { "Other" }
+fn rust_type_family(ty: &Type) -> &'static str {
+    match ty {
+        Type::Reference(reference) => rust_type_family(&reference.elem),
+        Type::Group(group) => rust_type_family(&group.elem),
+        Type::Paren(paren) => rust_type_family(&paren.elem),
+        Type::Array(_) | Type::Slice(_) | Type::Tuple(_) => "Array",
+        Type::Path(path) => {
+            let Some(segment) = path.path.segments.last() else { return "Other"; };
+            let ident = segment.ident.to_string();
+            match ident.as_str() {
+                "Option" | "Box" | "Arc" | "Rc" => {
+                    if let PathArguments::AngleBracketed(args) = &segment.arguments {
+                        if let Some(GenericArgument::Type(inner)) = args.args.iter().find(|arg| matches!(arg, GenericArgument::Type(_))) {
+                            return rust_type_family(inner);
+                        }
+                    }
+                    "Other"
+                }
+                "Vec" | "VecDeque" | "LinkedList" => "Array",
+                "HashMap" | "BTreeMap" | "Map" => "Object",
+                "Value" => "Any",
+                "f32" | "f64" => "Float",
+                "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" | "usize" | "isize" => "Int",
+                "bool" => "Bool",
+                "String" | "str" | "PathBuf" => "String",
+                _ => "Other",
+            }
+        }
+        _ => "Other",
+    }
 }
 fn contract_type_family(value: &serde_json::Value) -> &'static str {
     value.get("type").and_then(serde_json::Value::as_str).unwrap_or("Other")
@@ -70,7 +91,10 @@ impl<'ast> Visit<'ast> for Collector<'_> {
     fn visit_item_struct(&mut self, item: &'ast syn::ItemStruct) {
         let fields = match &item.fields {
             Fields::Named(named) => named.named.iter().filter_map(|field| {
-                Some((field.ident.as_ref()?.to_string(), type_tokens(&field.ty)))
+                Some((field.ident.as_ref()?.to_string(), FieldInfo {
+                    family: rust_type_family(&field.ty).to_string(),
+                    rust_type: type_tokens(&field.ty),
+                }))
             }).collect(),
             _ => BTreeMap::new(),
         };
@@ -96,6 +120,20 @@ impl<'ast> Visit<'ast> for Collector<'_> {
             }
         }
         syn::visit::visit_expr_call(self, expression);
+    }
+    fn visit_expr_method_call(&mut self, expression: &'ast syn::ExprMethodCall) {
+        if expression.method == "register" {
+            if let Some(arguments) = &expression.turbofish {
+                for argument in &arguments.args {
+                    if let GenericArgument::Type(ty) = argument {
+                        if let Some(name) = type_name(ty) {
+                            self.index.registrations.insert(name);
+                        }
+                    }
+                }
+            }
+        }
+        syn::visit::visit_expr_method_call(self, expression);
     }
     fn visit_item_impl(&mut self, item: &'ast syn::ItemImpl) {
         if let Some((_, path, _)) = &item.trait_ {
@@ -154,7 +192,13 @@ fn audit(contract_path: &Path, source_root: &Path, json_path: Option<&Path>) -> 
     let mut declarations_found = 0;
     let mut implemented_commands = 0;
     let mut registered_commands = 0;
+    let mut seen_contract_ids = BTreeSet::new();
     for command in &contract.commands {
+        if !seen_contract_ids.insert(command.id.as_str()) {
+            issues.push(Issue { command_id: command.id.clone(), code: "duplicate_contract_id".into(),
+                detail: format!("Contract command ID {} appears more than once.", command.id) });
+            continue;
+        }
         let Some(type_names) = index.command_ids.get(&command.id) else {
             issues.push(Issue { command_id: command.id.clone(), code: "missing_command_impl".into(),
                 detail: format!("No impl Command for {} declares ID {} (expected an associated const ID).", command.name, command.id) });
@@ -190,11 +234,11 @@ fn audit(contract_path: &Path, source_root: &Path, json_path: Option<&Path>) -> 
                 None => issues.push(Issue { command_id: command.id.clone(), code: "missing_parameter".into(),
                     detail: format!("Payload {} in {} has no field {}.", type_name, payload.file, name) }),
                 Some(actual) => {
-                    let actual_type = rust_type_family(actual);
+                    let actual_type = actual.family.as_str();
                     if actual_type != "Other" && actual_type != *expected_type
                         && !(*expected_type == "Choice" && actual_type == "String") {
                         issues.push(Issue { command_id: command.id.clone(), code: "parameter_type_mismatch".into(),
-                            detail: format!("Parameter {} expects {}, but {} is {}.", name, expected_type, type_name, actual) });
+                            detail: format!("Parameter {} expects {}, but {} is {}.", name, expected_type, type_name, actual.rust_type) });
                     }
                 }
             }
